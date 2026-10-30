@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log In / লগইন | GlobalWork</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--p:#12355b;--pl:#245587;--a:#c8102e;--bd:#E2E8F0;--mu:#5E6F8D;--bg:#F5F7FA}
+body{font-family:Inter,-apple-system,"Segoe UI",Roboto,sans-serif;background:linear-gradient(135deg,#eaf1fb,#fff,#fdeceb);color:#1E2A3A;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.box{width:100%;max-width:440px;background:#fff;border:1px solid var(--bd);border-top:4px solid var(--a);border-radius:16px;padding:32px 28px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.box.wide{max-width:1000px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.3rem;color:var(--p);margin-bottom:18px}
+.f{display:inline-block;width:30px;height:20px;border-radius:3px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.f.ca{background:linear-gradient(90deg,#d52b1e 25%,#fff 25% 75%,#d52b1e 75%);position:relative}
+.f.ca::after{content:"\1F341";position:absolute;inset:0;font-size:11px;text-align:center;line-height:20px}
+.f.us{background:repeating-linear-gradient(180deg,#b22234 0 7.692%,#fff 7.692% 15.384%);position:relative;margin-left:-8px}
+.f.us::after{content:"";position:absolute;left:0;top:0;width:40%;height:54%;background:#3c3b6e}
+h1{font-size:1.4rem;color:var(--p);margin-bottom:4px}
+.sub{color:var(--mu);font-size:.9rem;margin-bottom:22px}
+label{display:block;font-size:.85rem;font-weight:600;margin:14px 0 6px}
+input{width:100%;padding:12px 14px;font:inherit;font-size:16px;border:1.5px solid var(--bd);border-radius:12px;background:var(--bg);outline:none}
+input:focus{border-color:var(--p);background:#fff}
+button,.btn{display:inline-block;font:inherit;font-weight:600;padding:12px 20px;border:0;border-radius:40px;background:var(--p);color:#fff;cursor:pointer;text-align:center;text-decoration:none}
+button:hover{background:var(--pl)}
+.full{width:100%;margin-top:22px}
+.msg{margin-top:14px;font-size:.88rem;padding:10px 12px;border-radius:10px;display:none}
+.msg.err{display:block;background:#FDECEC;color:#9B1C1C}
+.msg.ok{display:block;background:#E8F6EC;color:#1E6B34}
+.alt{text-align:center;margin-top:16px;font-size:.88rem;color:var(--mu)}
+.alt a{color:var(--p);font-weight:600}
+.note{margin-top:14px;font-size:.78rem;color:var(--mu);text-align:center}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--bd)}
+th{background:var(--bg);color:var(--p);font-size:.8rem;text-transform:uppercase;letter-spacing:.4px}
+.wrap{overflow-x:auto;margin-top:14px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:14px}
+.bar input{max-width:280px}
+.sm{padding:6px 14px;font-size:.8rem}
+.del{background:#B42318}.del:hover{background:#8f1c12}
+.ghost{background:#fff;color:var(--p);border:2px solid var(--p)}
+.ghost:hover{background:var(--p);color:#fff}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="box">
+<div class="brand"><span><span class="f ca"></span><span class="f us"></span></span> GlobalWork</div>
+<h1>Log In / লগইন</h1>
+<p class="sub">Welcome back / আবার স্বাগতম</p>
+<form id="f" novalidate>
+<label for="e">Email / ইমেল</label><input id="e" type="email" autocomplete="email">
+<label for="w">Password / পাসওয়ার্ড</label><input id="w" type="password" autocomplete="current-password">
+<button class="full" type="submit">Log In / লগইন করুন</button>
+<div id="m" class="msg"></div>
+</form>
+<p class="alt">No account? / অ্যাকাউন্ট নেই? <a href="signup.html">Sign Up / সাইন আপ</a></p>
+<p class="note">Demo: accounts exist only in this browser. / ডেমো: অ্যাকাউন্ট শুধু এই ব্রাউজারে আছে।</p>
+</div>
+<script>
+
+function hashPw(pw,salt){
+  if(window.crypto&&crypto.subtle){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(salt+pw)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')})}
+  var h=5381,s=salt+pw;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return Promise.resolve('d'+h);
+}
+function getUsers(){try{return JSON.parse(localStorage.getItem('globalwork_users')||'{}')}catch(e){return{}}}
+function putUsers(u){try{localStorage.setItem('globalwork_users',JSON.stringify(u));return true}catch(e){return false}}
+function show(el,cls,t){el.className='msg '+cls;el.textContent=t}
+
+
+document.getElementById('f').addEventListener('submit',function(ev){
+  ev.preventDefault();
+  var m=document.getElementById('m');
+  var e=document.getElementById('e').value.trim().toLowerCase(),w=document.getElementById('w').value;
+  var u=getUsers()[e];
+  if(!e||!w||!u){show(m,'err','ইমেল বা পাসওয়ার্ড ভুল / Incorrect email or password');return}
+  hashPw(w,u.salt).then(function(h){
+    if(h!==u.hash){show(m,'err','ইমেল বা পাসওয়ার্ড ভুল / Incorrect email or password');return}
+    try{localStorage.setItem('globalwork_session',e)}catch(x){}
+    show(m,'ok','লগইন সফল! / Logged in!');
+    setTimeout(function(){location.href='index.html'},700);
+  });
+});
+</script>
+</body>
+</html>
