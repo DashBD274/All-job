@@ -150,6 +150,27 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
 .logo-flags{display:inline-flex;align-items:center}
 .logo-flags .flag{--s:22px;box-shadow:0 2px 6px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.7)}
 .logo-flags .flag+.flag{margin-left:-8px}
+.find{padding:56px 0;background:linear-gradient(180deg,#fff,var(--light-bg))}
+.find-box{max-width:820px;margin:0 auto 28px;background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:24px;box-shadow:var(--sh-md)}
+.find-form{display:grid;grid-template-columns:2fr 1fr auto;gap:14px;align-items:end}
+.find-form .form-group{margin:0}
+.find-form select{width:100%;padding:12px 14px;font-family:inherit;font-size:16px;border:1.5px solid var(--border);border-radius:var(--r-sm);background:var(--light-bg)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:16px;font-size:.85rem;color:var(--text-muted)}
+.chips button{font-family:inherit;font-size:.8rem;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--light-bg);cursor:pointer;transition:all .2s}
+.chips button:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:820px;margin:0 auto 24px}
+.res-card{display:flex;flex-direction:column;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:24px;box-shadow:var(--sh-sm);transition:transform .25s,box-shadow .25s}
+.res-card:hover{transform:translateY(-4px);box-shadow:var(--sh-md)}
+.res-card h3{color:var(--primary)}
+.res-card p{font-size:.92rem;flex:1}
+.res-card.off{display:none}
+.scam-warn{max-width:820px;margin:0 auto;background:#FFF8E6;border:1px solid #F0D58A;border-radius:var(--r);padding:18px 22px}
+.scam-warn strong{color:#7A5A00}.scam-warn p{color:#6B5A2A;font-size:.92rem;margin-top:6px}
+@media(max-width:640px){.find-form{grid-template-columns:1fr}.find{padding:40px 0}}
+[hidden]{display:none!important}
+.userbox{display:flex;align-items:center;gap:8px;font-weight:600;font-size:.9rem;color:var(--primary)}
+.userbox i{font-size:1.4rem}
+#login{border-top:none}
 @media(max-width:640px){.hero{padding:44px 0 40px}.flags-row .flag{--s:40px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.js .reveal{opacity:1;transform:none}.particles{display:none}}
 </style>
@@ -176,7 +197,9 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
           <option value="ja">日本語</option>
         </select>
       </div>
-      <a href="#account" class="btn btn-primary btn-sm"><i class="fas fa-user-plus"></i> <span data-i18n="signUp">Sign Up</span></a>
+      <a href="#login" class="btn btn-outline btn-sm auth-out"><i class="fas fa-sign-in-alt"></i> <span data-i18n="login">Log In</span></a>
+      <a href="#account" class="btn btn-primary btn-sm auth-out"><i class="fas fa-user-plus"></i> <span data-i18n="signUp">Sign Up</span></a>
+      <span id="userBox" class="userbox" hidden><i class="fas fa-user-circle"></i><span id="userName"></span><button type="button" id="logoutBtn" class="btn btn-outline btn-sm" data-i18n="logout">Log Out</button></span>
     </div>
   </div>
 </header>
@@ -189,9 +212,33 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
     <h1><span data-i18n="heroTitle1">Find Jobs in</span> <span data-i18n="heroTitle2">Canada & USA</span></h1>
     <p data-i18n="heroSubtitle">Apply from anywhere. Get selected, receive a job offer, and apply for a work visa with employer support.</p>
     <div class="hero-actions">
-      <a href="#jobs" class="btn btn-primary"><i class="fas fa-search"></i> <span data-i18n="browseJobs">Browse Jobs</span></a>
+      <a href="#find" class="btn btn-primary"><i class="fas fa-search"></i> <span data-i18n="browseJobs">Browse Jobs</span></a>
       <a href="#account" class="btn btn-outline"><i class="fas fa-user-plus"></i> <span data-i18n="createAccount">Create Account</span></a>
     </div>
+  </div>
+</section>
+
+<section class="find" id="find">
+  <div class="container">
+    <div class="section-header">
+      <h2 data-i18n="srchTitle">Find Jobs</h2>
+      <p data-i18n="srchSub">Real job postings from official government sources.</p>
+    </div>
+    <div class="find-box reveal">
+      <form id="jobSearch" class="find-form">
+        <div class="form-group"><label for="kw" data-i18n="srchKw">What job are you looking for?</label><input type="text" id="kw" placeholder="e.g. Farm worker, Greenhouse" autocomplete="off"></div>
+        <div class="form-group"><label for="ctry" data-i18n="srchCountry">Country</label>
+          <select id="ctry"><option value="all" data-i18n="srchAll">Canada &amp; USA</option><option value="ca" data-i18n="canadaTitle">Canada</option><option value="us" data-i18n="usaTitle">USA</option></select></div>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> <span data-i18n="srchBtn">Search</span></button>
+      </form>
+      <div class="chips"><span data-i18n="srchQuick">Popular:</span>
+        <button type="button" data-q="Farm worker">Farm Worker</button><button type="button" data-q="Greenhouse">Greenhouse</button><button type="button" data-q="Food processing">Food Processing</button><button type="button" data-q="Livestock">Livestock</button><button type="button" data-q="Landscaping">Landscaping</button></div>
+    </div>
+    <div class="res-grid">
+      <a id="rCA" class="res-card reveal" target="_blank" rel="noopener noreferrer" href="https://www.jobbank.gc.ca/jobsearch/jobsearch"><span class="flag ca" style="--s:34px"></span><h3>Job Bank (Canada)</h3><p data-i18n="srcCA"></p><span class="btn btn-primary btn-sm"><i class="fas fa-external-link-alt"></i> <span data-i18n="srchOpen">Open official listings</span></span></a>
+      <a id="rUS" class="res-card reveal" target="_blank" rel="noopener noreferrer" href="https://seasonaljobs.dol.gov/"><span class="flag us" style="--s:34px"></span><h3>SeasonalJobs.dol.gov (USA)</h3><p data-i18n="srcUS"></p><span class="btn btn-primary btn-sm"><i class="fas fa-external-link-alt"></i> <span data-i18n="srchOpen">Open official listings</span></span></a>
+    </div>
+    <div class="scam-warn reveal"><strong><i class="fas fa-shield-alt"></i> <span data-i18n="warnTitle">Stay safe from job scams</span></strong><p data-i18n="warnText"></p></div>
   </div>
 </section>
 
@@ -226,6 +273,22 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
         <div class="job-tags"><span class="job-tag">Sponsorship</span><span class="job-tag">Relocation</span><span class="job-tag">Support</span></div>
         <a href="#account" class="btn btn-accent btn-sm btn-block" data-i18n="applyBoth">Apply Both</a>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="account-section" id="login">
+  <div class="container account-wrapper">
+    <div class="account-form-box reveal">
+      <h3 data-i18n="loginTitle">Log In</h3>
+      <p class="form-sub" data-i18n="loginSub">Welcome back. Enter your email and password.</p>
+      <form id="loginForm" novalidate>
+        <div class="form-group"><label for="loginEmail" data-i18n="labelEmail">Email Address</label><input type="email" id="loginEmail" placeholder="john@example.com" autocomplete="email"></div>
+        <div class="form-group"><label for="loginPass" data-i18n="labelPassword">Password</label><input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"></div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px"><i class="fas fa-sign-in-alt"></i> <span data-i18n="loginBtn">Log In</span></button>
+        <p class="form-note"><a href="#account" style="color:var(--primary);font-weight:600" data-i18n="noAccount">No account yet? Sign up</a></p>
+        <p class="form-note" data-i18n="demoNote">Demo mode: accounts are saved only in this browser.</p>
+      </form>
     </div>
   </div>
 </section>
@@ -298,11 +361,11 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
 <script>
 (function () {
   // Key order — every language array below follows this exact order
-  var K = ["signUp","heroBadge","heroTitle1","heroTitle2","heroSubtitle","browseJobs","createAccount","jobsHeading","jobsSubheading","canadaTitle","canadaVisaTag","canadaDesc","applyCanada","usaTitle","usaVisaTag","usaDesc","applyUSA","bothTitle","bothVisaTag","bothDesc","applyBoth","accountHeading","accountSubheading","accountPoint1","accountPoint2","accountPoint3","accountPoint4","formTitle","formSub","labelFullName","labelEmail","labelPhone","labelPassword","createAccountBtn","formNote","footerBrandDesc","footerQuickLinks","footerJobs","footerAccount","footerVisa","footerSupport","footerLegal","footerPrivacy","footerTerms","footerDisclaimer","footerContact","footerCopyright","msgFill","msgPass","msgEmail","msgWelcome"];
+  var K = ["signUp","heroBadge","heroTitle1","heroTitle2","heroSubtitle","browseJobs","createAccount","jobsHeading","jobsSubheading","canadaTitle","canadaVisaTag","canadaDesc","applyCanada","usaTitle","usaVisaTag","usaDesc","applyUSA","bothTitle","bothVisaTag","bothDesc","applyBoth","accountHeading","accountSubheading","accountPoint1","accountPoint2","accountPoint3","accountPoint4","formTitle","formSub","labelFullName","labelEmail","labelPhone","labelPassword","createAccountBtn","formNote","footerBrandDesc","footerQuickLinks","footerJobs","footerAccount","footerVisa","footerSupport","footerLegal","footerPrivacy","footerTerms","footerDisclaimer","footerContact","footerCopyright","msgFill","msgPass","msgEmail","msgWelcome","srchTitle","srchSub","srchKw","srchCountry","srchAll","srchBtn","srchQuick","srcCA","srcUS","srchOpen","warnTitle","warnText","login","loginTitle","loginSub","loginBtn","noAccount","logout","msgLoginBad","msgLoginOk","msgExists","demoNote"];
 
   var L = {
-    en: ["Sign Up","🌍 Work in Canada & USA","Find Jobs in","Canada & USA","Apply from anywhere. Get selected, receive a job offer, and apply for a work visa with employer support.","Browse Jobs","Create Account","Job Opportunities","Explore work opportunities in Canada and the USA with visa sponsorship potential.","Canada","LMIA / Work Permit","Find jobs with employers who support LMIA or work permit applications. High demand in agriculture, food processing, and general labour.","Apply in Canada","USA","H-2A / H-2B Visa","Seasonal and agricultural jobs with employer petition support. Perfect for farm, hospitality, and landscaping roles.","Apply in USA","Canada & USA","Employer Sponsorship","Apply to both countries at once. Get matched with employers who are willing to sponsor your work visa.","Apply Both","Create Your Account","Sign up with your phone or email to start applying for jobs in Canada and the USA.","Apply to jobs in both countries","Get job alerts and updates","Track your applications","Secure and private","Sign Up","Enter your details to create an account.","Full Name","Email Address","Phone Number","Password","Create Account","By signing up you agree to our Terms & Privacy Policy.","Connecting global talent with opportunities in Canada and the USA.","Quick Links","Jobs","Create Account","Visa Info","Support","Legal","Privacy Policy","Terms of Service","Disclaimer","Contact","© 2026 GlobalWork. All rights reserved.","Please fill in all fields.","Password must be at least 6 characters.","Please enter a valid email address.","Welcome, {name}! Your account has been created."],
-    bn: ["সাইন আপ","🌍 কানাডা ও USA-তে কাজ","চাকরি খুঁজুন","কানাডা ও USA","যেকোনো জায়গা থেকে আবেদন করুন। নির্বাচিত হোন, জব অফার পান, এবং নিয়োগকর্তার সহায়তায় কাজের ভিসার জন্য আবেদন করুন।","চাকরি দেখুন","অ্যাকাউন্ট তৈরি করুন","চাকরির সুযোগ","ভিসা স্পনসরশিপের সম্ভাবনা সহ কানাডা ও USA-তে কাজের সুযোগ দেখুন।","কানাডা","LMIA / ওয়ার্ক পারমিট","এমন নিয়োগকর্তাদের চাকরি খুঁজুন যারা LMIA বা ওয়ার্ক পারমিট আবেদন সমর্থন করেন। কৃষি, খাদ্য প্রক্রিয়াকরণ এবং সাধারণ শ্রমে উচ্চ চাহিদা।","কানাডায় আবেদন করুন","USA","H-2A / H-2B ভিসা","নিয়োগকর্তার পিটিশন সহায়তা সহ মৌসুমী ও কৃষি চাকরি। খামার, আতিথেয়তা এবং ল্যান্ডস্কেপিং কাজের জন্য উপযুক্ত।","USA-তে আবেদন করুন","কানাডা ও USA","নিয়োগকর্তা স্পনসরশিপ","একসাথে উভয় দেশে আবেদন করুন। কাজের ভিসা স্পনসর করতে ইচ্ছুক নিয়োগকর্তাদের সাথে মিলিত হোন।","উভয়টিতে আবেদন করুন","আপনার অ্যাকাউন্ট তৈরি করুন","কানাডা ও USA-তে চাকরির আবেদন শুরু করতে ফোন বা ইমেল দিয়ে সাইন আপ করুন।","উভয় দেশে চাকরিতে আবেদন করুন","চাকরির সতর্কতা ও আপডেট পান","আপনার আবেদন ট্র্যাক করুন","নিরাপদ ও ব্যক্তিগত","সাইন আপ","অ্যাকাউন্ট তৈরি করতে আপনার বিবরণ লিখুন।","পুরো নাম","ইমেল ঠিকানা","ফোন নম্বর","পাসওয়ার্ড","অ্যাকাউন্ট তৈরি করুন","সাইন আপ করে আপনি আমাদের শর্তাবলী ও গোপনীয়তা নীতিতে সম্মত হচ্ছেন।","কানাডা ও USA-তে সুযোগের সাথে বিশ্বব্যাপী প্রতিভাকে সংযুক্ত করা।","দ্রুত লিঙ্ক","চাকরি","অ্যাকাউন্ট তৈরি করুন","ভিসা তথ্য","সহায়তা","আইনি","গোপনীয়তা নীতি","পরিষেবার শর্তাবলী","দাবিত্যাগ","যোগাযোগ","© 2026 GlobalWork. সর্বস্বত্ব সংরক্ষিত।","সব ঘর পূরণ করুন।","পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।","সঠিক ইমেল ঠিকানা লিখুন।","স্বাগতম, {name}! আপনার অ্যাকাউন্ট তৈরি হয়েছে।"],
+    en: ["Sign Up","🌍 Work in Canada & USA","Find Jobs in","Canada & USA","Apply from anywhere. Get selected, receive a job offer, and apply for a work visa with employer support.","Browse Jobs","Create Account","Job Opportunities","Explore work opportunities in Canada and the USA with visa sponsorship potential.","Canada","LMIA / Work Permit","Find jobs with employers who support LMIA or work permit applications. High demand in agriculture, food processing, and general labour.","Apply in Canada","USA","H-2A / H-2B Visa","Seasonal and agricultural jobs with employer petition support. Perfect for farm, hospitality, and landscaping roles.","Apply in USA","Canada & USA","Employer Sponsorship","Apply to both countries at once. Get matched with employers who are willing to sponsor your work visa.","Apply Both","Create Your Account","Sign up with your phone or email to start applying for jobs in Canada and the USA.","Apply to jobs in both countries","Get job alerts and updates","Track your applications","Secure and private","Sign Up","Enter your details to create an account.","Full Name","Email Address","Phone Number","Password","Create Account","By signing up you agree to our Terms & Privacy Policy.","Connecting global talent with opportunities in Canada and the USA.","Quick Links","Jobs","Create Account","Visa Info","Support","Legal","Privacy Policy","Terms of Service","Disclaimer","Contact","© 2026 GlobalWork. All rights reserved.","Please fill in all fields.","Password must be at least 6 characters.","Please enter a valid email address.","Welcome, {name}! Your account has been created.","Find Jobs","Real job postings from official government sources — jobs open to foreign workers with employer sponsorship.","What job are you looking for?","Country","Canada & USA","Search","Popular:","Canada's official government job board. Use the “Temporary foreign worker” / LMIA filters to see employers who hire from abroad.","The U.S. Department of Labor's official list of certified H-2A (farm) and H-2B (seasonal) jobs. Contact the employer directly through “Recruitment Information”.","Open official listings","Stay safe from job scams","Real employers never ask you to pay for a job offer. Apply only through official sites or directly to the employer, and never send money to agents who promise guaranteed visas.","Log In","Log In","Welcome back. Enter your email and password.","Log In","No account yet? Sign up","Log Out","Incorrect email or password.","Welcome back, {name}!","This email is already registered. Please log in.","Demo mode: accounts are saved only in this browser."],
+    bn: ["সাইন আপ","🌍 কানাডা ও USA-তে কাজ","চাকরি খুঁজুন","কানাডা ও USA","যেকোনো জায়গা থেকে আবেদন করুন। নির্বাচিত হোন, জব অফার পান, এবং নিয়োগকর্তার সহায়তায় কাজের ভিসার জন্য আবেদন করুন।","চাকরি দেখুন","অ্যাকাউন্ট তৈরি করুন","চাকরির সুযোগ","ভিসা স্পনসরশিপের সম্ভাবনা সহ কানাডা ও USA-তে কাজের সুযোগ দেখুন।","কানাডা","LMIA / ওয়ার্ক পারমিট","এমন নিয়োগকর্তাদের চাকরি খুঁজুন যারা LMIA বা ওয়ার্ক পারমিট আবেদন সমর্থন করেন। কৃষি, খাদ্য প্রক্রিয়াকরণ এবং সাধারণ শ্রমে উচ্চ চাহিদা।","কানাডায় আবেদন করুন","USA","H-2A / H-2B ভিসা","নিয়োগকর্তার পিটিশন সহায়তা সহ মৌসুমী ও কৃষি চাকরি। খামার, আতিথেয়তা এবং ল্যান্ডস্কেপিং কাজের জন্য উপযুক্ত।","USA-তে আবেদন করুন","কানাডা ও USA","নিয়োগকর্তা স্পনসরশিপ","একসাথে উভয় দেশে আবেদন করুন। কাজের ভিসা স্পনসর করতে ইচ্ছুক নিয়োগকর্তাদের সাথে মিলিত হোন।","উভয়টিতে আবেদন করুন","আপনার অ্যাকাউন্ট তৈরি করুন","কানাডা ও USA-তে চাকরির আবেদন শুরু করতে ফোন বা ইমেল দিয়ে সাইন আপ করুন।","উভয় দেশে চাকরিতে আবেদন করুন","চাকরির সতর্কতা ও আপডেট পান","আপনার আবেদন ট্র্যাক করুন","নিরাপদ ও ব্যক্তিগত","সাইন আপ","অ্যাকাউন্ট তৈরি করতে আপনার বিবরণ লিখুন।","পুরো নাম","ইমেল ঠিকানা","ফোন নম্বর","পাসওয়ার্ড","অ্যাকাউন্ট তৈরি করুন","সাইন আপ করে আপনি আমাদের শর্তাবলী ও গোপনীয়তা নীতিতে সম্মত হচ্ছেন।","কানাডা ও USA-তে সুযোগের সাথে বিশ্বব্যাপী প্রতিভাকে সংযুক্ত করা।","দ্রুত লিঙ্ক","চাকরি","অ্যাকাউন্ট তৈরি করুন","ভিসা তথ্য","সহায়তা","আইনি","গোপনীয়তা নীতি","পরিষেবার শর্তাবলী","দাবিত্যাগ","যোগাযোগ","© 2026 GlobalWork. সর্বস্বত্ব সংরক্ষিত।","সব ঘর পূরণ করুন।","পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।","সঠিক ইমেল ঠিকানা লিখুন।","স্বাগতম, {name}! আপনার অ্যাকাউন্ট তৈরি হয়েছে।","চাকরি খুঁজুন","সরকারি অফিসিয়াল সূত্র থেকে আসল চাকরির বিজ্ঞপ্তি — বিদেশি কর্মীদের জন্য নিয়োগকর্তার স্পনসরশিপসহ।","কোন চাকরি খুঁজছেন?","দেশ","কানাডা ও USA","খুঁজুন","জনপ্রিয়:","কানাডার সরকারি অফিসিয়াল চাকরির সাইট। বিদেশ থেকে নিয়োগ দেন এমন নিয়োগকর্তা দেখতে “Temporary foreign worker” / LMIA ফিল্টার ব্যবহার করুন।","USA-র শ্রম বিভাগের (DOL) সরকারি তালিকা: অনুমোদিত H-2A (খামার) ও H-2B (মৌসুমী) চাকরি। “Recruitment Information” থেকে সরাসরি নিয়োগকর্তার সঙ্গে যোগাযোগ করুন।","অফিসিয়াল তালিকা খুলুন","চাকরির প্রতারণা থেকে সাবধান","আসল নিয়োগকর্তা চাকরির অফারের জন্য কখনো টাকা চায় না। শুধু অফিসিয়াল সাইটে বা সরাসরি নিয়োগকর্তার কাছে আবেদন করুন, আর ভিসার নিশ্চয়তা দেওয়ার দাবিদার এজেন্টকে কখনো টাকা দেবেন না।","লগইন","লগইন","আবার স্বাগতম। আপনার ইমেল ও পাসওয়ার্ড দিন।","লগইন করুন","অ্যাকাউন্ট নেই? সাইন আপ করুন","লগআউট","ইমেল বা পাসওয়ার্ড ভুল।","আবার স্বাগতম, {name}!","এই ইমেল আগে থেকেই নিবন্ধিত। লগইন করুন।","ডেমো মোড: অ্যাকাউন্ট শুধু এই ব্রাউজারে সংরক্ষিত থাকে।"],
     es: ["Registrarse","🌍 Trabaja en Canadá y EE.UU.","Encuentra empleo en","Canadá y EE.UU.","Solicita desde cualquier lugar. Sé seleccionado, recibe una oferta de trabajo y solicita una visa de trabajo con apoyo del empleador.","Ver empleos","Crear cuenta","Oportunidades de empleo","Explora oportunidades laborales en Canadá y EE.UU. con posible patrocinio de visa.","Canadá","LMIA / Permiso de trabajo","Encuentra empleos con empleadores que apoyan la LMIA o el permiso de trabajo. Alta demanda en agricultura, procesamiento de alimentos y mano de obra general.","Solicitar en Canadá","EE.UU.","Visa H-2A / H-2B","Empleos estacionales y agrícolas con apoyo de petición del empleador. Ideal para granja, hostelería y jardinería.","Solicitar en EE.UU.","Canadá y EE.UU.","Patrocinio del empleador","Solicita a ambos países a la vez y conecta con empleadores dispuestos a patrocinar tu visa.","Solicitar en ambos","Crea tu cuenta","Regístrate con tu teléfono o correo para empezar a solicitar empleos en Canadá y EE.UU.","Solicita empleos en ambos países","Recibe alertas y novedades","Sigue tus solicitudes","Seguro y privado","Registrarse","Ingresa tus datos para crear una cuenta.","Nombre completo","Correo electrónico","Teléfono","Contraseña","Crear cuenta","Al registrarte aceptas nuestros Términos y Política de privacidad.","Conectando talento global con oportunidades en Canadá y EE.UU.","Enlaces rápidos","Empleos","Crear cuenta","Info de visa","Soporte","Legal","Política de privacidad","Términos de servicio","Aviso legal","Contacto","© 2026 GlobalWork. Todos los derechos reservados.","Complete todos los campos.","La contraseña debe tener al menos 6 caracteres.","Ingrese un correo válido.","¡Bienvenido, {name}! Tu cuenta ha sido creada."],
     fr: ["S'inscrire","🌍 Travaillez au Canada et aux États-Unis","Trouvez un emploi au","Canada et États-Unis","Postulez de n'importe où. Soyez sélectionné, recevez une offre et demandez un visa de travail avec le soutien de l'employeur.","Voir les emplois","Créer un compte","Opportunités d'emploi","Découvrez des emplois au Canada et aux États-Unis avec possibilité de parrainage de visa.","Canada","LMIA / Permis de travail","Trouvez des emplois chez des employeurs qui soutiennent la LMIA ou le permis de travail. Forte demande en agriculture, transformation alimentaire et main-d'œuvre générale.","Postuler au Canada","États-Unis","Visa H-2A / H-2B","Emplois saisonniers et agricoles avec soutien de pétition de l'employeur. Idéal pour la ferme, l'hôtellerie et l'aménagement paysager.","Postuler aux États-Unis","Canada et États-Unis","Parrainage de l'employeur","Postulez dans les deux pays et soyez mis en relation avec des employeurs prêts à parrainer votre visa.","Postuler dans les deux","Créez votre compte","Inscrivez-vous avec votre téléphone ou e-mail pour postuler au Canada et aux États-Unis.","Postulez dans les deux pays","Recevez alertes et mises à jour","Suivez vos candidatures","Sécurisé et privé","S'inscrire","Entrez vos informations pour créer un compte.","Nom complet","Adresse e-mail","Téléphone","Mot de passe","Créer un compte","En vous inscrivant, vous acceptez nos Conditions et notre Politique de confidentialité.","Connecter les talents du monde aux opportunités au Canada et aux États-Unis.","Liens rapides","Emplois","Créer un compte","Info visa","Support","Mentions légales","Politique de confidentialité","Conditions d'utilisation","Avertissement","Contact","© 2026 GlobalWork. Tous droits réservés.","Veuillez remplir tous les champs.","Le mot de passe doit contenir au moins 6 caractères.","Veuillez entrer un e-mail valide.","Bienvenue, {name} ! Votre compte a été créé."],
     de: ["Registrieren","🌍 Arbeiten in Kanada und den USA","Finde Jobs in","Kanada und USA","Bewirb dich von überall. Werde ausgewählt, erhalte ein Jobangebot und beantrage ein Arbeitsvisum mit Unterstützung des Arbeitgebers.","Jobs ansehen","Konto erstellen","Jobmöglichkeiten","Entdecke Jobs in Kanada und den USA mit möglichem Visa-Sponsoring.","Kanada","LMIA / Arbeitserlaubnis","Finde Jobs bei Arbeitgebern, die LMIA oder Arbeitserlaubnisse unterstützen. Hohe Nachfrage in Landwirtschaft, Lebensmittelverarbeitung und allgemeiner Arbeit.","In Kanada bewerben","USA","H-2A / H-2B Visum","Saisonale und landwirtschaftliche Jobs mit Unterstützung des Arbeitgebers. Ideal für Farm, Gastgewerbe und Landschaftsbau.","In den USA bewerben","Kanada und USA","Arbeitgeber-Sponsoring","Bewirb dich in beiden Ländern gleichzeitig und finde Arbeitgeber, die dein Visum sponsern.","In beiden bewerben","Erstelle dein Konto","Melde dich mit Telefon oder E-Mail an, um dich in Kanada und den USA zu bewerben.","Bewirb dich in beiden Ländern","Erhalte Job-Alarme und Updates","Verfolge deine Bewerbungen","Sicher und privat","Registrieren","Gib deine Daten ein, um ein Konto zu erstellen.","Vollständiger Name","E-Mail-Adresse","Telefonnummer","Passwort","Konto erstellen","Mit der Anmeldung stimmst du unseren Bedingungen und der Datenschutzrichtlinie zu.","Globale Talente mit Chancen in Kanada und den USA verbinden.","Schnelllinks","Jobs","Konto erstellen","Visum-Info","Support","Rechtliches","Datenschutzrichtlinie","Nutzungsbedingungen","Haftungsausschluss","Kontakt","© 2026 GlobalWork. Alle Rechte vorbehalten.","Bitte alle Felder ausfüllen.","Das Passwort muss mindestens 6 Zeichen haben.","Bitte eine gültige E-Mail eingeben.","Willkommen, {name}! Dein Konto wurde erstellt."],
@@ -328,7 +391,7 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
     if (!T[lang]) lang = 'en';
     current = lang;
     nodes.forEach(function (el) {
-      var v = T[lang][el.getAttribute('data-i18n')];
+      var kk = el.getAttribute('data-i18n'); var v = T[lang][kk] || T.en[kk];
       if (v) el.textContent = v;
     });
     document.documentElement.lang = lang;
@@ -355,13 +418,14 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
     if (pass.length < 6) { alert(t.msgPass); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert(t.msgEmail); return; }
 
-    // Password is never stored. Replace this with a real backend call.
-    try {
-      localStorage.setItem('globalwork_user', JSON.stringify({ fullName: name, email: email, phone: phone, createdAt: new Date().toISOString() }));
-    } catch (err) {}
-
-    alert(t.msgWelcome.replace('{name}', name));
-    this.reset();
+    if (getUsers()[email.toLowerCase()]) { alert(tx('msgExists')); return; }
+    var form = this;
+    saveUser(name, email, phone, pass).then(function () {
+      setSession(email.toLowerCase());
+      alert(tx('msgWelcome').replace('{name}', name));
+      form.reset();
+      document.getElementById('find').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   });
 
   // Smooth scroll for in-page links
@@ -407,6 +471,78 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
     }, { threshold: 0.15 });
     rv.forEach(function (el, k) { el.style.transitionDelay = (k % 3) * 0.12 + 's'; io.observe(el); });
   } else { rv.forEach(function (el) { el.classList.add('in'); }); }
+
+  // ---- Job search: opens official government job sources ----
+  var kwEl = document.getElementById('kw'), ctryEl = document.getElementById('ctry');
+  var rCA = document.getElementById('rCA'), rUS = document.getElementById('rUS');
+  function updateResults() {
+    var kw = kwEl.value.trim(), c = ctryEl.value;
+    rCA.href = 'https://www.jobbank.gc.ca/jobsearch/jobsearch?searchstring=' + encodeURIComponent(kw);
+    rCA.classList.toggle('off', c === 'us');
+    rUS.classList.toggle('off', c === 'ca');
+  }
+  document.getElementById('jobSearch').addEventListener('submit', function (e) {
+    e.preventDefault(); updateResults();
+    var target = ctryEl.value === 'us' ? rUS : rCA;
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+  ctryEl.addEventListener('change', updateResults);
+  kwEl.addEventListener('input', updateResults);
+  document.querySelectorAll('.chips button').forEach(function (b) {
+    b.addEventListener('click', function () { kwEl.value = b.dataset.q; updateResults(); });
+  });
+  updateResults();
+
+  // ---- Demo authentication (browser-only; use a real backend for production) ----
+  function tx(k) { return T[current][k] || T.en[k]; }
+  function hashPw(pw, salt) {
+    if (window.crypto && crypto.subtle) {
+      return crypto.subtle.digest('SHA-256', new TextEncoder().encode(salt + pw)).then(function (b) {
+        return Array.from(new Uint8Array(b)).map(function (x) { return x.toString(16).padStart(2, '0'); }).join('');
+      });
+    }
+    var h = 5381, str = salt + pw;
+    for (var i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0;
+    return Promise.resolve('d' + h);
+  }
+  function getUsers() { try { return JSON.parse(localStorage.getItem('globalwork_users') || '{}'); } catch (e) { return {}; } }
+  function putUsers(u) { try { localStorage.setItem('globalwork_users', JSON.stringify(u)); } catch (e) {} }
+  function saveUser(name, email, phone, pw) {
+    var salt = Math.random().toString(36).slice(2);
+    return hashPw(pw, salt).then(function (h) {
+      var u = getUsers();
+      u[email.toLowerCase()] = { fullName: name, phone: phone, salt: salt, hash: h };
+      putUsers(u);
+    });
+  }
+  function setSession(email) { try { localStorage.setItem('globalwork_session', email); } catch (e) {} renderUser(); }
+  function renderUser() {
+    var em = null; try { em = localStorage.getItem('globalwork_session'); } catch (e) {}
+    var u = em && getUsers()[em];
+    document.getElementById('userBox').hidden = !u;
+    document.getElementById('userName').textContent = u ? u.fullName : '';
+    document.querySelectorAll('.auth-out').forEach(function (el) { el.style.display = u ? 'none' : ''; });
+  }
+  document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var form = this;
+    var em = document.getElementById('loginEmail').value.trim().toLowerCase();
+    var pw = document.getElementById('loginPass').value;
+    var u = getUsers()[em];
+    if (!em || !pw || !u) { alert(tx('msgLoginBad')); return; }
+    hashPw(pw, u.salt).then(function (h) {
+      if (h !== u.hash) { alert(tx('msgLoginBad')); return; }
+      setSession(em);
+      alert(tx('msgLoginOk').replace('{name}', u.fullName));
+      form.reset();
+      document.getElementById('find').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+  document.getElementById('logoutBtn').addEventListener('click', function () {
+    try { localStorage.removeItem('globalwork_session'); } catch (e) {}
+    renderUser();
+  });
+  renderUser();
 })();
 </script>
 </body>
