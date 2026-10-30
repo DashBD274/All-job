@@ -213,7 +213,7 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
     <p data-i18n="heroSubtitle">Apply from anywhere. Get selected, receive a job offer, and apply for a work visa with employer support.</p>
     <div class="hero-actions">
       <a href="#find" class="btn btn-primary"><i class="fas fa-search"></i> <span data-i18n="browseJobs">Browse Jobs</span></a>
-      <a href="#account" class="btn btn-outline"><i class="fas fa-user-plus"></i> <span data-i18n="createAccount">Create Account</span></a>
+      <a href="#account" class="btn btn-outline auth-out"><i class="fas fa-user-plus"></i> <span data-i18n="createAccount">Create Account</span></a>
     </div>
   </div>
 </section>
@@ -255,7 +255,7 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
         <span class="visa-tag" data-i18n="canadaVisaTag">LMIA / Work Permit</span>
         <p data-i18n="canadaDesc">Find jobs with employers who support LMIA or work permit applications. High demand in agriculture, food processing, and general labour.</p>
         <div class="job-tags"><span class="job-tag">Farm Worker</span><span class="job-tag">Food Processing</span><span class="job-tag">Livestock</span><span class="job-tag">Greenhouse</span></div>
-        <a href="#account" class="btn btn-primary btn-sm btn-block" data-i18n="applyCanada">Apply in Canada</a>
+        <a href="#account" class="btn btn-primary btn-sm btn-block apply-link" data-i18n="applyCanada">Apply in Canada</a>
       </div>
       <div class="job-card reveal">
         <div class="country-flag"><span class="flag us" style="--s:34px"></span></div>
@@ -263,7 +263,7 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
         <span class="visa-tag" data-i18n="usaVisaTag">H-2A / H-2B Visa</span>
         <p data-i18n="usaDesc">Seasonal and agricultural jobs with employer petition support. Perfect for farm, hospitality, and landscaping roles.</p>
         <div class="job-tags"><span class="job-tag">H-2A Farm</span><span class="job-tag">H-2B Hospitality</span><span class="job-tag">Landscaping</span><span class="job-tag">Seafood</span></div>
-        <a href="#account" class="btn btn-primary btn-sm btn-block" data-i18n="applyUSA">Apply in USA</a>
+        <a href="#account" class="btn btn-primary btn-sm btn-block apply-link" data-i18n="applyUSA">Apply in USA</a>
       </div>
       <div class="job-card reveal">
         <div class="country-flag"><span class="flag ca" style="--s:30px"></span><span class="flag us" style="--s:30px"></span></div>
@@ -271,13 +271,13 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
         <span class="visa-tag" data-i18n="bothVisaTag">Employer Sponsorship</span>
         <p data-i18n="bothDesc">Apply to both countries at once. Get matched with employers who are willing to sponsor your work visa.</p>
         <div class="job-tags"><span class="job-tag">Sponsorship</span><span class="job-tag">Relocation</span><span class="job-tag">Support</span></div>
-        <a href="#account" class="btn btn-accent btn-sm btn-block" data-i18n="applyBoth">Apply Both</a>
+        <a href="#account" class="btn btn-accent btn-sm btn-block apply-link" data-i18n="applyBoth">Apply Both</a>
       </div>
     </div>
   </div>
 </section>
 
-<section class="account-section" id="login">
+<section class="account-section auth-out" id="login">
   <div class="container account-wrapper">
     <div class="account-form-box reveal">
       <h3 data-i18n="loginTitle">Log In</h3>
@@ -293,7 +293,7 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
   </div>
 </section>
 
-<section class="account-section" id="account">
+<section class="account-section auth-out" id="account">
   <div class="container account-wrapper">
     <div class="account-info">
       <h2 data-i18n="accountHeading">Create Your Account</h2>
@@ -331,7 +331,7 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
         <h4 data-i18n="footerQuickLinks">Quick Links</h4>
         <ul>
           <li><a href="#jobs" data-i18n="footerJobs">Jobs</a></li>
-          <li><a href="#account" data-i18n="footerAccount">Create Account</a></li>
+          <li class="auth-out"><a href="#account" data-i18n="footerAccount">Create Account</a></li>
           <li><a href="#" data-i18n="footerVisa">Visa Info</a></li>
           <li><a href="#" data-i18n="footerSupport">Support</a></li>
         </ul>
@@ -522,6 +522,7 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
     document.getElementById('userBox').hidden = !u;
     document.getElementById('userName').textContent = u ? u.fullName : '';
     document.querySelectorAll('.auth-out').forEach(function (el) { el.style.display = u ? 'none' : ''; });
+    document.querySelectorAll('.apply-link').forEach(function (a) { a.setAttribute('href', u ? '#find' : '#account'); });
   }
   document.getElementById('loginForm').addEventListener('submit', function (e) {
     e.preventDefault();
