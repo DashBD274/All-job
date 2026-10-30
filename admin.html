@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Panel | GlobalWork</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--p:#12355b;--pl:#245587;--a:#c8102e;--bd:#E2E8F0;--mu:#5E6F8D;--bg:#F5F7FA}
+body{font-family:Inter,-apple-system,"Segoe UI",Roboto,sans-serif;background:linear-gradient(135deg,#eaf1fb,#fff,#fdeceb);color:#1E2A3A;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.box{width:100%;max-width:440px;background:#fff;border:1px solid var(--bd);border-top:4px solid var(--a);border-radius:16px;padding:32px 28px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.box.wide{max-width:1000px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.3rem;color:var(--p);margin-bottom:18px}
+.f{display:inline-block;width:30px;height:20px;border-radius:3px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.f.ca{background:linear-gradient(90deg,#d52b1e 25%,#fff 25% 75%,#d52b1e 75%);position:relative}
+.f.ca::after{content:"\1F341";position:absolute;inset:0;font-size:11px;text-align:center;line-height:20px}
+.f.us{background:repeating-linear-gradient(180deg,#b22234 0 7.692%,#fff 7.692% 15.384%);position:relative;margin-left:-8px}
+.f.us::after{content:"";position:absolute;left:0;top:0;width:40%;height:54%;background:#3c3b6e}
+h1{font-size:1.4rem;color:var(--p);margin-bottom:4px}
+.sub{color:var(--mu);font-size:.9rem;margin-bottom:22px}
+label{display:block;font-size:.85rem;font-weight:600;margin:14px 0 6px}
+input{width:100%;padding:12px 14px;font:inherit;font-size:16px;border:1.5px solid var(--bd);border-radius:12px;background:var(--bg);outline:none}
+input:focus{border-color:var(--p);background:#fff}
+button,.btn{display:inline-block;font:inherit;font-weight:600;padding:12px 20px;border:0;border-radius:40px;background:var(--p);color:#fff;cursor:pointer;text-align:center;text-decoration:none}
+button:hover{background:var(--pl)}
+.full{width:100%;margin-top:22px}
+.msg{margin-top:14px;font-size:.88rem;padding:10px 12px;border-radius:10px;display:none}
+.msg.err{display:block;background:#FDECEC;color:#9B1C1C}
+.msg.ok{display:block;background:#E8F6EC;color:#1E6B34}
+.alt{text-align:center;margin-top:16px;font-size:.88rem;color:var(--mu)}
+.alt a{color:var(--p);font-weight:600}
+.note{margin-top:14px;font-size:.78rem;color:var(--mu);text-align:center}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--bd)}
+th{background:var(--bg);color:var(--p);font-size:.8rem;text-transform:uppercase;letter-spacing:.4px}
+.wrap{overflow-x:auto;margin-top:14px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:14px}
+.bar input{max-width:280px}
+.sm{padding:6px 14px;font-size:.8rem}
+.del{background:#B42318}.del:hover{background:#8f1c12}
+.ghost{background:#fff;color:var(--p);border:2px solid var(--p)}
+.ghost:hover{background:var(--p);color:#fff}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="box wide">
+<div class="brand"><span><span class="f ca"></span><span class="f us"></span></span> GlobalWork</div>
+<div id="setup" hidden>
+<h1>Admin Setup / অ্যাডমিন সেটআপ</h1>
+<p class="sub">Create the admin password / অ্যাডমিন পাসওয়ার্ড তৈরি করুন</p>
+<form id="fs" novalidate><label for="s1">New password / নতুন পাসওয়ার্ড (min 8)</label><input id="s1" type="password" autocomplete="new-password">
+<button class="full" type="submit">Save / সংরক্ষণ</button><div id="ms" class="msg"></div></form></div>
+<div id="gate" hidden>
+<h1>Admin Login / অ্যাডমিন লগইন</h1>
+<p class="sub">Restricted area / সীমাবদ্ধ এলাকা</p>
+<form id="fg" novalidate><label for="g1">Password / পাসওয়ার্ড</label><input id="g1" type="password" autocomplete="current-password">
+<button class="full" type="submit">Enter / প্রবেশ</button><div id="mg" class="msg"></div></form></div>
+<div id="panel" hidden>
+<div class="bar"><div><h1>Registered Users / নিবন্ধিত ব্যবহারকারী</h1><p class="sub" style="margin:0">Total / মোট: <b id="cnt">0</b></p></div>
+<div><button class="sm ghost" id="csv" type="button">Export CSV</button> <button class="sm ghost" id="out" type="button">Logout</button></div></div>
+<div class="bar"><input id="q" placeholder="Search name, email, phone / খুঁজুন"><button class="sm" id="rf" type="button">Refresh / রিফ্রেশ</button></div>
+<div class="wrap"><table><thead><tr><th>#</th><th>Name / নাম</th><th>Email / ইমেল</th><th>Phone / ফোন</th><th>Created / তারিখ</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+<p class="note">Demo: shows only accounts created in this browser. / ডেমো: শুধু এই ব্রাউজারে তৈরি অ্যাকাউন্ট দেখায়।</p>
+</div>
+</div>
+<script>
+
+function hashPw(pw,salt){
+  if(window.crypto&&crypto.subtle){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(salt+pw)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')})}
+  var h=5381,s=salt+pw;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return Promise.resolve('d'+h);
+}
+function getUsers(){try{return JSON.parse(localStorage.getItem('globalwork_users')||'{}')}catch(e){return{}}}
+function putUsers(u){try{localStorage.setItem('globalwork_users',JSON.stringify(u));return true}catch(e){return false}}
+function show(el,cls,t){el.className='msg '+cls;el.textContent=t}
+
+
+var $=function(i){return document.getElementById(i)};
+function getAdmin(){try{return JSON.parse(localStorage.getItem('globalwork_admin')||'null')}catch(e){return null}}
+function route(){
+  var ok=false;try{ok=sessionStorage.getItem('globalwork_admin_ok')==='1'}catch(e){}
+  var a=getAdmin();
+  $('setup').hidden=!!a;$('gate').hidden=!a||ok;$('panel').hidden=!(a&&ok);
+  document.querySelector('.box').classList.toggle('wide',!!(a&&ok));
+  if(a&&ok)render();
+}
+$('fs').addEventListener('submit',function(ev){ev.preventDefault();
+  var p=$('s1').value;if(p.length<8){show($('ms'),'err','কমপক্ষে ৮ অক্ষর / Min 8 characters');return}
+  var salt=Math.random().toString(36).slice(2);
+  hashPw(p,salt).then(function(h){localStorage.setItem('globalwork_admin',JSON.stringify({salt:salt,hash:h}));route()});
+});
+$('fg').addEventListener('submit',function(ev){ev.preventDefault();
+  var a=getAdmin();hashPw($('g1').value,a.salt).then(function(h){
+    if(h!==a.hash){show($('mg'),'err','ভুল পাসওয়ার্ড / Wrong password');return}
+    sessionStorage.setItem('globalwork_admin_ok','1');$('g1').value='';route();
+  });
+});
+$('out').addEventListener('click',function(){sessionStorage.removeItem('globalwork_admin_ok');route()});
+function list(){
+  var u=getUsers(),q=$('q').value.trim().toLowerCase();
+  return Object.keys(u).map(function(e){return{email:e,name:u[e].fullName||'',phone:u[e].phone||'',at:u[e].createdAt||''}})
+   .filter(function(r){return !q||(r.name+' '+r.email+' '+r.phone).toLowerCase().indexOf(q)>-1})
+   .sort(function(a,b){return (b.at||'').localeCompare(a.at||'')});
+}
+function render(){
+  var tb=$('rows'),rs=list();tb.textContent='';$('cnt').textContent=Object.keys(getUsers()).length;
+  rs.forEach(function(r,i){
+    var tr=document.createElement('tr');
+    [i+1,r.name,r.email,r.phone,r.at?new Date(r.at).toLocaleString():'—'].forEach(function(v){var td=document.createElement('td');td.textContent=v;tr.appendChild(td)});
+    var td=document.createElement('td'),b=document.createElement('button');
+    b.className='sm del';b.type='button';b.textContent='Delete';
+    b.onclick=function(){if(confirm(r.email+' ?')){var u=getUsers();delete u[r.email];putUsers(u);render()}};
+    td.appendChild(b);tr.appendChild(td);tb.appendChild(tr);
+  });
+  if(!rs.length){var tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=6;td.textContent='কোনো ব্যবহারকারী নেই / No users';tr.appendChild(td);tb.appendChild(tr)}
+}
+$('q').addEventListener('input',render);$('rf').addEventListener('click',render);
+$('csv').addEventListener('click',function(){
+  function c(v){v=String(v);if(/^[=+\-@]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"'}
+  var rows=[['Name','Email','Phone','Created']].concat(list().map(function(r){return[r.name,r.email,r.phone,r.at]}));
+  var blob=new Blob(['\ufeff'+rows.map(function(r){return r.map(c).join(',')}).join('\n')],{type:'text/csv;charset=utf-8'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='users.csv';a.click();
+});
+route();
+</script>
+</body>
+</html>
