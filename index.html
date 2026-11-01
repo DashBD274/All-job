@@ -173,6 +173,14 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
 #login{border-top:none}
 @media(max-width:640px){.hero{padding:44px 0 40px}.flags-row .flag{--s:40px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.js .reveal{opacity:1;transform:none}.particles{display:none}}
+
+/* ===== New Company List Styles ===== */
+#companyListContainer {
+  display: none;
+  margin-top: 30px;
+  animation: fadeIn 0.5s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
@@ -228,13 +236,28 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
       <form id="jobSearch" class="find-form">
         <div class="form-group"><label for="kw" data-i18n="srchKw">What job are you looking for?</label><input type="text" id="kw" placeholder="e.g. Farm worker, Greenhouse" autocomplete="off"></div>
         <div class="form-group"><label for="ctry" data-i18n="srchCountry">Country</label>
-          <select id="ctry"><option value="all" data-i18n="srchAll">Canada &amp; USA</option><option value="ca" data-i18n="canadaTitle">Canada</option><option value="us" data-i18n="usaTitle">USA</option></select></div>
+          <select id="ctry">
+            <option value="all" data-i18n="srchAll">Canada &amp; USA</option>
+            <option value="ca" data-i18n="canadaTitle">Canada</option>
+            <option value="us" data-i18n="usaTitle">USA</option>
+          </select>
+        </div>
         <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> <span data-i18n="srchBtn">Search</span></button>
       </form>
       <div class="chips"><span data-i18n="srchQuick">Popular:</span>
         <button type="button" data-q="Farm worker">Farm Worker</button><button type="button" data-q="Greenhouse">Greenhouse</button><button type="button" data-q="Food processing">Food Processing</button><button type="button" data-q="Livestock">Livestock</button><button type="button" data-q="Landscaping">Landscaping</button></div>
     </div>
-    <div class="res-grid">
+
+    <!-- NEW COMPANY LIST SECTION -->
+    <div id="companyListContainer" class="reveal">
+      <h3 style="margin-bottom: 15px; color: var(--primary); text-align: left; font-size: 1.3rem;">Featured Employers</h3>
+      <div id="companyGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+        <!-- Dynamic Company Cards will appear here -->
+      </div>
+    </div>
+    <!-- END NEW COMPANY LIST SECTION -->
+
+    <div class="res-grid" style="margin-top: 24px;">
       <a id="rCA" class="res-card reveal" target="_blank" rel="noopener noreferrer" href="https://www.jobbank.gc.ca/jobsearch/jobsearch"><span class="flag ca" style="--s:34px"></span><h3>Job Bank (Canada)</h3><p data-i18n="srcCA"></p><span class="btn btn-primary btn-sm"><i class="fas fa-external-link-alt"></i> <span data-i18n="srchOpen">Open official listings</span></span></a>
       <a id="rUS" class="res-card reveal" target="_blank" rel="noopener noreferrer" href="https://seasonaljobs.dol.gov/"><span class="flag us" style="--s:34px"></span><h3>SeasonalJobs.dol.gov (USA)</h3><p data-i18n="srcUS"></p><span class="btn btn-primary btn-sm"><i class="fas fa-external-link-alt"></i> <span data-i18n="srchOpen">Open official listings</span></span></a>
     </div>
@@ -286,7 +309,8 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
         <div class="form-group"><label for="loginEmail" data-i18n="labelEmail">Email Address</label><input type="email" id="loginEmail" placeholder="john@example.com" autocomplete="email"></div>
         <div class="form-group"><label for="loginPass" data-i18n="labelPassword">Password</label><input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"></div>
         <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px"><i class="fas fa-sign-in-alt"></i> <span data-i18n="loginBtn">Log In</span></button>
-        <p class="form-note"><a href="#account" style="color:var(--primary);font-weight:600" data-i18n="noAccount">No account yet? Sign up</a></p>
+        <p class="form-note"><a href="#account" style="color:var(--primary);font-weight:600" data-i18n="
+                <p class="form-note"><a href="#account" style="color:var(--primary);font-weight:600" data-i18n="noAccount">No account yet? Sign up</a></p>
         <p class="form-note" data-i18n="demoNote">Demo mode: accounts are saved only in this browser.</p>
       </form>
     </div>
@@ -430,7 +454,8 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
 
   // Smooth scroll for in-page links
   document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-    a.addEventListener('click', function (e) {
+    a.addEventListener('click',
+        a.addEventListener('click', function (e) {
       var id = this.getAttribute('href');
       if (id.length < 2) return;
       var target = document.querySelector(id);
@@ -472,26 +497,89 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
     rv.forEach(function (el, k) { el.style.transitionDelay = (k % 3) * 0.12 + 's'; io.observe(el); });
   } else { rv.forEach(function (el) { el.classList.add('in'); }); }
 
-  // ---- Job search: opens official government job sources ----
+  // ---- Job search & Company List Logic ----
   var kwEl = document.getElementById('kw'), ctryEl = document.getElementById('ctry');
   var rCA = document.getElementById('rCA'), rUS = document.getElementById('rUS');
+  var companyListContainer = document.getElementById('companyListContainer');
+  var companyGrid = document.getElementById('companyGrid');
+
+  // কোম্পানির ডেমো ডেটা
+  var canadaCompanies = [
+    { name: "Maple Leaf Farms", address: "123 Agri Rd, Ontario, Canada", logo: "🍁" },
+    { name: "Northern Harvest", address: "45 Green St, British Columbia, Canada", logo: "🌾" },
+    { name: "Canadian Meat Co.", address: "88 Butcher Ln, Alberta, Canada", logo: "🥩" },
+    { name: "Greenhouse Tech", address: "12 Garden Ave, Quebec, Canada", logo: "🌿" }
+  ];
+
+  var usaCompanies = [
+    { name: "US Farm Corp", address: "456 Ranch Rd, Texas, USA", logo: "🤠" },
+    { name: "Sunshine Hospitality", address: "78 Hotel Blvd, Florida, USA", logo: "🏨" },
+    { name: "Golden State Seafood", address: "9 Ocean Dr, California, USA", logo: "🦞" }
+  ];
+
+  function renderCompanies(country) {
+    if (!companyGrid) return;
+    companyGrid.innerHTML = ''; // আগের লিস্ট মুছে ফেলা
+    var list = [];
+    
+    if (country === 'ca') {
+      list = canadaCompanies;
+    } else if (country === 'us') {
+      list = usaCompanies;
+    } else {
+      if (companyListContainer) companyListContainer.style.display = 'none';
+      return;
+    }
+
+    if (companyListContainer) companyListContainer.style.display = 'block';
+    
+    list.forEach(function(comp) {
+      var card = document.createElement('div');
+      card.style.cssText = "background:#fff; border:1px solid var(--border); border-radius:12px; padding:20px; display:flex; align-items:flex-start; gap:15px; box-shadow:0 4px 12px rgba(0,0,0,0.05); transition:transform 0.2s;";
+      
+      card.innerHTML = `
+        <div style="font-size:2.5rem; background:var(--light-bg); width:60px; height:60px; display:flex; align-items:center; justify-content:center; border-radius:12px; border:1px solid var(--border); flex-shrink:0;">
+          ${comp.logo}
+        </div>
+        <div>
+          <h4 style="margin: 0 0 5px 0; font-size:1.1rem; color:var(--text-dark);">${comp.name}</h4>
+          <p style="margin: 0; font-size:0.85rem; color:var(--text-muted);"><i class="fas fa-map-marker-alt"></i> ${comp.address}</p>
+        </div>
+      `;
+      companyGrid.appendChild(card);
+    });
+  }
+
   function updateResults() {
     var kw = kwEl.value.trim(), c = ctryEl.value;
+    
+    // আপডেট লিংক
     rCA.href = 'https://www.jobbank.gc.ca/jobsearch/jobsearch?searchstring=' + encodeURIComponent(kw);
     rCA.classList.toggle('off', c === 'us');
     rUS.classList.toggle('off', c === 'ca');
+
+    // কোম্পানি লিস্ট আপডেট
+    renderCompanies(c);
   }
+
   document.getElementById('jobSearch').addEventListener('submit', function (e) {
     e.preventDefault(); updateResults();
     var target = ctryEl.value === 'us' ? rUS : rCA;
-    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (target.classList.contains('off')) {
+       if (companyListContainer) companyListContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+       target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   });
+  
   ctryEl.addEventListener('change', updateResults);
   kwEl.addEventListener('input', updateResults);
+  
   document.querySelectorAll('.chips button').forEach(function (b) {
     b.addEventListener('click', function () { kwEl.value = b.dataset.q; updateResults(); });
   });
-  updateResults();
+  
+  updateResults(); // পেজ লোড হওয়ার সময় একবার চালাবে
 
   // ---- Demo authentication (browser-only; use a real backend for production) ----
   function tx(k) { return T[current][k] || T.en[k]; }
@@ -507,6 +595,7 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
   }
   function getUsers() { try { return JSON.parse(localStorage.getItem('globalwork_users') || '{}'); } catch (e) { return {}; } }
   function putUsers(u) { try { localStorage.setItem('globalwork_users', JSON.stringify(u)); } catch (e) {} }
+  
   function saveUser(name, email, phone, pw) {
     var salt = Math.random().toString(36).slice(2);
     return hashPw(pw, salt).then(function (h) {
@@ -515,7 +604,9 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
       putUsers(u);
     });
   }
+  
   function setSession(email) { try { localStorage.setItem('globalwork_session', email); } catch (e) {} renderUser(); }
+  
   function renderUser() {
     var em = null; try { em = localStorage.getItem('globalwork_session'); } catch (e) {}
     var u = em && getUsers()[em];
@@ -524,6 +615,7 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
     document.querySelectorAll('.auth-out').forEach(function (el) { el.style.display = u ? 'none' : ''; });
     document.querySelectorAll('.apply-link').forEach(function (a) { a.setAttribute('href', u ? '#find' : '#account'); });
   }
+  
   document.getElementById('loginForm').addEventListener('submit', function (e) {
     e.preventDefault();
     var form = this;
@@ -539,10 +631,12 @@ body,.btn,.job-card,.site-footer{transition:background .5s,color .5s,box-shadow 
       document.getElementById('find').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
+  
   document.getElementById('logoutBtn').addEventListener('click', function () {
     try { localStorage.removeItem('globalwork_session'); } catch (e) {}
     renderUser();
   });
+  
   renderUser();
 })();
 </script>
