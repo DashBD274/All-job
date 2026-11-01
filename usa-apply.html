@@ -1,4 +1,250 @@
-  function getSession(){try{return localStorage.getItem('globalwork_session')}catch(e){return null}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apply in USA | GlobalWork</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#0a3161;--primary-light:#1b4f8f;--accent:#b31942;--light-bg:#F5F7FA;--white:#fff;--text-dark:#1E2A3A;--text-muted:#5E6F8D;--border:#E2E8F0;--ok:#16a34a;--sh-sm:0 4px 12px rgba(0,0,0,.04);--sh-md:0 8px 24px rgba(0,0,0,.06);--r:14px;--r-sm:10px}
+body{font-family:'Inter',sans-serif;background:var(--light-bg);color:var(--text-dark);min-height:100vh;display:flex;flex-direction:column;line-height:1.5}
+a{text-decoration:none;color:inherit}
+.container{width:100%;max-width:1200px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
+
+/* Header */
+.site-header{background:var(--white);box-shadow:var(--sh-sm);position:sticky;top:0;z-index:100;padding:12px 0;border-bottom:3px solid transparent;border-image:linear-gradient(90deg,#d52b1e 0 33%,#fff 33% 50%,#3c3b6e 50% 66%,#b22234 66%) 1}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.4rem;color:var(--primary)}
+.logo i{color:var(--accent);font-size:1.6rem}
+.header-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.userbox{display:flex;align-items:center;gap:8px;font-weight:600;font-size:.9rem;color:var(--primary)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:.9rem;padding:9px 20px;border-radius:40px;border:none;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-light)}
+.btn-outline{background:transparent;color:var(--primary);border:2px solid var(--primary)}
+.btn-outline:hover{background:var(--primary);color:#fff}
+.btn-accent{background:var(--accent);color:#fff}
+.btn-accent:hover{filter:brightness(1.1)}
+.btn-sm{padding:7px 16px;font-size:.82rem}
+.btn-block{width:100%}
+
+/* Page head */
+.page-head{background:linear-gradient(120deg,#e6eefb,#fff,#fdebee);padding:36px 0 28px;border-bottom:1px solid var(--border)}
+.page-head h1{color:var(--primary);font-size:1.9rem;margin-bottom:6px;display:flex;align-items:center;gap:12px}
+.page-head p{color:var(--text-muted);font-size:.95rem;max-width:700px}
+.flag{display:inline-block;width:36px;height:24px;border-radius:4px;box-shadow:0 2px 6px rgba(0,0,0,.15);vertical-align:middle}
+.flag.us{background:repeating-linear-gradient(180deg,#b22234 0 7.692%,#fff 7.692% 15.384%);position:relative}
+.flag.us::after{content:"";position:absolute;left:0;top:0;width:40%;height:54%;background:#3c3b6e}
+
+/* Toolbar */
+.toolbar{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin:22px 0;box-shadow:var(--sh-sm);display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.search-box{flex:1;min-width:220px;display:flex;gap:8px}
+.search-box input{flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--r-sm);font:inherit;font-size:15px;background:var(--light-bg);outline:none;transition:border .2s}
+.search-box input:focus{border-color:var(--primary);background:#fff}
+.toolbar select{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--r-sm);font:inherit;font-size:14px;background:#fff;cursor:pointer;outline:none}
+.toolbar select:focus{border-color:var(--primary)}
+.result-info{font-size:.88rem;color:var(--text-muted);margin-bottom:14px}
+
+/* Job list */
+.job-list{display:flex;flex-direction:column;gap:14px}
+.job-item{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh-sm);transition:all .2s;position:relative;border-left:4px solid var(--accent)}
+.job-item:hover{transform:translateX(3px);box-shadow:var(--sh-md)}
+.job-item h3{color:var(--primary);font-size:1.05rem;margin-bottom:6px}
+.job-item .loc{color:var(--text-muted);font-size:.86rem;margin-bottom:4px}
+.job-item .meta{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:.8rem;color:var(--text-muted);align-items:center}
+.job-item .tag{background:rgba(10,49,97,.08);color:var(--primary);padding:3px 10px;border-radius:20px;font-weight:600}
+.job-item .tag.full{background:rgba(22,163,74,.1);color:var(--ok)}
+.job-item .tag.it{background:rgba(179,25,66,.1);color:var(--accent)}
+.job-item .actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.job-item .posted{position:absolute;top:16px;right:18px;font-size:.75rem;color:var(--text-muted)}
+.empty{text-align:center;padding:50px 20px;color:var(--text-muted);background:#fff;border-radius:var(--r);border:1px dashed var(--border)}
+
+/* Pagination */
+.pagination{display:flex;justify-content:center;align-items:center;gap:6px;margin:28px 0;flex-wrap:wrap}
+.pagination button{min-width:38px;height:38px;border:1.5px solid var(--border);background:#fff;border-radius:8px;cursor:pointer;font:inherit;font-weight:600;color:var(--primary);transition:all .15s}
+.pagination button:hover:not(:disabled){background:var(--primary);color:#fff;border-color:var(--primary)}
+.pagination button.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.pagination button:disabled{opacity:.4;cursor:not-allowed}
+
+/* Footer */
+.site-footer{background:linear-gradient(160deg,var(--primary),#071e3d);color:rgba(255,255,255,.85);padding:30px 0 20px;margin-top:auto;font-size:.85rem;text-align:center}
+
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;padding:20px;z-index:200}
+.modal-box{background:#fff;border-radius:16px;padding:26px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.modal-box h3{color:var(--primary);margin-bottom:14px;font-size:1.3rem}
+.modal-box dl{display:grid;grid-template-columns:120px 1fr;gap:10px 8px;font-size:.92rem;margin-bottom:20px}
+.modal-box dt{color:var(--text-muted);font-weight:600}
+.modal-box dd{word-break:break-word}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+/* Toast */
+.toast{position:fixed;right:20px;bottom:20px;background:var(--primary);color:#fff;padding:12px 18px;border-radius:10px;font-size:.9rem;box-shadow:0 8px 20px rgba(0,0,0,.25);z-index:300;animation:slideIn .3s ease}
+.toast.err{background:var(--accent)}
+@keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:none;opacity:1}}
+
+[hidden]{display:none!important}
+@media(max-width:640px){
+  .header-inner{flex-direction:column;align-items:stretch}
+  .header-controls{justify-content:space-between;width:100%}
+  .page-head h1{font-size:1.5rem}
+  .toolbar{flex-direction:column;align-items:stretch}
+  .search-box{flex-direction:column}
+  .job-item .posted{position:static;display:block;margin-top:8px}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo"><i class="fas fa-briefcase"></i><span>GlobalWork</span></a>
+    <div class="header-controls">
+      <select id="langSel" style="padding:8px 12px;border:1px solid var(--border);border-radius:40px;font:inherit;font-size:14px;background:var(--light-bg);cursor:pointer">
+        <option value="en">English</option>
+        <option value="bn">বাংলা</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
+        <option value="pt">Português</option>
+        <option value="hi">हिन्दी</option>
+        <option value="ar">العربية</option>
+        <option value="zh">中文</option>
+        <option value="ja">日本語</option>
+      </select>
+      <span id="userBox" class="userbox" hidden>
+        <i class="fas fa-user-circle"></i><span id="userName"></span>
+        <button class="btn btn-outline btn-sm" id="logoutBtn">Log Out</button>
+      </span>
+      <a href="login.html" id="loginBtn" class="btn btn-outline btn-sm">Log In</a>
+      <a href="signup.html" id="signupBtn" class="btn btn-primary btn-sm">Sign Up</a>
+    </div>
+  </div>
+</header>
+
+<section class="page-head">
+  <div class="container">
+    <h1><span class="flag us"></span> <span data-i18n="pageTitle">Apply in USA</span></h1>
+    <p data-i18n="pageSub">Browse official job listings across the USA. Select a job to view details and apply.</p>
+  </div>
+</section>
+
+<main class="container">
+  <div class="toolbar">
+    <div class="search-box">
+      <input id="q" type="text" placeholder="Search by title, city or state…" data-i18n-ph="qPh">
+      <button class="btn btn-primary" id="searchBtn"><i class="fas fa-search"></i></button>
+    </div>
+    <select id="prov">
+      <option value="" data-i18n="provAll">All States</option>
+      <option value="Texas">Texas</option>
+      <option value="California">California</option>
+      <option value="Florida">Florida</option>
+      <option value="Washington">Washington</option>
+      <option value="New York">New York</option>
+      <option value="Arizona">Arizona</option>
+      <option value="Georgia">Georgia</option>
+    </select>
+    <select id="type">
+      <option value="" data-i18n="typeAll">All Types</option>
+      <option value="Full Time" data-i18n="typeFull">Full Time</option>
+      <option value="Part Time" data-i18n="typePart">Part Time</option>
+      <option value="Seasonal" data-i18n="typeSeasonal">Seasonal</option>
+    </select>
+    <select id="sort">
+      <option value="new" data-i18n="sortNew">Newest first</option>
+      <option value="old" data-i18n="sortOld">Oldest first</option>
+      <option value="az" data-i18n="sortAZ">Title A–Z</option>
+    </select>
+  </div>
+
+  <div class="result-info"><span id="countTxt"></span></div>
+  <div class="job-list" id="jobList"></div>
+  <div class="pagination" id="pager"></div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p data-i18n="footerTxt">© 2026 GlobalWork — Connecting talent with the USA.</p>
+  </div>
+</footer>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal-box" id="modalBox"></div>
+</div>
+
+<script>
+(function(){
+  /* ====== Demo jobs data (USA - 85+ Jobs) ====== */
+  var JOBS = [];
+  
+  var states = ["Texas", "California", "Florida", "Washington", "New York", "Arizona", "Georgia"];
+  var cities = {
+    "Texas": ["Austin", "Dallas", "Houston", "Amarillo", "San Antonio"],
+    "California": ["Los Angeles", "San Diego", "Napa", "San Francisco", "Sacramento"],
+    "Florida": ["Orlando", "Miami", "Tampa", "Jacksonville", "Key West"],
+    "Washington": ["Seattle", "Yakima", "Bellingham", "Spokane", "Tacoma"],
+    "New York": ["New York", "Buffalo", "Rochester", "Albany", "Syracuse"],
+    "Arizona": ["Phoenix", "Tucson", "Mesa", "Scottsdale", "Flagstaff"],
+    "Georgia": ["Atlanta", "Savannah", "Augusta", "Columbus", "Macon"]
+  };
+  
+  var generalJobs = ["H-2A Farm Worker", "H-2B Hospitality Staff", "Landscaping Crew", "Seafood Processor", "H-2A Orchard Worker", "Kitchen Helper", "H-2B Resort Cleaner", "Poultry Farm Worker", "H-2A Greenhouse Worker", "Hotel Housekeeper", "H-2A Livestock Worker", "Food Processing Line"];
+  var itJobs = ["Software Developer", "IT Support Specialist", "Data Analyst", "Web Developer", "Network Administrator"];
+  var companies = ["AgriCorp USA", "Sunshine Hospitality", "Coastal Seafoods", "Golden State Farms", "Liberty Landscaping", "Tech Solutions Inc", "Grand Canyon Resorts", "Peach State Poultry", "Ocean Breeze Hotels", "Desert Star Farms"];
+
+  function generateJob(id, title, company, state, city, type, isIT) {
+    var street = Math.floor(Math.random() * 9000) + 100;
+    var streetName = ["Main St", "Ocean Dr", "Broadway", "Sunset Blvd", "Peachtree St", "5th Ave", "Congress Ave"][Math.floor(Math.random() * 7)];
+    var zip = Math.floor(Math.random() * 90000) + 10000;
+    
+    var month = Math.floor(Math.random() * 12) + 1;
+    var day = Math.floor(Math.random() * 28) + 1;
+    var dateStr = "2026-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day);
+    
+    var desc = isIT ? "IT position requiring relevant technical skills. Competitive salary and benefits package offered." : "General labour position. No previous experience required. On-the-job training provided. H-2A/H-2B support available.";
+    
+    return {
+      id: id,
+      title: title,
+      company: company,
+      prov: state,
+      city: city,
+      addr: street + " " + streetName + ", " + city + ", " + state + " " + zip,
+      type: type,
+      posted: dateStr,
+      desc: desc,
+      isIT: isIT
+    };
+  }
+
+  // 80 General Jobs
+  for (var i = 0; i < 80; i++) {
+    var state = states[i % states.length];
+    var cityArr = cities[state];
+    var city = cityArr[i % cityArr.length];
+    var title = generalJobs[i % generalJobs.length];
+    var comp = companies[i % companies.length];
+    var type = ["Full Time", "Part Time", "Seasonal"][i % 3];
+    JOBS.push(generateJob(i + 1, title, comp, state, city, type, false));
+  }
+
+  // 5 IT Jobs
+  for (var j = 0; j < 5; j++) {
+    var state = states[(j + 2) % states.length];
+    var cityArr = cities[state];
+    var city = cityArr[(j + 1) % cityArr.length];
+    var title = itJobs[j % itJobs.length];
+    var comp = companies[(j + 2) % companies.length];
+    JOBS.push(generateJob(100 + j, title, comp, state, city, "Full Time", true));
+  }
+
+  var state = {page:1, per:10, q:"", prov:"", type:"", sort:"new"};
+  var $ = function(id){return document.getElementById(id)};
+    function getSession(){try{return localStorage.getItem('globalwork_session')}catch(e){return null}}
   function getUsers(){try{return JSON.parse(localStorage.getItem('globalwork_users')||'{}')}catch(e){return{}}}
   
   function renderUser(){
@@ -95,7 +341,7 @@
     }
     renderPager(pages);
   }
-      function renderPager(pages){
+    function renderPager(pages){
     var p=$('pager'); p.textContent='';
     function btn(label,page,disabled,on){
       var b=document.createElement('button'); b.textContent=label;
