@@ -1,211 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Apply in USA | GlobalWork</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--primary:#0a3161;--primary-light:#1b4f8f;--accent:#b31942;--light-bg:#F5F7FA;--white:#fff;--text-dark:#1E2A3A;--text-muted:#5E6F8D;--border:#E2E8F0;--ok:#16a34a;--sh-sm:0 4px 12px rgba(0,0,0,.04);--sh-md:0 8px 24px rgba(0,0,0,.06);--r:14px;--r-sm:10px}
-body{font-family:'Inter',sans-serif;background:var(--light-bg);color:var(--text-dark);min-height:100vh;display:flex;flex-direction:column;line-height:1.5}
-a{text-decoration:none;color:inherit}
-.container{width:100%;max-width:1200px;margin:0 auto;padding:0 20px}
-h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
-
-/* Header */
-.site-header{background:var(--white);box-shadow:var(--sh-sm);position:sticky;top:0;z-index:100;padding:12px 0;border-bottom:3px solid transparent;border-image:linear-gradient(90deg,#d52b1e 0 33%,#fff 33% 50%,#3c3b6e 50% 66%,#b22234 66%) 1}
-.header-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.4rem;color:var(--primary)}
-.logo i{color:var(--accent);font-size:1.6rem}
-.header-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.userbox{display:flex;align-items:center;gap:8px;font-weight:600;font-size:.9rem;color:var(--primary)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:.9rem;padding:9px 20px;border-radius:40px;border:none;cursor:pointer;transition:all .2s;white-space:nowrap}
-.btn-primary{background:var(--primary);color:#fff}
-.btn-primary:hover{background:var(--primary-light)}
-.btn-outline{background:transparent;color:var(--primary);border:2px solid var(--primary)}
-.btn-outline:hover{background:var(--primary);color:#fff}
-.btn-accent{background:var(--accent);color:#fff}
-.btn-accent:hover{filter:brightness(1.1)}
-.btn-sm{padding:7px 16px;font-size:.82rem}
-.btn-block{width:100%}
-
-/* Page head */
-.page-head{background:linear-gradient(120deg,#e6eefb,#fff,#fdebee);padding:36px 0 28px;border-bottom:1px solid var(--border)}
-.page-head h1{color:var(--primary);font-size:1.9rem;margin-bottom:6px;display:flex;align-items:center;gap:12px}
-.page-head p{color:var(--text-muted);font-size:.95rem;max-width:700px}
-.flag{display:inline-block;width:36px;height:24px;border-radius:4px;box-shadow:0 2px 6px rgba(0,0,0,.15);vertical-align:middle}
-.flag.us{background:repeating-linear-gradient(180deg,#b22234 0 7.692%,#fff 7.692% 15.384%);position:relative}
-.flag.us::after{content:"";position:absolute;left:0;top:0;width:40%;height:54%;background:#3c3b6e}
-
-/* Toolbar */
-.toolbar{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin:22px 0;box-shadow:var(--sh-sm);display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-.search-box{flex:1;min-width:220px;display:flex;gap:8px}
-.search-box input{flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--r-sm);font:inherit;font-size:15px;background:var(--light-bg);outline:none;transition:border .2s}
-.search-box input:focus{border-color:var(--primary);background:#fff}
-.toolbar select{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--r-sm);font:inherit;font-size:14px;background:#fff;cursor:pointer;outline:none}
-.toolbar select:focus{border-color:var(--primary)}
-.result-info{font-size:.88rem;color:var(--text-muted);margin-bottom:14px}
-
-/* Job list */
-.job-list{display:flex;flex-direction:column;gap:14px}
-.job-item{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh-sm);transition:all .2s;position:relative;border-left:4px solid var(--accent)}
-.job-item:hover{transform:translateX(3px);box-shadow:var(--sh-md)}
-.job-item h3{color:var(--primary);font-size:1.05rem;margin-bottom:6px}
-.job-item .loc{color:var(--text-muted);font-size:.86rem;margin-bottom:4px}
-.job-item .meta{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:.8rem;color:var(--text-muted);align-items:center}
-.job-item .tag{background:rgba(10,49,97,.08);color:var(--primary);padding:3px 10px;border-radius:20px;font-weight:600}
-.job-item .tag.full{background:rgba(22,163,74,.1);color:var(--ok)}
-.job-item .actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.job-item .posted{position:absolute;top:16px;right:18px;font-size:.75rem;color:var(--text-muted)}
-.empty{text-align:center;padding:50px 20px;color:var(--text-muted);background:#fff;border-radius:var(--r);border:1px dashed var(--border)}
-
-/* Pagination */
-.pagination{display:flex;justify-content:center;align-items:center;gap:6px;margin:28px 0;flex-wrap:wrap}
-.pagination button{min-width:38px;height:38px;border:1.5px solid var(--border);background:#fff;border-radius:8px;cursor:pointer;font:inherit;font-weight:600;color:var(--primary);transition:all .15s}
-.pagination button:hover:not(:disabled){background:var(--primary);color:#fff;border-color:var(--primary)}
-.pagination button.on{background:var(--primary);color:#fff;border-color:var(--primary)}
-.pagination button:disabled{opacity:.4;cursor:not-allowed}
-
-/* Footer */
-.site-footer{background:linear-gradient(160deg,var(--primary),#071e3d);color:rgba(255,255,255,.85);padding:30px 0 20px;margin-top:auto;font-size:.85rem;text-align:center}
-
-/* Modal */
-.modal{position:fixed;inset:0;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;padding:20px;z-index:200}
-.modal-box{background:#fff;border-radius:16px;padding:26px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 50px rgba(0,0,0,.3)}
-.modal-box h3{color:var(--primary);margin-bottom:14px;font-size:1.3rem}
-.modal-box dl{display:grid;grid-template-columns:120px 1fr;gap:10px 8px;font-size:.92rem;margin-bottom:20px}
-.modal-box dt{color:var(--text-muted);font-weight:600}
-.modal-box dd{word-break:break-word}
-.modal-actions{display:flex;gap:10px;flex-wrap:wrap}
-
-/* Toast */
-.toast{position:fixed;right:20px;bottom:20px;background:var(--primary);color:#fff;padding:12px 18px;border-radius:10px;font-size:.9rem;box-shadow:0 8px 20px rgba(0,0,0,.25);z-index:300;animation:slideIn .3s ease}
-.toast.err{background:var(--accent)}
-@keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:none;opacity:1}}
-
-[hidden]{display:none!important}
-@media(max-width:640px){
-  .header-inner{flex-direction:column;align-items:stretch}
-  .header-controls{justify-content:space-between;width:100%}
-  .page-head h1{font-size:1.5rem}
-  .toolbar{flex-direction:column;align-items:stretch}
-  .search-box{flex-direction:column}
-  .job-item .posted{position:static;display:block;margin-top:8px}
-}
-</style>
-</head>
-<body>
-
-<header class="site-header">
-  <div class="container header-inner">
-    <a href="index.html" class="logo"><i class="fas fa-briefcase"></i><span>GlobalWork</span></a>
-    <div class="header-controls">
-      <select id="langSel" style="padding:8px 12px;border:1px solid var(--border);border-radius:40px;font:inherit;font-size:14px;background:var(--light-bg);cursor:pointer">
-        <option value="en">English</option>
-        <option value="bn">বাংলা</option>
-        <option value="es">Español</option>
-        <option value="fr">Français</option>
-        <option value="de">Deutsch</option>
-        <option value="pt">Português</option>
-        <option value="hi">हिन्दी</option>
-        <option value="ar">العربية</option>
-        <option value="zh">中文</option>
-        <option value="ja">日本語</option>
-      </select>
-      <span id="userBox" class="userbox" hidden>
-        <i class="fas fa-user-circle"></i><span id="userName"></span>
-        <button class="btn btn-outline btn-sm" id="logoutBtn">Log Out</button>
-      </span>
-      <a href="login.html" id="loginBtn" class="btn btn-outline btn-sm">Log In</a>
-      <a href="signup.html" id="signupBtn" class="btn btn-primary btn-sm">Sign Up</a>
-    </div>
-  </div>
-</header>
-
-<section class="page-head">
-  <div class="container">
-    <h1><span class="flag us"></span> <span data-i18n="pageTitle">Apply in USA</span></h1>
-    <p data-i18n="pageSub">Browse official job listings across the USA. Select a job to view details and apply.</p>
-  </div>
-</section>
-
-<main class="container">
-  <div class="toolbar">
-    <div class="search-box">
-      <input id="q" type="text" placeholder="Search by title, city or state…" data-i18n-ph="qPh">
-      <button class="btn btn-primary" id="searchBtn"><i class="fas fa-search"></i></button>
-    </div>
-    <select id="prov">
-      <option value="" data-i18n="provAll">All States</option>
-      <option value="Texas">Texas</option>
-      <option value="California">California</option>
-      <option value="Florida">Florida</option>
-      <option value="Washington">Washington</option>
-      <option value="New York">New York</option>
-      <option value="Arizona">Arizona</option>
-      <option value="Georgia">Georgia</option>
-    </select>
-    <select id="type">
-      <option value="" data-i18n="typeAll">All Types</option>
-      <option value="Full Time" data-i18n="typeFull">Full Time</option>
-      <option value="Part Time" data-i18n="typePart">Part Time</option>
-      <option value="Seasonal" data-i18n="typeSeasonal">Seasonal</option>
-    </select>
-    <select id="sort">
-      <option value="new" data-i18n="sortNew">Newest first</option>
-      <option value="old" data-i18n="sortOld">Oldest first</option>
-      <option value="az" data-i18n="sortAZ">Title A–Z</option>
-    </select>
-  </div>
-
-  <div class="result-info"><span id="countTxt"></span></div>
-  <div class="job-list" id="jobList"></div>
-  <div class="pagination" id="pager"></div>
-</main>
-
-<footer class="site-footer">
-  <div class="container">
-    <p data-i18n="footerTxt">© 2026 GlobalWork — Connecting talent with the USA.</p>
-  </div>
-</footer>
-
-<!-- Modal -->
-<div class="modal" id="modal" hidden>
-  <div class="modal-box" id="modalBox"></div>
-</div>
-
-<script>
-(function(){
-  /* ====== Demo jobs data (USA) ====== */
-  var JOBS = [
-    {id:1,title:"H-2A Farm Worker",prov:"Texas",city:"Austin",addr:"123 Ranch Rd, Austin, TX 78701",type:"Seasonal",posted:"2026-02-10",desc:"Planting and harvesting crops. Employer provides housing. H-2A visa petition supported."},
-    {id:2,title:"H-2B Hospitality Staff",prov:"Florida",city:"Orlando",addr:"8000 International Dr, Orlando, FL 32819",type:"Seasonal",posted:"2026-02-09",desc:"Hotel housekeeping and front desk. Seasonal 8-month contract. English basic required."},
-    {id:3,title:"Landscaping Crew",prov:"California",city:"Los Angeles",addr:"1234 Sunset Blvd, Los Angeles, CA 90028",type:"Full Time",posted:"2026-02-08",desc:"Lawn care, planting, and irrigation. Year-round position. Experience preferred."},
-    {id:4,title:"Seafood Processor",prov:"Washington",city:"Seattle",addr:"500 Pike St, Seattle, WA 98101",type:"Seasonal",posted:"2026-02-07",desc:"Fish processing and packing. Cold environment. Seasonal May–October."},
-    {id:5,title:"H-2A Orchard Worker",prov:"Washington",city:"Yakima",addr:"100 Apple Way, Yakima, WA 98901",type:"Seasonal",posted:"2026-02-06",desc:"Apple picking and sorting. Employer provides transportation. H-2A visa support."},
-    {id:6,title:"Kitchen Helper",prov:"New York",city:"New York",addr:"200 W 57th St, New York, NY 10019",type:"Full Time",posted:"2026-02-05",desc:"Food prep and dishwashing. Evening shifts. Meals included."},
-    {id:7,title:"H-2B Resort Cleaner",prov:"Arizona",city:"Phoenix",addr:"5000 E Camelback Rd, Phoenix, AZ 85018",type:"Seasonal",posted:"2026-02-04",desc:"Cleaning resort rooms and common areas. Winter season. H-2B petition supported."},
-    {id:8,title:"Poultry Farm Worker",prov:"Georgia",city:"Atlanta",addr:"300 Peachtree St, Atlanta, GA 30303",type:"Full Time",posted:"2026-02-03",desc:"Feeding, cleaning, and collecting eggs. Farm experience a plus."},
-    {id:9,title:"H-2A Greenhouse Worker",prov:"California",city:"San Diego",addr:"100 Harbor Dr, San Diego, CA 92101",type:"Seasonal",posted:"2026-02-02",desc:"Planting and tending greenhouse crops. Spanish helpful. H-2A visa sponsorship."},
-    {id:10,title:"Hotel Housekeeper",prov:"Florida",city:"Miami",addr:"1500 Ocean Dr, Miami, FL 33139",type:"Full Time",posted:"2026-02-01",desc:"Cleaning guest rooms, laundry, and common areas. Full benefits."},
-    {id:11,title:"H-2A Livestock Worker",prov:"Texas",city:"Amarillo",addr:"5000 Ranch Rd, Amarillo, TX 79101",type:"Seasonal",posted:"2026-01-30",desc:"Feeding cattle, repairing fences, and general farm work. Housing provided."},
-    {id:12,title:"Food Processing Line",prov:"Georgia",city:"Savannah",addr:"100 River St, Savannah, GA 31401",type:"Full Time",posted:"2026-01-28",desc:"Packing and processing food products. Shift work. Training provided."},
-    {id:13,title:"H-2B Amusement Park Staff",prov:"Florida",city:"Orlando",addr:"6000 Discovery Cove Way, Orlando, FL 32821",type:"Seasonal",posted:"2026-01-25",desc:"Ride operators and ticket sales. Summer season. H-2B petition support."},
-    {id:14,title:"Truck Driver (Class A)",prov:"Texas",city:"Dallas",addr:"2000 Commerce St, Dallas, TX 75201",type:"Full Time",posted:"2026-01-22",desc:"Long-haul trucking. Valid Class A license required. 2+ years experience."},
-    {id:15,title:"H-2A Vineyard Worker",prov:"California",city:"Napa",addr:"1000 Main St, Napa, CA 94559",type:"Seasonal",posted:"2026-01-20",desc:"Grape harvesting and vineyard maintenance. August–November season."},
-    {id:16,title:"H-2B Landscaper",prov:"New York",city:"Buffalo",addr:"500 Main St, Buffalo, NY 14202",type:"Seasonal",posted:"2026-01-18",desc:"Mowing, planting, and snow removal. April–October contract."},
-    {id:17,title:"H-2A Dairy Farm Worker",prov:"Arizona",city:"Tucson",addr:"100 Dairy Rd, Tucson, AZ 85701",type:"Full Time",posted:"2026-01-15",desc:"Milking cows, feeding, and cleaning. Year-round position. H-2A support."},
-    {id:18,title:"Seafood Packer",prov:"Washington",city:"Bellingham",addr:"200 Bay St, Bellingham, WA 98225",type:"Seasonal",posted:"2026-01-12",desc:"Packing and freezing seafood. Cold environment. Seasonal April–September."}
-  ];
-
-  var state = {page:1, per:8, q:"", prov:"", type:"", sort:"new"};
-  var $ = function(id){return document.getElementById(id)};
-
-  /* ====== User session ====== */
   function getSession(){try{return localStorage.getItem('globalwork_session')}catch(e){return null}}
   function getUsers(){try{return JSON.parse(localStorage.getItem('globalwork_users')||'{}')}catch(e){return{}}}
+  
   function renderUser(){
     var em=getSession(), u=em&&getUsers()[em];
     $('userBox').hidden=!u;
@@ -215,128 +10,20 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
   }
   $('logoutBtn').addEventListener('click',function(){
     try{localStorage.removeItem('globalwork_session')}catch(e){}
-    renderUser();
-    toast('Logged out');
+    renderUser(); toast('Logged out');
   });
 
-  /* ====== i18n (10 Languages) ====== */
   var T = {
-    en:{
-      pageTitle:"Apply in USA",pageSub:"Browse official job listings across the USA. Select a job to view details and apply.",
-      qPh:"Search by title, city or state…",provAll:"All States",typeAll:"All Types",
-      typeFull:"Full Time",typePart:"Part Time",typeSeasonal:"Seasonal",
-      sortNew:"Newest first",sortOld:"Oldest first",sortAZ:"Title A–Z",
-      footerTxt:"© 2026 GlobalWork — Connecting talent with the USA.",
-      results:"{n} jobs found",noResults:"No jobs found. Try a different search.",view:"View Details",
-      apply:"Apply",applyNow:"Apply Now",close:"Close",province:"State",city:"City",
-      address:"Address",type_lbl:"Job Type",posted:"Posted",description:"Description",
-      loginToApply:"Please log in to apply.",applied:"Application submitted (demo)!"
-    },
-    bn:{
-      pageTitle:"USA-তে আবেদন করুন",pageSub:"USA জুড়ে অফিসিয়াল চাকরির তালিকা দেখুন। বিস্তারিত দেখতে এবং আবেদন করতে একটি চাকরি বেছে নিন।",
-      qPh:"শিরোনাম, শহর বা রাজ্য দিয়ে খুঁজুন…",provAll:"সব রাজ্য",typeAll:"সব ধরন",
-      typeFull:"ফুল টাইম",typePart:"পার্ট টাইম",typeSeasonal:"মৌসুমী",
-      sortNew:"নতুন আগে",sortOld:"পুরোনো আগে",sortAZ:"শিরোনাম A–Z",
-      footerTxt:"© 2026 GlobalWork — USA-র সাথে প্রতিভা সংযুক্ত করা।",
-      results:"{n} টি চাকরি পাওয়া গেছে",noResults:"কোনো চাকরি পাওয়া যায়নি। অন্য কিছু খুঁজুন।",view:"বিস্তারিত দেখুন",
-      apply:"আবেদন করুন",applyNow:"এখনই আবেদন করুন",close:"বন্ধ",province:"রাজ্য",city:"শহর",
-      address:"ঠিকানা",type_lbl:"চাকরির ধরন",posted:"প্রকাশিত",description:"বিবরণ",
-      loginToApply:"আবেদন করতে লগইন করুন।",applied:"আবেদন জমা হয়েছে (ডেমো)!"
-    },
-    es: {
-      pageTitle:"Solicitar en EE.UU.",pageSub:"Explora las ofertas de empleo oficiales en EE.UU. Selecciona una para ver detalles y aplicar.",
-      qPh:"Buscar por título, ciudad o estado…",provAll:"Todos los Estados",typeAll:"Todos los Tipos",
-      typeFull:"Tiempo Completo",typePart:"Medio Tiempo",typeSeasonal:"Temporada",
-      sortNew:"Más recientes",sortOld:"Más antiguos",sortAZ:"Título A–Z",
-      footerTxt:"© 2026 GlobalWork — Conectando talento con EE.UU.",
-      results:"{n} empleos encontrados",noResults:"No se encontraron empleos.",view:"Ver Detalles",
-      apply:"Aplicar",applyNow:"Aplicar Ahora",close:"Cerrar",province:"Estado",city:"Ciudad",
-      address:"Dirección",type_lbl:"Tipo de Empleo",posted:"Publicado",description:"Descripción",
-      loginToApply:"Inicia sesión para aplicar.",applied:"¡Solicitud enviada (demo)!"
-    },
-    fr: {
-      pageTitle:"Postuler aux États-Unis",pageSub:"Parcourez les offres d'emploi officielles aux États-Unis. Sélectionnez un emploi pour voir les détails et postuler.",
-      qPh:"Rechercher par titre, ville ou état…",provAll:"Tous les États",typeAll:"Tous les Types",
-      typeFull:"Temps Plein",typePart:"Temps Partiel",typeSeasonal:"Saisonnier",
-      sortNew:"Plus récents",sortOld:"Plus anciens",sortAZ:"Titre A–Z",
-      footerTxt:"© 2026 GlobalWork — Connecter les talents aux États-Unis.",
-      results:"{n} emplois trouvés",noResults:"Aucun emploi trouvé.",view:"Voir les Détails",
-      apply:"Postuler",applyNow:"Postuler Maintenant",close:"Fermer",province:"État",city:"Ville",
-      address:"Adresse",type_lbl:"Type d'Emploi",posted:"Publié",description:"Description",
-      loginToApply:"Veuillez vous connecter pour postuler.",applied:"Candidature soumise (démo) !"
-    },
-    de: {
-      pageTitle:"In den USA bewerben",pageSub:"Durchsuchen Sie offizielle Stellenangebote in den USA. Wählen Sie einen Job aus, um Details zu sehen und sich zu bewerben.",
-      qPh:"Nach Titel, Stadt oder Bundesstaat suchen…",provAll:"Alle Bundesstaaten",typeAll:"Alle Arten",
-      typeFull:"Vollzeit",typePart:"Teilzeit",typeSeasonal:"Saisonal",
-      sortNew:"Neueste zuerst",sortOld:"Älteste zuerst",sortAZ:"Titel A–Z",
-      footerTxt:"© 2026 GlobalWork — Talente mit den USA verbinden.",
-      results:"{n} Jobs gefunden",noResults:"Keine Jobs gefunden.",view:"Details Anzeigen",
-      apply:"Bewerben",applyNow:"Jetzt Bewerben",close:"Schließen",province:"Bundesstaat",city:"Stadt",
-      address:"Adresse",type_lbl:"Job-Typ",posted:"Veröffentlicht",description:"Beschreibung",
-      loginToApply:"Bitte melden Sie sich an, um sich zu bewerben.",applied:"Bewerbung eingereicht (Demo)!"
-    },
-    pt: {
-      pageTitle:"Candidatar-se nos EUA",pageSub:"Navegue pelas vagas de emprego oficiais nos EUA. Selecione uma vaga para ver detalhes e se candidatar.",
-      qPh:"Pesquisar por título, cidade ou estado…",provAll:"Todos os Estados",typeAll:"Todos os Tipos",
-      typeFull:"Tempo Integral",typePart:"Meio Período",typeSeasonal:"Sazonal",
-      sortNew:"Mais recentes",sortOld:"Mais antigos",sortAZ:"Título A–Z",
-      footerTxt:"© 2026 GlobalWork — Conectando talentos aos EUA.",
-      results:"{n} vagas encontradas",noResults:"Nenhuma vaga encontrada.",view:"Ver Detalhes",
-      apply:"Candidatar-se",applyNow:"Candidatar-se Agora",close:"Fechar",province:"Estado",city:"Cidade",
-      address:"Endereço",type_lbl:"Tipo de Vaga",posted:"Publicado",description:"Descrição",
-      loginToApply:"Faça login para se candidatar.",applied:"Candidatura enviada (demo)!"
-    },
-    hi: {
-      pageTitle:"USA में आवेदन करें",pageSub:"USA में आधिकारिक नौकरी की सूची देखें। विवरण देखने और आवेदन करने के लिए नौकरी चुनें।",
-      qPh:"शीर्षक, शहर या राज्य से खोजें…",provAll:"सभी राज्य",typeAll:"सभी प्रकार",
-      typeFull:"पूर्णकालिक",typePart:"अंशकालिक",typeSeasonal:"मौसमी",
-      sortNew:"नवीनतम पहले",sortOld:"पुराने पहले",sortAZ:"शीर्षक A–Z",
-      footerTxt:"© 2026 GlobalWork — USA के साथ प्रतिभा को जोड़ना।",
-      results:"{n} नौकरियां मिलीं",noResults:"कोई नौकरी नहीं मिली।",view:"विवरण देखें",
-      apply:"आवेदन करें",applyNow:"अभी आवेदन करें",close:"बंद करें",province:"राज्य",city:"शहर",
-      address:"पता",type_lbl:"नौकरी का प्रकार",posted:"प्रकाशित",description:"विवरण",
-      loginToApply:"आवेदन करने के लिए लॉग इन करें।",applied:"आवेदन सबमिट किया गया (डेमो)!"
-    },
-    ar: {
-      pageTitle:"التقديم في الولايات المتحدة",pageSub:"تصفح قوائم الوظائف الرسمية في جميع أنحاء الولايات المتحدة. اختر وظيفة لعرض التفاصيل والتقديم.",
-      qPh:"البحث بالعنوان أو المدينة أو الولاية…",provAll:"جميع الولايات",typeAll:"جميع الأنواع",
-      typeFull:"دوام كامل",typePart:"دوام جزئي",typeSeasonal:"موسمي",
-      sortNew:"الأحدث أولاً",sortOld:"الأقدم أولاً",sortAZ:"العنوان أ-ي",
-      footerTxt:"© 2026 GlobalWork — ربط المواهب بالولايات المتحدة.",
-      results:"تم العثور على {n} وظيفة",noResults:"لم يتم العثور على وظائف.",view:"عرض التفاصيل",
-      apply:"تقديم",applyNow:"تقديم الآن",close:"إغلاق",province:"الولاية",city:"المدينة",
-      address:"العنوان",type_lbl:"نوع الوظيفة",posted:"نشر",description:"الوصف",
-      loginToApply:"يرجى تسجيل الدخول للتقديم.",applied:"تم تقديم الطلب (تجريبي)!"
-    },
-    zh: {
-      pageTitle:"在美国申请",pageSub:"浏览美国各地的官方职位列表。选择一个职位查看详情并申请。",
-      qPh:"按职位、城市或州搜索…",provAll:"所有州",typeAll:"所有类型",
-      typeFull:"全职",typePart:"兼职",typeSeasonal:"季节性",
-      sortNew:"最新优先",sortOld:"最旧优先",sortAZ:"标题 A–Z",
-      footerTxt:"© 2026 GlobalWork — 将人才与美国联系起来。",
-      results:"找到 {n} 个职位",noResults:"未找到职位。",view:"查看详情",
-      apply:"申请",applyNow:"立即申请",close:"关闭",province:"州",city:"城市",
-      address:"地址",type_lbl:"工作类型",posted:"发布时间",description:"描述",
-      loginToApply:"请登录以申请。",applied:"申请已提交（演示）！"
-    },
-    ja: {
-      pageTitle:"アメリカで応募",pageSub:"アメリカ全土の公式求人を閲覧できます。詳細を見て応募する求人を選択してください。",
-      qPh:"タイトル、都市、州で検索…",provAll:"すべての州",typeAll:"すべてのタイプ",
-      typeFull:"フルタイム",typePart:"パートタイム",typeSeasonal:"季節",
-      sortNew:"新しい順",sortOld:"古い順",sortAZ:"タイトル A–Z",
-      footerTxt:"© 2026 GlobalWork — アメリカに人材をつなぐ。",
-      results:"{n} 件の求人が見つかりました",noResults:"求人が見つかりませんでした。",view:"詳細を見る",
-      apply:"応募",applyNow:"今すぐ応募",close:"閉じる",province:"州",city:"都市",
-      address:"住所",type_lbl:"雇用形態",posted:"投稿日",description:"説明",
-      loginToApply:"応募するにはログインしてください。",applied:"応募が送信されました（デモ）！"
-    }
+    en:{ pageTitle:"Apply in USA", pageSub:"Browse official job listings across the USA.", qPh:"Search by title, city or state…", provAll:"All States", typeAll:"All Types", typeFull:"Full Time", typePart:"Part Time", typeSeasonal:"Seasonal", sortNew:"Newest first", sortOld:"Oldest first", sortAZ:"Title A–Z", footerTxt:"© 2026 GlobalWork", results:"{n} jobs found", noResults:"No jobs found.", view:"View Details", apply:"Apply", applyNow:"Apply Now", close:"Close", province:"State", city:"City", address:"Address", type_lbl:"Job Type", posted:"Posted", description:"Description", company:"Company", loginToApply:"Please log in to apply.", applied:"Application submitted!" },
+    bn:{ pageTitle:"USA-তে আবেদন করুন", pageSub:"USA জুড়ে চাকরির তালিকা দেখুন।", qPh:"শিরোনাম, শহর বা রাজ্য দিয়ে খুঁজুন…", provAll:"সব রাজ্য", typeAll:"সব ধরন", typeFull:"ফুল টাইম", typePart:"পার্ট টাইম", typeSeasonal:"মৌসুমী", sortNew:"নতুন আগে", sortOld:"পুরোনো আগে", sortAZ:"শিরোনাম A–Z", footerTxt:"© ২০২৬ GlobalWork", results:"{n} টি চাকরি পাওয়া গেছে", noResults:"কোনো চাকরি পাওয়া যায়নি।", view:"বিস্তারিত দেখুন", apply:"আবেদন করুন", applyNow:"এখনই আবেদন করুন", close:"বন্ধ", province:"রাজ্য", city:"শহর", address:"ঠিকানা", type_lbl:"চাকরির ধরন", posted:"প্রকাশিত", description:"বিবরণ", company:"কোম্পানি", loginToApply:"আবেদন করতে লগইন করুন।", applied:"আবেদন জমা হয়েছে!" }
   };
   
   var LANG='en';
   try{LANG=localStorage.getItem('globalwork_lang')||'en'}catch(e){}
-  if(!T[LANG])LANG='en';
+  if(!T[LANG]) LANG='en';
+  
   function t(k){return T[LANG][k]||T.en[k]||k}
+  
   function applyI18n(){
     document.querySelectorAll('[data-i18n]').forEach(function(el){
       var v=t(el.getAttribute('data-i18n')); if(v)el.textContent=v;
@@ -345,22 +32,21 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
       var v=t(el.getAttribute('data-i18n-ph')); if(v)el.placeholder=v;
     });
     document.documentElement.lang=LANG;
-    document.documentElement.dir = LANG === 'ar' ? 'rtl' : 'ltr';
     $('langSel').value=LANG;
   }
+  
   $('langSel').addEventListener('change',function(e){
     LANG=e.target.value;
     try{localStorage.setItem('globalwork_lang',LANG)}catch(x){}
     applyI18n(); render();
   });
 
-  /* ====== Filter + sort ====== */
   function filtered(){
     var q=state.q.toLowerCase().trim();
     var r=JOBS.filter(function(j){
       if(state.prov && j.prov!==state.prov) return false;
       if(state.type && j.type!==state.type) return false;
-      if(q && (j.title+" "+j.city+" "+j.prov).toLowerCase().indexOf(q)===-1) return false;
+      if(q && (j.title+" "+j.city+" "+j.prov+" "+j.company).toLowerCase().indexOf(q)===-1) return false;
       return true;
     });
     if(state.sort==='az') r.sort(function(a,b){return a.title.localeCompare(b.title)});
@@ -369,7 +55,8 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
     return r;
   }
 
-  /* ====== Render list ====== */
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+
   function render(){
     var all=filtered(), total=all.length;
     var pages=Math.max(1,Math.ceil(total/state.per));
@@ -381,16 +68,20 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
 
     if(!slice.length){
       var e=document.createElement('div');
-      e.className='empty'; e.textContent=t('noResults'); list.appendChild(e);
+      e.className='empty'; 
+      e.textContent=t('noResults'); 
+      list.appendChild(e);
     } else {
       slice.forEach(function(j){
         var d=document.createElement('div'); d.className='job-item';
+        var itBadge = j.isIT ? '<span class="tag it">IT</span>' : '';
         d.innerHTML='<div class="posted">'+j.posted+'</div>'+
           '<h3>'+esc(j.title)+'</h3>'+
-          '<div class="loc"><i class="fas fa-map-marker-alt"></i> '+esc(j.addr)+'</div>'+
+          '<div class="loc"><i class="fas fa-map-marker-alt"></i> '+esc(j.company)+' — '+esc(j.addr)+'</div>'+
           '<div class="meta">'+
             '<span class="tag">'+esc(j.prov)+'</span>'+
             '<span class="tag '+(j.type==='Full Time'?'full':'')+'">'+esc(j.type)+'</span>'+
+            itBadge +
             '<span>'+esc(j.city)+'</span>'+
           '</div>'+
           '<div class="actions">'+
@@ -404,10 +95,7 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
     }
     renderPager(pages);
   }
-
-  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-
-  function renderPager(pages){
+      function renderPager(pages){
     var p=$('pager'); p.textContent='';
     function btn(label,page,disabled,on){
       var b=document.createElement('button'); b.textContent=label;
@@ -423,11 +111,11 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
     btn('›',Math.min(pages,state.page+1),state.page===pages);
   }
 
-  /* ====== Detail modal ====== */
   function openDetail(j){
     var box=$('modalBox');
     box.innerHTML='<h3>'+esc(j.title)+'</h3>'+
       '<dl>'+
+        '<dt>'+t('company')+'</dt><dd>'+esc(j.company)+'</dd>'+
         '<dt>'+t('province')+'</dt><dd>'+esc(j.prov)+'</dd>'+
         '<dt>'+t('city')+'</dt><dd>'+esc(j.city)+'</dd>'+
         '<dt>'+t('address')+'</dt><dd>'+esc(j.addr)+'</dd>'+
@@ -443,10 +131,10 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
     $('applyBtn2').onclick=function(){closeM();applyJob(j)};
     $('modal').hidden=false;
   }
+  
   function closeM(){$('modal').hidden=true}
   $('modal').addEventListener('click',function(e){if(e.target===$('modal'))closeM()});
 
-  /* ====== Apply flow (login required) ====== */
   function applyJob(j){
     if(!getSession()){
       toast(t('loginToApply'),true);
@@ -456,14 +144,12 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
     toast(t('applied'));
   }
 
-  /* ====== Toast ====== */
   function toast(msg,err){
     var t=document.createElement('div'); t.className='toast'+(err?' err':'');
     t.textContent=msg; document.body.appendChild(t);
     setTimeout(function(){t.remove()},3000);
   }
 
-  /* ====== Bind controls ====== */
   var debounce;
   $('q').addEventListener('input',function(e){
     clearTimeout(debounce);
@@ -474,7 +160,6 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
   $('type').addEventListener('change',function(e){state.type=e.target.value;state.page=1;render()});
   $('sort').addEventListener('change',function(e){state.sort=e.target.value;state.page=1;render()});
 
-  /* ====== Init ====== */
   renderUser();
   applyI18n();
   render();
