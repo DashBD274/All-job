@@ -371,8 +371,7 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
 
   /* ====== Render list ====== */
   function render(){
-    var all=filtered(), total=all
-    .length;
+    var all=filtered(), total=all.length;
     var pages=Math.max(1,Math.ceil(total/state.per));
     if(state.page>pages) state.page=pages;
     var start=(state.page-1)*state.per;
