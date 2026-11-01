@@ -39,6 +39,14 @@ button:hover{background:var(--pl)}
     <select id="langSel" class="lang-sel">
       <option value="en">English</option>
       <option value="bn">বাংলা</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+      <option value="de">Deutsch</option>
+      <option value="pt">Português</option>
+      <option value="hi">हिन्दी</option>
+      <option value="ar">العربية</option>
+      <option value="zh">中文</option>
+      <option value="ja">日本語</option>
     </select>
   </div>
 
@@ -63,34 +71,18 @@ button:hover{background:var(--pl)}
 </div>
 
 <script>
-// ====== Translation Logic ======
+// ====== Translation Logic (10 Languages) ======
 var T = {
-  en: {
-    pageTitle: "Log In | GlobalWork",
-    heading: "Log In",
-    subheading: "Welcome back",
-    lblEmail: "Email",
-    lblPass: "Password",
-    btnLogin: "Log In",
-    noAccount: "No account?",
-    signUp: "Sign Up",
-    demoNote: "Demo: accounts exist only in this browser.",
-    errLogin: "Incorrect email or password",
-    okLogin: "Logged in!"
-  },
-  bn: {
-    pageTitle: "লগইন | GlobalWork",
-    heading: "লগইন",
-    subheading: "আবার স্বাগতম",
-    lblEmail: "ইমেল",
-    lblPass: "পাসওয়ার্ড",
-    btnLogin: "লগইন করুন",
-    noAccount: "অ্যাকাউন্ট নেই?",
-    signUp: "সাইন আপ",
-    demoNote: "ডেমো: অ্যাকাউন্ট শুধু এই ব্রাউজারে আছে।",
-    errLogin: "ইমেল বা পাসওয়ার্ড ভুল",
-    okLogin: "লগইন সফল!"
-  }
+  en: { pageTitle: "Log In | GlobalWork", heading: "Log In", subheading: "Welcome back", lblEmail: "Email", lblPass: "Password", btnLogin: "Log In", noAccount: "No account?", signUp: "Sign Up", demoNote: "Demo: accounts exist only in this browser.", errLogin: "Incorrect email or password", okLogin: "Logged in!" },
+  bn: { pageTitle: "লগইন | GlobalWork", heading: "লগইন", subheading: "আবার স্বাগতম", lblEmail: "ইমেল", lblPass: "পাসওয়ার্ড", btnLogin: "লগইন করুন", noAccount: "অ্যাকাউন্ট নেই?", signUp: "সাইন আপ", demoNote: "ডেমো: অ্যাকাউন্ট শুধু এই ব্রাউজারে আছে।", errLogin: "ইমেল বা পাসওয়ার্ড ভুল", okLogin: "লগইন সফল!" },
+  es: { pageTitle: "Iniciar sesión | GlobalWork", heading: "Iniciar sesión", subheading: "Bienvenido de nuevo", lblEmail: "Correo electrónico", lblPass: "Contraseña", btnLogin: "Iniciar sesión", noAccount: "¿No tienes cuenta?", signUp: "Registrarse", demoNote: "Demo: las cuentas solo existen en este navegador.", errLogin: "Correo o contraseña incorrectos", okLogin: "¡Sesión iniciada!" },
+  fr: { pageTitle: "Connexion | GlobalWork", heading: "Connexion", subheading: "Bon retour", lblEmail: "E-mail", lblPass: "Mot de passe", btnLogin: "Se connecter", noAccount: "Pas de compte ?", signUp: "S'inscrire", demoNote: "Démo : les comptes n'existent que dans ce navigateur.", errLogin: "E-mail ou mot de passe incorrect", okLogin: "Connecté !" },
+  de: { pageTitle: "Anmelden | GlobalWork", heading: "Anmelden", subheading: "Willkommen zurück", lblEmail: "E-Mail", lblPass: "Passwort", btnLogin: "Anmelden", noAccount: "Kein Konto?", signUp: "Registrieren", demoNote: "Demo: Konten existieren nur in diesem Browser.", errLogin: "Falsche E-Mail oder Passwort", okLogin: "Angemeldet!" },
+  pt: { pageTitle: "Entrar | GlobalWork", heading: "Entrar", subheading: "Bem-vindo de volta", lblEmail: "E-mail", lblPass: "Senha", btnLogin: "Entrar", noAccount: "Não tem conta?", signUp: "Cadastrar-se", demoNote: "Demo: as contas existem apenas neste navegador.", errLogin: "E-mail ou senha incorretos", okLogin: "Conectado!" },
+  hi: { pageTitle: "लॉग इन | GlobalWork", heading: "लॉग इन", subheading: "वापसी पर स्वागत है", lblEmail: "ईमेल", lblPass: "पासवर्ड", btnLogin: "लॉग इन करें", noAccount: "खाता नहीं है?", signUp: "साइन अप करें", demoNote: "डेमो: खाते केवल इस ब्राउज़र में मौजूद हैं।", errLogin: "गलत ईमेल या पासवर्ड", okLogin: "लॉग इन हो गया!" },
+  ar: { pageTitle: "تسجيل الدخول | GlobalWork", heading: "تسجيل الدخول", subheading: "مرحبًا بعودتك", lblEmail: "البريد الإلكتروني", lblPass: "كلمة المرور", btnLogin: "تسجيل الدخول", noAccount: "ليس لديك حساب؟", signUp: "إنشاء حساب", demoNote: "تجريبي: الحسابات موجودة فقط في هذا المتصفح.", errLogin: "البريد الإلكتروني أو كلمة المرور غير صحيحة", okLogin: "تم تسجيل الدخول!" },
+  zh: { pageTitle: "登录 | GlobalWork", heading: "登录", subheading: "欢迎回来", lblEmail: "电子邮箱", lblPass: "密码", btnLogin: "登录", noAccount: "还没有账户？", signUp: "注册", demoNote: "演示：账户仅存在于本浏览器中。", errLogin: "邮箱或密码错误", okLogin: "已登录！" },
+  ja: { pageTitle: "ログイン | GlobalWork", heading: "ログイン", subheading: "おかえりなさい", lblEmail: "メールアドレス", lblPass: "パスワード", btnLogin: "ログイン", noAccount: "アカウントをお持ちでないですか？", signUp: "新規登録", demoNote: "デモ：アカウントはこのブラウザにのみ存在します。", errLogin: "メールアドレスまたはパスワードが間違っています", okLogin: "ログインしました！" }
 };
 
 var currentLang = 'en';
@@ -109,6 +101,7 @@ function applyI18n() {
     }
   });
   document.documentElement.lang = currentLang;
+  document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
 }
 
 var langSel = document.getElementById('langSel');
