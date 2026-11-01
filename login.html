@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Log In / লগইন | GlobalWork</title>
+<title data-i18n="pageTitle">Log In | GlobalWork</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--p:#12355b;--pl:#245587;--a:#c8102e;--bd:#E2E8F0;--mu:#5E6F8D;--bg:#F5F7FA}
 body{font-family:Inter,-apple-system,"Segoe UI",Roboto,sans-serif;background:linear-gradient(135deg,#eaf1fb,#fff,#fdeceb);color:#1E2A3A;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.box{width:100%;max-width:440px;background:#fff;border:1px solid var(--bd);border-top:4px solid var(--a);border-radius:16px;padding:32px 28px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
-.box.wide{max-width:1000px}
+.box{width:100%;max-width:440px;background:#fff;border:1px solid var(--bd);border-top:4px solid var(--a);border-radius:16px;padding:32px 28px;box-shadow:0 8px 24px rgba(0,0,0,.08);position:relative}
+.top-bar{display:flex;justify-content:flex-end;margin-bottom:15px}
+select.lang-sel{padding:6px 10px;border:1px solid var(--bd);border-radius:8px;font-family:inherit;font-size:14px;background:var(--bg);cursor:pointer;outline:none}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.3rem;color:var(--p);margin-bottom:18px}
 .f{display:inline-block;width:30px;height:20px;border-radius:3px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
 .f.ca{background:linear-gradient(90deg,#d52b1e 25%,#fff 25% 75%,#d52b1e 75%);position:relative}
@@ -28,56 +29,125 @@ button:hover{background:var(--pl)}
 .msg.err{display:block;background:#FDECEC;color:#9B1C1C}
 .msg.ok{display:block;background:#E8F6EC;color:#1E6B34}
 .alt{text-align:center;margin-top:16px;font-size:.88rem;color:var(--mu)}
-.alt a{color:var(--p);font-weight:600}
+.alt a{color:var(--p);font-weight:600;text-decoration:none}
 .note{margin-top:14px;font-size:.78rem;color:var(--mu);text-align:center}
-table{width:100%;border-collapse:collapse;font-size:.9rem}
-th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--bd)}
-th{background:var(--bg);color:var(--p);font-size:.8rem;text-transform:uppercase;letter-spacing:.4px}
-.wrap{overflow-x:auto;margin-top:14px}
-.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:14px}
-.bar input{max-width:280px}
-.sm{padding:6px 14px;font-size:.8rem}
-.del{background:#B42318}.del:hover{background:#8f1c12}
-.ghost{background:#fff;color:var(--p);border:2px solid var(--p)}
-.ghost:hover{background:var(--p);color:#fff}
-[hidden]{display:none!important}
 </style>
 </head>
 <body>
 <div class="box">
-<div class="brand"><span><span class="f ca"></span><span class="f us"></span></span> GlobalWork</div>
-<h1>Log In / লগইন</h1>
-<p class="sub">Welcome back / আবার স্বাগতম</p>
-<form id="f" novalidate>
-<label for="e">Email / ইমেল</label><input id="e" type="email" autocomplete="email">
-<label for="w">Password / পাসওয়ার্ড</label><input id="w" type="password" autocomplete="current-password">
-<button class="full" type="submit">Log In / লগইন করুন</button>
-<div id="m" class="msg"></div>
-</form>
-<p class="alt">No account? / অ্যাকাউন্ট নেই? <a href="signup.html">Sign Up / সাইন আপ</a></p>
-<p class="note">Demo: accounts exist only in this browser. / ডেমো: অ্যাকাউন্ট শুধু এই ব্রাউজারে আছে।</p>
-</div>
-<script>
+  <div class="top-bar">
+    <select id="langSel" class="lang-sel">
+      <option value="en">English</option>
+      <option value="bn">বাংলা</option>
+    </select>
+  </div>
 
+  <div class="brand"><span><span class="f ca"></span><span class="f us"></span></span> GlobalWork</div>
+  
+  <h1 data-i18n="heading">Log In</h1>
+  <p class="sub" data-i18n="subheading">Welcome back</p>
+  
+  <form id="f" novalidate>
+    <label for="e" data-i18n="lblEmail">Email</label>
+    <input id="e" type="email" autocomplete="email">
+    
+    <label for="w" data-i18n="lblPass">Password</label>
+    <input id="w" type="password" autocomplete="current-password">
+    
+    <button class="full" type="submit" data-i18n="btnLogin">Log In</button>
+    <div id="m" class="msg"></div>
+  </form>
+  
+  <p class="alt"><span data-i18n="noAccount">No account?</span> <a href="signup.html" data-i18n="signUp">Sign Up</a></p>
+  <p class="note" data-i18n="demoNote">Demo: accounts exist only in this browser.</p>
+</div>
+
+<script>
+// ====== Translation Logic ======
+var T = {
+  en: {
+    pageTitle: "Log In | GlobalWork",
+    heading: "Log In",
+    subheading: "Welcome back",
+    lblEmail: "Email",
+    lblPass: "Password",
+    btnLogin: "Log In",
+    noAccount: "No account?",
+    signUp: "Sign Up",
+    demoNote: "Demo: accounts exist only in this browser.",
+    errLogin: "Incorrect email or password",
+    okLogin: "Logged in!"
+  },
+  bn: {
+    pageTitle: "লগইন | GlobalWork",
+    heading: "লগইন",
+    subheading: "আবার স্বাগতম",
+    lblEmail: "ইমেল",
+    lblPass: "পাসওয়ার্ড",
+    btnLogin: "লগইন করুন",
+    noAccount: "অ্যাকাউন্ট নেই?",
+    signUp: "সাইন আপ",
+    demoNote: "ডেমো: অ্যাকাউন্ট শুধু এই ব্রাউজারে আছে।",
+    errLogin: "ইমেল বা পাসওয়ার্ড ভুল",
+    okLogin: "লগইন সফল!"
+  }
+};
+
+var currentLang = 'en';
+try { currentLang = localStorage.getItem('globalwork_lang') || 'en'; } catch(e){}
+if (!T[currentLang]) currentLang = 'en';
+
+function applyI18n() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (T[currentLang][key]) {
+      if (el.tagName === 'TITLE') {
+        document.title = T[currentLang][key];
+      } else {
+        el.textContent = T[currentLang][key];
+      }
+    }
+  });
+  document.documentElement.lang = currentLang;
+}
+
+var langSel = document.getElementById('langSel');
+langSel.value = currentLang;
+applyI18n();
+
+langSel.addEventListener('change', function(e) {
+  currentLang = e.target.value;
+  try { localStorage.setItem('globalwork_lang', currentLang); } catch(e){}
+  applyI18n();
+});
+
+// ====== Authentication Logic ======
 function hashPw(pw,salt){
   if(window.crypto&&crypto.subtle){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(salt+pw)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')})}
   var h=5381,s=salt+pw;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return Promise.resolve('d'+h);
 }
 function getUsers(){try{return JSON.parse(localStorage.getItem('globalwork_users')||'{}')}catch(e){return{}}}
-function putUsers(u){try{localStorage.setItem('globalwork_users',JSON.stringify(u));return true}catch(e){return false}}
 function show(el,cls,t){el.className='msg '+cls;el.textContent=t}
-
 
 document.getElementById('f').addEventListener('submit',function(ev){
   ev.preventDefault();
   var m=document.getElementById('m');
-  var e=document.getElementById('e').value.trim().toLowerCase(),w=document.getElementById('w').value;
+  var e=document.getElementById('e').value.trim().toLowerCase();
+  var w=document.getElementById('w').value;
   var u=getUsers()[e];
-  if(!e||!w||!u){show(m,'err','ইমেল বা পাসওয়ার্ড ভুল / Incorrect email or password');return}
+  
+  if(!e||!w||!u){
+    show(m,'err',T[currentLang].errLogin);
+    return;
+  }
+  
   hashPw(w,u.salt).then(function(h){
-    if(h!==u.hash){show(m,'err','ইমেল বা পাসওয়ার্ড ভুল / Incorrect email or password');return}
+    if(h!==u.hash){
+      show(m,'err',T[currentLang].errLogin);
+      return;
+    }
     try{localStorage.setItem('globalwork_session',e)}catch(x){}
-    show(m,'ok','লগইন সফল! / Logged in!');
+    show(m,'ok',T[currentLang].okLogin);
     setTimeout(function(){location.href='index.html'},700);
   });
 });
