@@ -105,6 +105,14 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
       <select id="langSel" style="padding:8px 12px;border:1px solid var(--border);border-radius:40px;font:inherit;font-size:14px;background:var(--light-bg);cursor:pointer">
         <option value="en">English</option>
         <option value="bn">বাংলা</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
+        <option value="pt">Português</option>
+        <option value="hi">हिन्दी</option>
+        <option value="ar">العربية</option>
+        <option value="zh">中文</option>
+        <option value="ja">日本語</option>
       </select>
       <span id="userBox" class="userbox" hidden>
         <i class="fas fa-user-circle"></i><span id="userName"></span>
@@ -167,7 +175,6 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
 <div class="modal" id="modal" hidden>
   <div class="modal-box" id="modalBox"></div>
 </div>
-
 <script>
 (function(){
   /* ====== Demo jobs data (Canada) ====== */
@@ -212,7 +219,7 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
     toast('Logged out');
   });
 
-  /* ====== i18n ====== */
+  /* ====== i18n (10 Languages) ====== */
   var T = {
     en:{
       pageTitle:"Apply in Canada",pageSub:"Browse official job listings across Canada. Select a job to view details and apply.",
@@ -235,8 +242,97 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
       apply:"আবেদন করুন",applyNow:"এখনই আবেদন করুন",close:"বন্ধ",province:"প্রদেশ",city:"শহর",
       address:"ঠিকানা",type_lbl:"চাকরির ধরন",posted:"প্রকাশিত",description:"বিবরণ",
       loginToApply:"আবেদন করতে লগইন করুন।",applied:"আবেদন জমা হয়েছে (ডেমো)!"
+    },
+    es: {
+      pageTitle:"Solicitar en Canadá",pageSub:"Explora las ofertas de empleo oficiales en Canadá. Selecciona una para ver detalles y aplicar.",
+      qPh:"Buscar por título, ciudad o provincia…",provAll:"Todas las Provincias",typeAll:"Todos los Tipos",
+      typeFull:"Tiempo Completo",typePart:"Medio Tiempo",typeSeasonal:"Temporada",
+      sortNew:"Más recientes",sortOld:"Más antiguos",sortAZ:"Título A–Z",
+      footerTxt:"© 2026 GlobalWork — Conectando talento con Canadá.",
+      results:"{n} empleos encontrados",noResults:"No se encontraron empleos.",view:"Ver Detalles",
+      apply:"Aplicar",applyNow:"Aplicar Ahora",close:"Cerrar",province:"Provincia",city:"Ciudad",
+      address:"Dirección",type_lbl:"Tipo de Empleo",posted:"Publicado",description:"Descripción",
+      loginToApply:"Inicia sesión para aplicar.",applied:"¡Solicitud enviada (demo)!"
+    },
+    fr: {
+      pageTitle:"Postuler au Canada",pageSub:"Parcourez les offres d'emploi officielles au Canada. Sélectionnez un emploi pour voir les détails et postuler.",
+      qPh:"Rechercher par titre, ville ou province…",provAll:"Toutes les Provinces",typeAll:"Tous les Types",
+      typeFull:"Temps Plein",typePart:"Temps Partiel",typeSeasonal:"Saisonnier",
+      sortNew:"Plus récents",sortOld:"Plus anciens",sortAZ:"Titre A–Z",
+      footerTxt:"© 2026 GlobalWork — Connecter les talents au Canada.",
+      results:"{n} emplois trouvés",noResults:"Aucun emploi trouvé.",view:"Voir les Détails",
+      apply:"Postuler",applyNow:"Postuler Maintenant",close:"Fermer",province:"Province",city:"Ville",
+      address:"Adresse",type_lbl:"Type d'Emploi",posted:"Publié",description:"Description",
+      loginToApply:"Veuillez vous connecter pour postuler.",applied:"Candidature soumise (démo) !"
+    },
+    de: {
+      pageTitle:"In Kanada bewerben",pageSub:"Durchsuchen Sie offizielle Stellenangebote in ganz Kanada. Wählen Sie einen Job aus, um Details zu sehen und sich zu bewerben.",
+      qPh:"Nach Titel, Stadt oder Provinz suchen…",provAll:"Alle Provinzen",typeAll:"Alle Arten",
+      typeFull:"Vollzeit",typePart:"Teilzeit",typeSeasonal:"Saisonal",
+      sortNew:"Neueste zuerst",sortOld:"Älteste zuerst",sortAZ:"Titel A–Z",
+      footerTxt:"© 2026 GlobalWork — Talente mit Kanada verbinden.",
+      results:"{n} Jobs gefunden",noResults:"Keine Jobs gefunden.",view:"Details Anzeigen",
+      apply:"Bewerben",applyNow:"Jetzt Bewerben",close:"Schließen",province:"Provinz",city:"Stadt",
+      address:"Adresse",type_lbl:"Job-Typ",posted:"Veröffentlicht",description:"Beschreibung",
+      loginToApply:"Bitte melden Sie sich an, um sich zu bewerben.",applied:"Bewerbung eingereicht (Demo)!"
+    },
+    pt: {
+      pageTitle:"Candidatar-se no Canadá",pageSub:"Navegue pelas vagas de emprego oficiais em todo o Canadá. Selecione uma vaga para ver detalhes e se candidatar.",
+      qPh:"Pesquisar por título, cidade ou província…",provAll:"Todas as Províncias",typeAll:"Todos os Tipos",
+      typeFull:"Tempo Integral",typePart:"Meio Período",typeSeasonal:"Sazonal",
+      sortNew:"Mais recentes",sortOld:"Mais antigos",sortAZ:"Título A–Z",
+      footerTxt:"© 2026 GlobalWork — Conectando talentos ao Canadá.",
+      results:"{n} vagas encontradas",noResults:"Nenhuma vaga encontrada.",view:"Ver Detalhes",
+      apply:"Candidatar-se",applyNow:"Candidatar-se Agora",close:"Fechar",province:"Província",city:"Cidade",
+      address:"Endereço",type_lbl:"Tipo de Vaga",posted:"Publicado",description:"Descrição",
+      loginToApply:"Faça login para se candidatar.",applied:"Candidatura enviada (demo)!"
+    },
+    hi: {
+      pageTitle:"कनाडा में आवेदन करें",pageSub:"पूरे कनाडा में आधिकारिक नौकरी की सूची देखें। विवरण देखने और आवेदन करने के लिए नौकरी चुनें।",
+      qPh:"शीर्षक, शहर या प्रांत से खोजें…",provAll:"सभी प्रांत",typeAll:"सभी प्रकार",
+      typeFull:"पूर्णकालिक",typePart:"अंशकालिक",typeSeasonal:"मौसमी",
+      sortNew:"नवीनतम पहले",sortOld:"पुराने पहले",sortAZ:"शीर्षक A–Z",
+      footerTxt:"© 2026 GlobalWork — कनाडा के साथ प्रतिभा को जोड़ना।",
+      results:"{n} नौकरियां मिलीं",noResults:"कोई नौकरी नहीं मिली।",view:"विवरण देखें",
+      apply:"आवेदन करें",applyNow:"अभी आवेदन करें",close:"बंद करें",province:"प्रांत",city:"शहर",
+      address:"पता",type_lbl:"नौकरी का प्रकार",posted:"प्रकाशित",description:"विवरण",
+      loginToApply:"आवेदन करने के लिए लॉग इन करें।",applied:"आवेदन सबमिट किया गया (डेमो)!"
+    },
+    ar: {
+      pageTitle:"التقديم في كندا",pageSub:"تصفح قوائم الوظائف الرسمية في جميع أنحاء كندا. اختر وظيفة لعرض التفاصيل والتقديم.",
+      qPh:"البحث بالعنوان أو المدينة أو المقاطعة…",provAll:"جميع المقاطعات",typeAll:"جميع الأنواع",
+      typeFull:"دوام كامل",typePart:"دوام جزئي",typeSeasonal:"موسمي",
+      sortNew:"الأحدث أولاً",sortOld:"الأقدم أولاً",sortAZ:"العنوان أ-ي",
+      footerTxt:"© 2026 GlobalWork — ربط المواهب بكندا.",
+      results:"تم العثور على {n} وظيفة",noResults:"لم يتم العثور على وظائف.",view:"عرض التفاصيل",
+      apply:"تقديم",applyNow:"تقديم الآن",close:"إغلاق",province:"المقاطعة",city:"المدينة",
+      address:"العنوان",type_lbl:"نوع الوظيفة",posted:"نشر",description:"الوصف",
+      loginToApply:"يرجى تسجيل الدخول للتقديم.",applied:"تم تقديم الطلب (تجريبي)!"
+    },
+    zh: {
+      pageTitle:"在加拿大申请",pageSub:"浏览加拿大各地的官方职位列表。选择一个职位查看详情并申请。",
+      qPh:"按职位、城市或省份搜索…",provAll:"所有省份",typeAll:"所有类型",
+      typeFull:"全职",typePart:"兼职",typeSeasonal:"季节性",
+      sortNew:"最新优先",sortOld:"最旧优先",sortAZ:"标题 A–Z",
+      footerTxt:"© 2026 GlobalWork — 将人才与加拿大联系起来。",
+      results:"找到 {n} 个职位",noResults:"未找到职位。",view:"查看详情",
+      apply:"申请",applyNow:"立即申请",close:"关闭",province:"省份",city:"城市",
+      address:"地址",type_lbl:"工作类型",posted:"发布时间",description:"描述",
+      loginToApply:"请登录以申请。",applied:"申请已提交（演示）！"
+    },
+    ja: {
+      pageTitle:"カナダで応募",pageSub:"カナダ全土の公式求人を閲覧できます。詳細を見て応募する求人を選択してください。",
+      qPh:"タイトル、都市、州で検索…",provAll:"すべての州",typeAll:"すべてのタイプ",
+      typeFull:"フルタイム",typePart:"パートタイム",typeSeasonal:"季節",
+      sortNew:"新しい順",sortOld:"古い順",sortAZ:"タイトル A–Z",
+      footerTxt:"© 2026 GlobalWork — カナダに人材をつなぐ。",
+      results:"{n} 件の求人が見つかりました",noResults:"求人が見つかりませんでした。",view:"詳細を見る",
+      apply:"応募",applyNow:"今すぐ応募",close:"閉じる",province:"州/県",city:"都市",
+      address:"住所",type_lbl:"雇用形態",posted:"投稿日",description:"説明",
+      loginToApply:"応募するにはログインしてください。",applied:"応募が送信されました（デモ）！"
     }
   };
+  
   var LANG='en';
   try{LANG=localStorage.getItem('globalwork_lang')||'en'}catch(e){}
   if(!T[LANG])LANG='en';
@@ -249,6 +345,7 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
       var v=t(el.getAttribute('data-i18n-ph')); if(v)el.placeholder=v;
     });
     document.documentElement.lang=LANG;
+    document.documentElement.dir = LANG === 'ar' ? 'rtl' : 'ltr';
     $('langSel').value=LANG;
   }
   $('langSel').addEventListener('change',function(e){
@@ -385,3 +482,4 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
 </script>
 </body>
 </html>
+    
