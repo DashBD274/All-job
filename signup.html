@@ -73,22 +73,42 @@ button:hover{background:var(--pl)}
   </form>
   
   <p class="alt"><span data-i18n="hasAccount">Already have an account?</span> <a href="login.html" data-i18n="logIn">Log In</a></p>
-  <p class="note" data-i18n="demoNote">Demo: data is saved only in this browser.</p>
+  <p class="note" data-i18n="demoNote">Your data will be securely saved online.</p>
 </div>
 
-<script>
-// ====== Translation Logic (10 Languages) ======
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+// ====== ১. আপনার Firebase কনফিগারেশন ======
+const firebaseConfig = {
+  apiKey: "AIzaSyCNWEeJ249mzef1-QMc2YiVk7F3un8eP3M",
+  authDomain: "my-farm-job-app.firebaseapp.com",
+  databaseURL: "https://my-farm-job-app-default-rtdb.firebaseio.com",
+  projectId: "my-farm-job-app",
+  storageBucket: "my-farm-job-app.firebasestorage.app",
+  messagingSenderId: "185581371494",
+  appId: "1:185581371494:web:02580d927e5186ffb3f1a7",
+  measurementId: "G-WP48B1HGL2"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// ====== ২. Translation Logic (আপনার আগের কোড থেকে) ======
 var T = {
-  en: { pageTitle: "Sign Up | GlobalWork", heading: "Sign Up", subheading: "Create your account", lblName: "Full Name", lblEmail: "Email", lblPhone: "Phone", lblPass: "Password (min 6)", btnSignup: "Create Account", hasAccount: "Already have an account?", logIn: "Log In", demoNote: "Demo: data is saved only in this browser.", errFill: "Fill in all fields", errEmail: "Enter a valid email", errPass: "Password min 6 characters", errExists: "Email already registered", errSave: "Could not save", okSignup: "Account created!" },
-  bn: { pageTitle: "সাইন আপ | GlobalWork", heading: "সাইন আপ", subheading: "আপনার অ্যাকাউন্ট তৈরি করুন", lblName: "পুরো নাম", lblEmail: "ইমেল", lblPhone: "ফোন নম্বর", lblPass: "পাসওয়ার্ড (কমপক্ষে ৬)", btnSignup: "অ্যাকাউন্ট তৈরি করুন", hasAccount: "অ্যাকাউন্ট আছে?", logIn: "লগইন", demoNote: "ডেমো: তথ্য শুধু এই ব্রাউজারে থাকে।", errFill: "সব ঘর পূরণ করুন", errEmail: "সঠিক ইমেল দিন", errPass: "পাসওয়ার্ড কমপক্ষে ৬ অক্ষর", errExists: "এই ইমেল আগে থেকেই আছে", errSave: "সংরক্ষণ করা যায়নি", okSignup: "অ্যাকাউন্ট তৈরি হয়েছে!" },
-  es: { pageTitle: "Registrarse | GlobalWork", heading: "Registrarse", subheading: "Crea tu cuenta", lblName: "Nombre completo", lblEmail: "Correo electrónico", lblPhone: "Teléfono", lblPass: "Contraseña (mín 6)", btnSignup: "Crear cuenta", hasAccount: "¿Ya tienes cuenta?", logIn: "Iniciar sesión", demoNote: "Demo: los datos se guardan solo en este navegador.", errFill: "Complete todos los campos", errEmail: "Ingrese un correo válido", errPass: "Contraseña mín 6 caracteres", errExists: "Correo ya registrado", errSave: "No se pudo guardar", okSignup: "¡Cuenta creada!" },
-  fr: { pageTitle: "S'inscrire | GlobalWork", heading: "S'inscrire", subheading: "Créez votre compte", lblName: "Nom complet", lblEmail: "E-mail", lblPhone: "Téléphone", lblPass: "Mot de passe (min 6)", btnSignup: "Créer un compte", hasAccount: "Déjà un compte ?", logIn: "Se connecter", demoNote: "Démo : les données sont enregistrées uniquement dans ce navigateur.", errFill: "Remplissez tous les champs", errEmail: "Entrez un e-mail valide", errPass: "Mot de passe min 6 caractères", errExists: "E-mail déjà enregistré", errSave: "Impossible d'enregistrer", okSignup: "Compte créé !" },
-  de: { pageTitle: "Registrieren | GlobalWork", heading: "Registrieren", subheading: "Erstelle dein Konto", lblName: "Vollständiger Name", lblEmail: "E-Mail", lblPhone: "Telefon", lblPass: "Passwort (min. 6)", btnSignup: "Konto erstellen", hasAccount: "Bereits ein Konto?", logIn: "Anmelden", demoNote: "Demo: Daten werden nur in diesem Browser gespeichert.", errFill: "Alle Felder ausfüllen", errEmail: "Gültige E-Mail eingeben", errPass: "Passwort min. 6 Zeichen", errExists: "E-Mail bereits registriert", errSave: "Speichern fehlgeschlagen", okSignup: "Konto erstellt!" },
-  pt: { pageTitle: "Cadastrar-se | GlobalWork", heading: "Cadastrar-se", subheading: "Crie sua conta", lblName: "Nome completo", lblEmail: "E-mail", lblPhone: "Telefone", lblPass: "Senha (mín 6)", btnSignup: "Criar conta", hasAccount: "Já tem conta?", logIn: "Entrar", demoNote: "Demo: os dados são salvos apenas neste navegador.", errFill: "Preencha todos os campos", errEmail: "Digite um e-mail válido", errPass: "Senha mín 6 caracteres", errExists: "E-mail já cadastrado", errSave: "Não foi possível salvar", okSignup: "Conta criada!" },
-  hi: { pageTitle: "साइन अप | GlobalWork", heading: "साइन अप", subheading: "अपना खाता बनाएं", lblName: "पूरा नाम", lblEmail: "ईमेल", lblPhone: "फ़ोन", lblPass: "पासवर्ड (कम से कम 6)", btnSignup: "खाता बनाएं", hasAccount: "पहले से खाता है?", logIn: "लॉग इन करें", demoNote: "डेमो: डेटा केवल इस ब्राउज़र में सहेजा जाता है।", errFill: "सभी फ़ील्ड भरें", errEmail: "मान्य ईमेल दर्ज करें", errPass: "पासवर्ड कम से कम 6 अक्षर", errExists: "ईमेल पहले से पंजीकृत है", errSave: "सहेजा नहीं जा सका", okSignup: "खाता बन गया!" },
-  ar: { pageTitle: "إنشاء حساب | GlobalWork", heading: "إنشاء حساب", subheading: "أنشئ حسابك", lblName: "الاسم الكامل", lblEmail: "البريد الإلكتروني", lblPhone: "الهاتف", lblPass: "كلمة المرور (6 على الأقل)", btnSignup: "إنشاء حساب", hasAccount: "لديك حساب بالفعل؟", logIn: "تسجيل الدخول", demoNote: "تجريبي: يتم حفظ البيانات فقط في هذا المتصفح.", errFill: "املأ جميع الحقول", errEmail: "أدخل بريدًا إلكترونيًا صحيحًا", errPass: "كلمة المرور 6 أحرف على الأقل", errExists: "البريد الإلكتروني مسجل بالفعل", errSave: "تعذر الحفظ", okSignup: "تم إنشاء الحساب!" },
-  zh: { pageTitle: "注册 | GlobalWork", heading: "注册", subheading: "创建您的账户", lblName: "全名", lblEmail: "电子邮箱", lblPhone: "电话", lblPass: "密码（至少6位）", btnSignup: "创建账户", hasAccount: "已经有账户？", logIn: "登录", demoNote: "演示：数据仅保存在此浏览器中。", errFill: "请填写所有字段", errEmail: "请输入有效的电子邮箱", errPass: "密码至少6个字符", errExists: "邮箱已注册", errSave: "无法保存", okSignup: "账户已创建！" },
-  ja: { pageTitle: "新規登録 | GlobalWork", heading: "新規登録", subheading: "アカウントを作成", lblName: "氏名", lblEmail: "メールアドレス", lblPhone: "電話番号", lblPass: "パスワード（6文字以上）", btnSignup: "アカウント作成", hasAccount: "すでにアカウントをお持ちですか？", logIn: "ログイン", demoNote: "デモ：データはこのブラウザにのみ保存されます。", errFill: "すべての項目を入力してください", errEmail: "有効なメールアドレスを入力してください", errPass: "パスワードは6文字以上", errExists: "メールアドレスは既に登録されています", errSave: "保存できませんでした", okSignup: "アカウントが作成されました！" }
+  en: { pageTitle: "Sign Up | GlobalWork", heading: "Sign Up", subheading: "Create your account", lblName: "Full Name", lblEmail: "Email", lblPhone: "Phone", lblPass: "Password (min 6)", btnSignup: "Create Account", hasAccount: "Already have an account?", logIn: "Log In", demoNote: "Your data will be securely saved online.", errFill: "Fill in all fields", errEmail: "Enter a valid email", errPass: "Password min 6 characters", errExists: "Email already registered", errPhone: "Phone number already registered", errSave: "Could not save", okSignup: "Account created! Redirecting..." },
+  bn: { pageTitle: "সাইন আপ | GlobalWork", heading: "সাইন আপ", subheading: "আপনার অ্যাকাউন্ট তৈরি করুন", lblName: "পুরো নাম", lblEmail: "ইমেল", lblPhone: "ফোন নম্বর", lblPass: "পাসওয়ার্ড (কমপক্ষে ৬)", btnSignup: "অ্যাকাউন্ট তৈরি করুন", hasAccount: "অ্যাকাউন্ট আছে?", logIn: "লগইন", demoNote: "আপনার তথ্য নিরাপদে অনলাইনে সেভ হবে।", errFill: "সব ঘর পূরণ করুন", errEmail: "সঠিক ইমেল দিন", errPass: "পাসওয়ার্ড কমপক্ষে ৬ অক্ষর", errExists: "এই ইমেল আগে থেকেই আছে", errPhone: "এই ফোন নম্বর আগে থেকেই আছে", errSave: "সংরক্ষণ করা যায়নি", okSignup: "অ্যাকাউন্ট তৈরি হয়েছে! অপেক্ষা করুন..." },
+  es: { pageTitle: "Registrarse | GlobalWork", heading: "Registrarse", subheading: "Crea tu cuenta", lblName: "Nombre completo", lblEmail: "Correo electrónico", lblPhone: "Teléfono", lblPass: "Contraseña (mín 6)", btnSignup: "Crear cuenta", hasAccount: "¿Ya tienes cuenta?", logIn: "Iniciar sesión", demoNote: "Tus datos se guardarán de forma segura en línea.", errFill: "Complete todos los campos", errEmail: "Ingrese un correo válido", errPass: "Contraseña mín 6 caracteres", errExists: "Correo ya registrado", errPhone: "Teléfono ya registrado", errSave: "No se pudo guardar", okSignup: "¡Cuenta creada! Redirigiendo..." },
+  fr: { pageTitle: "S'inscrire | GlobalWork", heading: "S'inscrire", subheading: "Créez votre compte", lblName: "Nom complet", lblEmail: "E-mail", lblPhone: "Téléphone", lblPass: "Mot de passe (min 6)", btnSignup: "Créer un compte", hasAccount: "Déjà un compte ?", logIn: "Se connecter", demoNote: "Vos données seront enregistrées en ligne en toute sécurité.", errFill: "Remplissez tous les champs", errEmail: "Entrez un e-mail valide", errPass: "Mot de passe min 6 caractères", errExists: "E-mail déjà enregistré", errPhone: "Téléphone déjà enregistré", errSave: "Impossible d'enregistrer", okSignup: "Compte créé ! Redirection..." },
+  de: { pageTitle: "Registrieren | GlobalWork", heading: "Registrieren", subheading: "Erstelle dein Konto", lblName: "Vollständiger Name", lblEmail: "E-Mail", lblPhone: "Telefon", lblPass: "Passwort (min. 6)", btnSignup: "Konto erstellen", hasAccount: "Bereits ein Konto?", logIn: "Anmelden", demoNote: "Ihre Daten werden sicher online gespeichert.", errFill: "Alle Felder ausfüllen", errEmail: "Gültige E-Mail eingeben", errPass: "Passwort min. 6 Zeichen", errExists: "E-Mail bereits registriert", errPhone: "Telefonnummer bereits registriert", errSave: "Speichern fehlgeschlagen", okSignup: "Konto erstellt! Weiterleitung..." },
+  pt: { pageTitle: "Cadastrar-se | GlobalWork", heading: "Cadastrar-se", subheading: "Crie sua conta", lblName: "Nome completo", lblEmail: "E-mail", lblPhone: "Telefone", lblPass: "Senha (mín 6)", btnSignup: "Criar conta", hasAccount: "Já tem conta?", logIn: "Entrar", demoNote: "Seus dados serão salvos online com segurança.", errFill: "Preencha todos os campos", errEmail: "Digite um e-mail válido", errPass: "Senha mín 6 caracteres", errExists: "E-mail já cadastrado", errPhone: "Telefone já cadastrado", errSave: "Não foi possível salvar", okSignup: "Conta criada! Redirecionando..." },
+  hi: { pageTitle: "साइन अप | GlobalWork", heading: "साइन अप", subheading: "अपना खाता बनाएं", lblName: "पूरा नाम", lblEmail: "ईमेल", lblPhone: "फ़ोन", lblPass: "पासवर्ड (कम से कम 6)", btnSignup: "खाता बनाएं", hasAccount: "पहले से खाता है?", logIn: "लॉग इन करें", demoNote: "आपका डेटा सुरक्षित रूप से ऑनलाइन सहेजा जाएगा।", errFill: "सभी फ़ील्ड भरें", errEmail: "मान्य ईमेल दर्ज करें", errPass: "पासवर्ड कम से कम 6 अक्षर", errExists: "ईमेल पहले से पंजीकृत है", errPhone: "फ़ोन नंबर पहले से पंजीकृत है", errSave: "सहेजा नहीं जा सका", okSignup: "खाता बन गया! रीडायरेक्ट हो रहा है..." },
+  ar: { pageTitle: "إنشاء حساب | GlobalWork", heading: "إنشاء حساب", subheading: "أنشئ حسابك", lblName: "الاسم الكامل", lblEmail: "البريد الإلكتروني", lblPhone: "الهاتف", lblPass: "كلمة المرور (6 على الأقل)", btnSignup: "إنشاء حساب", hasAccount: "لديك حساب بالفعل؟", logIn: "تسجيل الدخول", demoNote: "سيتم حفظ بياناتك عبر الإنترنت بأمان.", errFill: "املأ جميع الحقول", errEmail: "أدخل بريدًا إلكترونيًا صحيحًا", errPass: "كلمة المرور 6 أحرف على الأقل", errExists: "البريد الإلكتروني مسجل بالفعل", errPhone: "رقم الهاتف مسجل بالفعل", errSave: "تعذر الحفظ", okSignup: "تم إنشاء الحساب! جارٍ إعادة التوجيه..." },
+  zh: { pageTitle: "注册 | GlobalWork", heading: "注册", subheading: "创建您的账户", lblName: "全名", lblEmail: "电子邮箱", lblPhone: "电话", lblPass: "密码（至少6位）", btnSignup: "创建账户", hasAccount: "已经有账户？", logIn: "登录", demoNote: "您的数据将安全地保存在线。", errFill: "请填写所有字段", errEmail: "请输入有效的电子邮箱", errPass: "密码至少6个字符", errExists: "邮箱已注册", errPhone: "电话号码已注册", errSave: "无法保存", okSignup: "账户已创建！正在跳转..." },
+  ja: { pageTitle: "新規登録 | GlobalWork", heading: "新規登録", subheading: "アカウントを作成", lblName: "氏名", lblEmail: "メールアドレス", lblPhone: "電話番号", lblPass: "パスワード（6文字以上）", btnSignup: "アカウント作成", hasAccount: "すでにアカウントをお持ちですか？", logIn: "ログイン", demoNote: "データは安全にオンラインで保存されます。", errFill: "すべての項目を入力してください", errEmail: "有効なメールアドレスを入力してください", errPass: "パスワードは6文字以上", errExists: "メールアドレスは既に登録されています", errPhone: "電話番号は既に登録されています", errSave: "保存できませんでした", okSignup: "アカウントが作成されました！リダイレクト中..." }
 };
 
 var currentLang = 'en';
@@ -120,39 +140,61 @@ langSel.addEventListener('change', function(e) {
   applyI18n();
 });
 
-// ====== Authentication Logic ======
-function hashPw(pw,salt){
-  if(window.crypto&&crypto.subtle){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(salt+pw)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')})}
-  var h=5381,s=salt+pw;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return Promise.resolve('d'+h);
-}
-function getUsers(){try{return JSON.parse(localStorage.getItem('globalwork_users')||'{}')}catch(e){return{}}}
-function putUsers(u){try{localStorage.setItem('globalwork_users',JSON.stringify(u));return true}catch(e){return false}}
+// ====== ৩. Firebase Signup Logic ======
 function show(el,cls,t){el.className='msg '+cls;el.textContent=t}
 
-document.getElementById('f').addEventListener('submit',function(ev){
+document.getElementById('f').addEventListener('submit', async function(ev){
   ev.preventDefault();
-  var m=document.getElementById('m');
-  var n=document.getElementById('n').value.trim();
-  var e=document.getElementById('e').value.trim().toLowerCase();
-  var p=document.getElementById('p').value.trim();
-  var w=document.getElementById('w').value;
+  var m = document.getElementById('m');
+  var n = document.getElementById('n').value.trim();
+  var e = document.getElementById('e').value.trim().toLowerCase();
+  var p = document.getElementById('p').value.trim();
+  var w = document.getElementById('w').value;
   var t = T[currentLang];
 
-  if(!n||!e||!p||!w){ show(m,'err',t.errFill); return; }
+  // ফর্ম ভ্যালিডেশন
+  if(!n || !e || !p || !w){ show(m,'err',t.errFill); return; }
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){ show(m,'err',t.errEmail); return; }
-  if(w.length<6){ show(m,'err',t.errPass); return; }
-  
-  var u=getUsers();
-  if(u[e]){ show(m,'err',t.errExists); return; }
-  
-  var salt=Math.random().toString(36).slice(2);
-  hashPw(w,salt).then(function(h){
-    u[e]={fullName:n,phone:p,salt:salt,hash:h,createdAt:new Date().toISOString()};
-    if(!putUsers(u)){ show(m,'err',t.errSave); return; }
-    try{localStorage.setItem('globalwork_session',e)}catch(x){}
-    show(m,'ok',t.okSignup);
-    setTimeout(function(){location.href='index.html'},900);
-  });
+  if(w.length < 6){ show(m,'err',t.errPass); return; }
+
+  show(m, 'ok', 'Processing...'); // লোডিং মেসেজ
+
+  try {
+    // 🔴 ফোন নম্বরটি আগে থেকে ডেটাবেসে আছে কিনা চেক করা (Firestore)
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("phone", "==", p));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      show(m, 'err', t.errPhone); // ফোন নম্বর আগে থেকে থাকলে এরর
+      return;
+    }
+
+    // 🔴 নতুন ইউজার তৈরি (Firebase Authentication)
+    const userCredential = await createUserWithEmailAndPassword(auth, e, w);
+    const user = userCredential.user;
+
+    // 🔴 ইউজারের তথ্য Firestore-এ সেভ করা
+    await setDoc(doc(db, "users", user.uid), {
+      fullName: n,
+      email: e,
+      phone: p,
+      role: "user", // ডিফল্ট রোল
+      createdAt: new Date()
+    });
+
+    // সফল হলে মেসেজ দেখানো এবং রিডাইরেক্ট করা
+    show(m, 'ok', t.okSignup);
+    setTimeout(function(){ location.href = 'index.html'; }, 1500);
+
+  } catch (error) {
+    // Firebase থেকে আসা এরর (যেমন: ইমেইল আগে থেকে থাকলে)
+    if (error.code === 'auth/email-already-in-use') {
+      show(m, 'err', t.errExists);
+    } else {
+      show(m, 'err', 'Error: ' + error.message);
+    }
+  }
 });
 </script>
 </body>
