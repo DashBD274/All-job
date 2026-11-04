@@ -67,22 +67,41 @@ button:hover{background:var(--pl)}
   </form>
   
   <p class="alt"><span data-i18n="noAccount">No account?</span> <a href="signup.html" data-i18n="signUp">Sign Up</a></p>
-  <p class="note" data-i18n="demoNote">Demo: accounts exist only in this browser.</p>
+  <p class="note" data-i18n="demoNote">Your login is secure and saved online.</p>
 </div>
 
-<script>
-// ====== Translation Logic (10 Languages) ======
+<script type="module">
+// Firebase SDK ইমপোর্ট
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+// ====== ১. আপনার Firebase কনফিগারেশন ======
+const firebaseConfig = {
+  apiKey: "AIzaSyCNWEeJ249mzef1-QMc2YiVk7F3un8eP3M",
+  authDomain: "my-farm-job-app.firebaseapp.com",
+  databaseURL: "https://my-farm-job-app-default-rtdb.firebaseio.com",
+  projectId: "my-farm-job-app",
+  storageBucket: "my-farm-job-app.firebasestorage.app",
+  messagingSenderId: "185581371494",
+  appId: "1:185581371494:web:02580d927e5186ffb3f1a7",
+  measurementId: "G-WP48B1HGL2"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// ====== ২. Translation Logic (আপনার আগের কোড থেকে) ======
 var T = {
-  en: { pageTitle: "Log In | GlobalWork", heading: "Log In", subheading: "Welcome back", lblEmail: "Email", lblPass: "Password", btnLogin: "Log In", noAccount: "No account?", signUp: "Sign Up", demoNote: "Demo: accounts exist only in this browser.", errLogin: "Incorrect email or password", okLogin: "Logged in!" },
-  bn: { pageTitle: "লগইন | GlobalWork", heading: "লগইন", subheading: "আবার স্বাগতম", lblEmail: "ইমেল", lblPass: "পাসওয়ার্ড", btnLogin: "লগইন করুন", noAccount: "অ্যাকাউন্ট নেই?", signUp: "সাইন আপ", demoNote: "ডেমো: অ্যাকাউন্ট শুধু এই ব্রাউজারে আছে।", errLogin: "ইমেল বা পাসওয়ার্ড ভুল", okLogin: "লগইন সফল!" },
-  es: { pageTitle: "Iniciar sesión | GlobalWork", heading: "Iniciar sesión", subheading: "Bienvenido de nuevo", lblEmail: "Correo electrónico", lblPass: "Contraseña", btnLogin: "Iniciar sesión", noAccount: "¿No tienes cuenta?", signUp: "Registrarse", demoNote: "Demo: las cuentas solo existen en este navegador.", errLogin: "Correo o contraseña incorrectos", okLogin: "¡Sesión iniciada!" },
-  fr: { pageTitle: "Connexion | GlobalWork", heading: "Connexion", subheading: "Bon retour", lblEmail: "E-mail", lblPass: "Mot de passe", btnLogin: "Se connecter", noAccount: "Pas de compte ?", signUp: "S'inscrire", demoNote: "Démo : les comptes n'existent que dans ce navigateur.", errLogin: "E-mail ou mot de passe incorrect", okLogin: "Connecté !" },
-  de: { pageTitle: "Anmelden | GlobalWork", heading: "Anmelden", subheading: "Willkommen zurück", lblEmail: "E-Mail", lblPass: "Passwort", btnLogin: "Anmelden", noAccount: "Kein Konto?", signUp: "Registrieren", demoNote: "Demo: Konten existieren nur in diesem Browser.", errLogin: "Falsche E-Mail oder Passwort", okLogin: "Angemeldet!" },
-  pt: { pageTitle: "Entrar | GlobalWork", heading: "Entrar", subheading: "Bem-vindo de volta", lblEmail: "E-mail", lblPass: "Senha", btnLogin: "Entrar", noAccount: "Não tem conta?", signUp: "Cadastrar-se", demoNote: "Demo: as contas existem apenas neste navegador.", errLogin: "E-mail ou senha incorretos", okLogin: "Conectado!" },
-  hi: { pageTitle: "लॉग इन | GlobalWork", heading: "लॉग इन", subheading: "वापसी पर स्वागत है", lblEmail: "ईमेल", lblPass: "पासवर्ड", btnLogin: "लॉग इन करें", noAccount: "खाता नहीं है?", signUp: "साइन अप करें", demoNote: "डेमो: खाते केवल इस ब्राउज़र में मौजूद हैं।", errLogin: "गलत ईमेल या पासवर्ड", okLogin: "लॉग इन हो गया!" },
-  ar: { pageTitle: "تسجيل الدخول | GlobalWork", heading: "تسجيل الدخول", subheading: "مرحبًا بعودتك", lblEmail: "البريد الإلكتروني", lblPass: "كلمة المرور", btnLogin: "تسجيل الدخول", noAccount: "ليس لديك حساب؟", signUp: "إنشاء حساب", demoNote: "تجريبي: الحسابات موجودة فقط في هذا المتصفح.", errLogin: "البريد الإلكتروني أو كلمة المرور غير صحيحة", okLogin: "تم تسجيل الدخول!" },
-  zh: { pageTitle: "登录 | GlobalWork", heading: "登录", subheading: "欢迎回来", lblEmail: "电子邮箱", lblPass: "密码", btnLogin: "登录", noAccount: "还没有账户？", signUp: "注册", demoNote: "演示：账户仅存在于本浏览器中。", errLogin: "邮箱或密码错误", okLogin: "已登录！" },
-  ja: { pageTitle: "ログイン | GlobalWork", heading: "ログイン", subheading: "おかえりなさい", lblEmail: "メールアドレス", lblPass: "パスワード", btnLogin: "ログイン", noAccount: "アカウントをお持ちでないですか？", signUp: "新規登録", demoNote: "デモ：アカウントはこのブラウザにのみ存在します。", errLogin: "メールアドレスまたはパスワードが間違っています", okLogin: "ログインしました！" }
+  en: { pageTitle: "Log In | GlobalWork", heading: "Log In", subheading: "Welcome back", lblEmail: "Email", lblPass: "Password", btnLogin: "Log In", noAccount: "No account?", signUp: "Sign Up", demoNote: "Your login is secure and saved online.", errLogin: "Incorrect email or password", errFill: "Fill in all fields", okLogin: "Logged in! Redirecting..." },
+  bn: { pageTitle: "লগইন | GlobalWork", heading: "লগইন", subheading: "আবার স্বাগতম", lblEmail: "ইমেল", lblPass: "পাসওয়ার্ড", btnLogin: "লগইন করুন", noAccount: "অ্যাকাউন্ট নেই?", signUp: "সাইন আপ", demoNote: "আপনার লগইন নিরাপদ ও অনলাইনে সেভ থাকে।", errLogin: "ইমেল বা পাসওয়ার্ড ভুল", errFill: "সব ঘর পূরণ করুন", okLogin: "লগইন সফল! অপেক্ষা করুন..." },
+  es: { pageTitle: "Iniciar sesión | GlobalWork", heading: "Iniciar sesión", subheading: "Bienvenido de nuevo", lblEmail: "Correo electrónico", lblPass: "Contraseña", btnLogin: "Iniciar sesión", noAccount: "¿No tienes cuenta?", signUp: "Registrarse", demoNote: "Su inicio de sesión es seguro y se guarda en línea.", errLogin: "Correo o contraseña incorrectos", errFill: "Complete todos los campos", okLogin: "¡Sesión iniciada! Redirigiendo..." },
+  fr: { pageTitle: "Connexion | GlobalWork", heading: "Connexion", subheading: "Bon retour", lblEmail: "E-mail", lblPass: "Mot de passe", btnLogin: "Se connecter", noAccount: "Pas de compte ?", signUp: "S'inscrire", demoNote: "Votre connexion est sécurisée et enregistrée en ligne.", errLogin: "E-mail ou mot de passe incorrect", errFill: "Remplissez tous les champs", okLogin: "Connecté ! Redirection..." },
+  de: { pageTitle: "Anmelden | GlobalWork", heading: "Anmelden", subheading: "Willkommen zurück", lblEmail: "E-Mail", lblPass: "Passwort", btnLogin: "Anmelden", noAccount: "Kein Konto?", signUp: "Registrieren", demoNote: "Ihre Anmeldung ist sicher und wird online gespeichert.", errLogin: "Falsche E-Mail oder Passwort", errFill: "Alle Felder ausfüllen", okLogin: "Angemeldet! Weiterleitung..." },
+  pt: { pageTitle: "Entrar | GlobalWork", heading: "Entrar", subheading: "Bem-vindo de volta", lblEmail: "E-mail", lblPass: "Senha", btnLogin: "Entrar", noAccount: "Não tem conta?", signUp: "Cadastrar-se", demoNote: "Seu login é seguro e salvo online.", errLogin: "E-mail ou senha incorretos", errFill: "Preencha todos os campos", okLogin: "Conectado! Redirecionando..." },
+  hi: { pageTitle: "लॉग इन | GlobalWork", heading: "लॉग इन", subheading: "वापसी पर स्वागत है", lblEmail: "ईमेल", lblPass: "पासवर्ड", btnLogin: "लॉग इन करें", noAccount: "खाता नहीं है?", signUp: "साइन अप करें", demoNote: "आपका लॉगिन सुरक्षित है और ऑनलाइन सहेजा जाता है।", errLogin: "गलत ईमेल या पासवर्ड", errFill: "सभी फ़ील्ड भरें", okLogin: "लॉग इन हो गया! रीडायरेक्ट हो रहा है..." },
+  ar: { pageTitle: "تسجيل الدخول | GlobalWork", heading: "تسجيل الدخول", subheading: "مرحبًا بعودتك", lblEmail: "البريد الإلكتروني", lblPass: "كلمة المرور", btnLogin: "تسجيل الدخول", noAccount: "ليس لديك حساب؟", signUp: "إنشاء حساب", demoNote: "تسجيل الدخول آمن ويتم حفظه عبر الإنترنت.", errLogin: "البريد الإلكتروني أو كلمة المرور غير صحيحة", errFill: "املأ جميع الحقول", okLogin: "تم تسجيل الدخول! جارٍ إعادة التوجيه..." },
+  zh: { pageTitle: "登录 | GlobalWork", heading: "登录", subheading: "欢迎回来", lblEmail: "电子邮箱", lblPass: "密码", btnLogin: "登录", noAccount: "还没有账户？", signUp: "注册", demoNote: "您的登录是安全的，并保存在线。", errLogin: "邮箱或密码错误", errFill: "请填写所有字段", okLogin: "已登录！正在跳转..." },
+  ja: { pageTitle: "ログイン | GlobalWork", heading: "ログイン", subheading: "おかえりなさい", lblEmail: "メールアドレス", lblPass: "パスワード", btnLogin: "ログイン", noAccount: "アカウントをお持ちでないですか？", signUp: "新規登録", demoNote: "ログインは安全でオンラインに保存されます。", errLogin: "メールアドレスまたはパスワードが間違っています", errFill: "すべての項目を入力してください", okLogin: "ログインしました！リダイレクト中..." }
 };
 
 var currentLang = 'en';
@@ -114,35 +133,32 @@ langSel.addEventListener('change', function(e) {
   applyI18n();
 });
 
-// ====== Authentication Logic ======
-function hashPw(pw,salt){
-  if(window.crypto&&crypto.subtle){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(salt+pw)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')})}
-  var h=5381,s=salt+pw;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return Promise.resolve('d'+h);
-}
-function getUsers(){try{return JSON.parse(localStorage.getItem('globalwork_users')||'{}')}catch(e){return{}}}
+// ====== ৩. Firebase Login Logic ======
 function show(el,cls,t){el.className='msg '+cls;el.textContent=t}
 
-document.getElementById('f').addEventListener('submit',function(ev){
+document.getElementById('f').addEventListener('submit', async function(ev){
   ev.preventDefault();
-  var m=document.getElementById('m');
-  var e=document.getElementById('e').value.trim().toLowerCase();
-  var w=document.getElementById('w').value;
-  var u=getUsers()[e];
-  
-  if(!e||!w||!u){
-    show(m,'err',T[currentLang].errLogin);
-    return;
+  var m = document.getElementById('m');
+  var e = document.getElementById('e').value.trim().toLowerCase();
+  var w = document.getElementById('w').value;
+  var t = T[currentLang];
+
+  if(!e || !w){ show(m,'err',t.errFill); return; }
+
+  show(m, 'ok', 'Checking...'); // লোডিং মেসেজ
+
+  try {
+    // 🔴 Firebase Authentication-এর মাধ্যমে লগইন
+    await signInWithEmailAndPassword(auth, e, w);
+    
+    // লগইন সফল হলে
+    show(m, 'ok', t.okLogin);
+    setTimeout(function(){ location.href = 'index.html'; }, 1000);
+
+  } catch (error) {
+    // লগইন ব্যর্থ হলে (ভুল পাসওয়ার্ড বা ইমেইল)
+    show(m, 'err', t.errLogin);
   }
-  
-  hashPw(w,u.salt).then(function(h){
-    if(h!==u.hash){
-      show(m,'err',T[currentLang].errLogin);
-      return;
-    }
-    try{localStorage.setItem('globalwork_session',e)}catch(x){}
-    show(m,'ok',T[currentLang].okLogin);
-    setTimeout(function(){location.href='index.html'},700);
-  });
 });
 </script>
 </body>
