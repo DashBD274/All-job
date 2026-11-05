@@ -366,13 +366,17 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
   function closeM(){$('modal').hidden=true}
   $('modal').addEventListener('click',function(e){if(e.target===$('modal'))closeM()});
 
+  // ==========================================
+  // ⚠️ এই ফাংশনটি পরিবর্তন করা হয়েছে 
+  // ==========================================
   function applyJob(j){
     if(!getSession()){
       toast(t('loginToApply'),true);
       setTimeout(function(){location.href='login.html'},1200);
       return;
     }
-    toast(t('applied'));
+    // ফর্ম পেজে রিডাইরেক্ট করবে এবং URL-এ চাকরির নাম পাঠাবে
+    window.location.href = 'apply-form.html?job=' + encodeURIComponent(j.title);
   }
 
   function toast(msg,err){
