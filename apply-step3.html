@@ -106,10 +106,10 @@ a{text-decoration:none;color:inherit}
     <h1 data-i18n="title">Application Instructions</h1>
     
     <div class="instruction-text">
-      <p data-i18n="text1">After you click the "Submit" button you will be taken to an orientation page.</p>
+      <p data-i18n="text1">After you click the "Next" button you will be taken to an orientation page.</p>
       <p data-i18n="text2">Please follow every step in order to accomplish the best results during the paid training session.</p>
       <p data-i18n="text3">After completing your Training as part of your application we will let you know if you qualify so please try to follow the instructions to the letter.</p>
-      <p data-i18n="text4">Click the button below to submit this application:</p>
+      <p data-i18n="text4">Click the button below to proceed:</p>
     </div>
 
     <!-- Declaration Box -->
@@ -123,13 +123,14 @@ a{text-decoration:none;color:inherit}
       <span data-i18n="agreeLabel">I have read and understood the declaration above and I agree to all the terms.</span>
     </label>
 
-    <form action="#" method="POST" onsubmit="submitFinal(event)">
+    <form action="#" method="POST" onsubmit="nextPage(event)">
       
       <div class="form-actions">
         <button type="button" class="btn btn-back" data-i18n="backBtn" onclick="history.back()">Back</button>
         
         <div class="submit-wrapper">
-          <button type="submit" class="btn btn-submit" id="submitBtn" disabled data-i18n="submitBtn">Submit</button>
+          <!-- বাটনের লেখা Next করা হয়েছে -->
+          <button type="submit" class="btn btn-submit" id="submitBtn" disabled data-i18n="nextBtn">Next</button>
         </div>
         
         <!-- Empty div for flexbox spacing balance -->
@@ -145,112 +146,112 @@ a{text-decoration:none;color:inherit}
   const T = {
     en: { 
       title:"Application Instructions", 
-      text1:"After you click the 'Submit' button you will be taken to an orientation page.",
+      text1:"After you click the 'Next' button you will be taken to an orientation page.",
       text2:"Please follow every step in order to accomplish the best results during the paid training session.",
       text3:"After completing your Training as part of your application we will let you know if you qualify so please try to follow the instructions to the letter.",
-      text4:"Click the button below to submit this application:",
+      text4:"Click the button below to proceed:",
       agreeLabel:"I have read and understood the declaration above and I agree to all the terms.",
       backBtn:"Back", 
-      submitBtn:"Submit",
+      nextBtn:"Next",
       declaration:"I hereby declare that all the information, statements, and documents provided by me in this application are true, correct, complete, and accurate to the best of my knowledge and belief. I have not concealed or misrepresented any material fact, nor have I submitted any false or forged document.<br><br>I understand that if any information provided by me is found to be false, incorrect, incomplete, or misleading at any stage, my application may be rejected without prior notice. If I have already been selected or appointed, my selection or employment may also be cancelled or terminated.<br><br>I agree to produce all original documents whenever required by the concerned authority and to cooperate fully in any verification process. I accept full legal and administrative responsibility for any false or incorrect information provided in this application."
     },
     bn: { 
       title:"আবেদনের নির্দেশনা", 
-      text1:"আপনি 'সাবমিট' বাটনে ক্লিক করার পরে আপনাকে একটি ওরিয়েন্টেশন পেজে নিয়ে যাওয়া হবে।",
+      text1:"আপনি 'পরবর্তী' বাটনে ক্লিক করার পরে আপনাকে একটি ওরিয়েন্টেশন পেজে নিয়ে যাওয়া হবে।",
       text2:"পেইড প্রশিক্ষণ সেশনের সময় সেরা ফলাফল পেতে অনুগ্রহ করে প্রতিটি ধাপ অনুসরণ করুন।",
       text3:"আপনার আবেদনের অংশ হিসেবে প্রশিক্ষণ সম্পন্ন করার পরে, আপনি যোগ্য কিনা তা আমরা আপনাকে জানাবো, তাই অনুগ্রহ করে নির্দেশনাগুলো অক্ষরে অক্ষরে অনুসরণ করার চেষ্টা করুন।",
-      text4:"এই আবেদনটি জমা দিতে নিচের বাটনে ক্লিক করুন:",
+      text4:"এগিয়ে যেতে নিচের বাটনে ক্লিক করুন:",
       agreeLabel:"আমি উপরের ঘোষণাটি পড়েছি এবং বুঝেছি এবং আমি সমস্ত শর্তাবলীতে সম্মত।",
       backBtn:"পেছনে", 
-      submitBtn:"জমা দিন",
+      nextBtn:"পরবর্তী",
       declaration:"আমি এতদ্বারা ঘোষণা করছি যে, এই আবেদনে আমার দেওয়া সমস্ত তথ্য, বিবৃতি এবং নথি আমার জ্ঞান ও বিশ্বাসের সর্বোত্তম অনুযায়ী সত্য, সঠিক, সম্পূর্ণ এবং নির্ভুল। আমি কোনো গুরুত্বপূর্ণ তথ্য গোপন করিনি বা ভুল উপস্থাপন করিনি, এবং কোনো ভুয়া বা জাল নথি জমা দিইনি।<br><br>আমি বুঝতে পারছি যে, যদি কোনো পর্যায়ে আমার দেওয়া কোনো তথ্য মিথ্যা, ভুল, অসম্পূর্ণ বা বিভ্রান্তিকর পাওয়া যায়, তবে পূর্ব নোটিশ ছাড়াই আমার আবেদন বাতিল করা যেতে পারে। যদি আমি ইতিমধ্যে নির্বাচিত বা নিয়োগপ্রাপ্ত হয়ে থাকি, তবে আমার নির্বাচন বা চাকরিও বাতিল বা সমাপ্ত করা যেতে পারে।<br><br>আমি সংশ্লিষ্ট কর্তৃপক্ষের প্রয়োজন অনুসারে সমস্ত মূল নথি উপস্থাপন করতে এবং কোনো যাচাইকরণ প্রক্রিয়ায় সম্পূর্ণ সহযোগিতা করতে সম্মত। এই আবেদনে প্রদত্ত কোনো মিথ্যা বা ভুল তথ্যের জন্য আমি সম্পূর্ণ আইনি ও প্রশাসনিক দায়িত্ব গ্রহণ করছি।"
     },
     es: { 
       title:"Instrucciones de Solicitud", 
-      text1:"Después de hacer clic en el botón 'Enviar', será llevado a una página de orientación.",
+      text1:"Después de hacer clic en el botón 'Siguiente', será llevado a una página de orientación.",
       text2:"Siga cada paso para lograr los mejores resultados durante la sesión de capacitación remunerada.",
       text3:"Después de completar su Capacitación como parte de su solicitud, le informaremos si califica, así que intente seguir las instrucciones al pie de la letra.",
-      text4:"Haga clic en el botón a continuación para enviar esta solicitud:",
+      text4:"Haga clic en el botón a continuación para continuar:",
       agreeLabel:"He leído y entendido la declaración anterior y acepto todos los términos.",
       backBtn:"Atrás", 
-      submitBtn:"Enviar",
+      nextBtn:"Siguiente",
       declaration:"Por la presente declaro que toda la información, declaraciones y documentos proporcionados por mí en esta solicitud son verdaderos, correctos, completos y precisos según mi leal saber y entender. No he ocultado ni tergiversado ningún hecho material, ni he presentado ningún documento falso o falsificado.<br><br>Entiendo que si alguna información proporcionada por mí se encuentra falsa, incorrecta, incompleta o engañosa en cualquier etapa, mi solicitud puede ser rechazada sin previo aviso. Si ya he sido seleccionado o designado, mi selección o empleo también pueden ser cancelados o terminados.<br><br>Acepto producir todos los documentos originales cuando lo requiera la autoridad correspondiente y cooperar plenamente en cualquier proceso de verificación. Acepto toda la responsabilidad legal y administrativa por cualquier información falsa o incorrecta proporcionada en esta solicitud."
     },
     fr: { 
       title:"Instructions de Candidature", 
-      text1:"Après avoir cliqué sur le bouton « Soumettre », vous serez redirigé vers une page d'orientation.",
+      text1:"Après avoir cliqué sur le bouton « Suivant », vous serez redirigé vers une page d'orientation.",
       text2:"Veuillez suivre chaque étape afin d'obtenir les meilleurs résultats lors de la session de formation rémunérée.",
       text3:"Après avoir terminé votre formation dans le cadre de votre candidature, nous vous informerons si vous êtes qualifié, alors essayez de suivre les instructions à la lettre.",
-      text4:"Cliquez sur le bouton ci-dessous pour soumettre cette candidature :",
+      text4:"Cliquez sur le bouton ci-dessous pour continuer :",
       agreeLabel:"J'ai lu et compris la déclaration ci-dessus et j'accepte toutes les conditions.",
       backBtn:"Retour", 
-      submitBtn:"Soumettre",
+      nextBtn:"Suivant",
       declaration:"Je déclare par la présente que toutes les informations, déclarations et documents fournis par moi dans cette candidature sont vrais, corrects, complets et exacts au meilleur de ma connaissance et de ma croyance. Je n'ai dissimulé ni dénaturé aucun fait important, ni soumis de document faux ou falsifié.<br><br>Je comprends que si des informations fournies par moi s'avèrent fausses, incorrectes, incomplètes ou trompeuses à n'importe quel stade, ma candidature peut être rejetée sans préavis. Si j'ai déjà été sélectionné ou nommé, ma sélection ou mon emploi peut également être annulé ou résilié.<br><br>J'accepte de produire tous les documents originaux lorsque l'autorité compétente le demande et de coopérer pleinement à tout processus de vérification. J'accepte l'entière responsabilité légale et administrative pour toute information fausse ou incorrecte fournie dans cette candidature."
     },
     de: { 
       title:"Bewerbungsanweisungen", 
-      text1:"Nachdem Sie auf die Schaltfläche „Senden“ geklickt haben, werden Sie zu einer Orientierungsseite weitergeleitet.",
+      text1:"Nachdem Sie auf die Schaltfläche „Weiter“ geklickt haben, werden Sie zu einer Orientierungsseite weitergeleitet.",
       text2:"Bitte befolgen Sie jeden Schritt, um die besten Ergebnisse während der bezahlten Schulungssitzung zu erzielen.",
       text3:"Nach Abschluss Ihrer Schulung im Rahmen Ihrer Bewerbung werden wir Ihnen mitteilen, ob Sie qualifiziert sind. Bitte befolgen Sie die Anweisungen genau.",
-      text4:"Klicken Sie auf die Schaltfläche unten, um diese Bewerbung einzureichen:",
+      text4:"Klicken Sie auf die Schaltfläche unten, um fortzufahren:",
       agreeLabel:"Ich habe die obige Erklärung gelesen und verstanden und stimme allen Bedingungen zu.",
       backBtn:"Zurück", 
-      submitBtn:"Senden",
+      nextBtn:"Weiter",
       declaration:"Ich erkläre hiermit, dass alle von mir in dieser Bewerbung gemachten Angaben, Erklärungen und Unterlagen nach bestem Wissen und Gewissen wahr, richtig, vollständig und korrekt sind. Ich habe keine wesentlichen Tatsachen verschwiegen oder falsch dargestellt und keine falschen oder gefälschten Dokumente eingereicht.<br><br>Ich verstehe, dass meine Bewerbung ohne vorherige Ankündigung abgelehnt werden kann, wenn sich zu irgendeinem Zeitpunkt herausstellt, dass die von mir gemachten Angaben falsch, unrichtig, unvollständig oder irreführend sind. Wenn ich bereits ausgewählt oder ernannt wurde, kann meine Auswahl oder Anstellung ebenfalls annulliert oder beendet werden.<br><br>Ich verpflichte mich, alle Originaldokumente vorzulegen, wann immer dies von der zuständigen Behörde verlangt wird, und bei allen Überprüfungsverfahren vollständig mitzuwirken. Ich übernehme die volle rechtliche und administrative Verantwortung für falsche oder unrichtige Angaben in dieser Bewerbung."
     },
     pt: { 
       title:"Instruções de Candidatura", 
-      text1:"Depois de clicar no botão 'Enviar', você será levado a uma página de orientação.",
+      text1:"Depois de clicar no botão 'Próximo', você será levado a uma página de orientação.",
       text2:"Siga cada passo para obter os melhores resultados durante a sessão de treinamento remunerado.",
       text3:"Após concluir o seu Treinamento como parte da sua candidatura, informaremos se você se qualifica, portanto, tente seguir as instruções à risca.",
-      text4:"Clique no botão abaixo para enviar esta candidatura:",
+      text4:"Clique no botão abaixo para continuar:",
       agreeLabel:"Li e compreendi a declaração acima e concordo com todos os termos.",
       backBtn:"Voltar", 
-      submitBtn:"Enviar",
+      nextBtn:"Próximo",
       declaration:"Declaro pelo presente que todas as informações, declarações e documentos fornecidos por mim nesta candidatura são verdadeiros, corretos, completos e precisos, tanto quanto é do meu conhecimento e crença. Não ocultei nem deturpei nenhum fato material, nem submeti qualquer documento falso ou falsificado.<br><br>Entendo que, se qualquer informação fornecida por mim for considerada falsa, incorreta, incompleta ou enganosa em qualquer fase, minha candidatura pode ser rejeitada sem aviso prévio. Se eu já tiver sido selecionado ou nomeado, minha seleção ou emprego também pode ser cancelado ou encerrado.<br><br>Concordo em apresentar todos os documentos originais sempre que exigido pela autoridade competente e em cooperar plenamente em qualquer processo de verificação. Aceito total responsabilidade legal e administrativa por qualquer informação falsa ou incorreta fornecida nesta candidatura."
     },
     hi: { 
       title:"आवेदन निर्देश", 
-      text1:"'सबमिट' बटन पर क्लिक करने के बाद आपको एक ओरिएंटेशन पेज पर ले जाया जाएगा।",
+      text1:"'अगला' बटन पर क्लिक करने के बाद आपको एक ओरिएंटेशन पेज पर ले जाया जाएगा।",
       text2:"सशुल्क प्रशिक्षण सत्र के दौरान सर्वोत्तम परिणाम प्राप्त करने के लिए कृपया प्रत्येक चरण का पालन करें।",
       text3:"आपके आवेदन के भाग के रूप में आपका प्रशिक्षण पूरा करने के बाद, हम आपको बताएंगे कि आप योग्य हैं या नहीं, इसलिए कृपया निर्देशों का अक्षरशः पालन करने का प्रयास करें।",
-      text4:"यह आवेदन जमा करने के लिए नीचे दिए गए बटन पर क्लिक करें:",
+      text4:"आगे बढ़ने के लिए नीचे दिए गए बटन पर क्लिक करें:",
       agreeLabel:"मैंने उपरोक्त घोषणा को पढ़ और समझ लिया है और मैं सभी शर्तों से सहमत हूं।",
       backBtn:"पीछे", 
-      submitBtn:"सबमिट करें",
+      nextBtn:"आगे",
       declaration:"मैं एतद्द्वारा घोषणा करता हूं कि इस आवेदन में मेरे द्वारा प्रदान की गई सभी जानकारी, बयान और दस्तावेज मेरे ज्ञान और विश्वास के अनुसार सत्य, सही, पूर्ण और सटीक हैं। मैंने कोई भी महत्वपूर्ण तथ्य नहीं छिपाया है और न ही कोई गलत या जाली दस्तावेज प्रस्तुत किया है।<br><br>मैं समझता हूं कि यदि किसी भी स्तर पर मेरे द्वारा दी गई कोई भी जानकारी गलत, अपूर्ण या भ्रामक पाई जाती है, तो मेरा आवेदन बिना किसी पूर्व सूचना के खारिज किया जा सकता है। यदि मैं पहले ही चयनित या नियुक्त हो चुका हूं, तो मेरा चयन या रोजगार भी रद्द या समाप्त किया जा सकता है।<br><br>मैं संबंधित प्राधिकारी द्वारा मांगे जाने पर सभी मूल दस्तावेज प्रस्तुत करने और किसी भी सत्यापन प्रक्रिया में पूर्ण सहयोग करने के लिए सहमत हूं। इस आवेदन में दी गई किसी भी गलत जानकारी के लिए मैं पूरी कानूनी और प्रशासनिक जिम्मेदारी स्वीकार करता हूं।"
     },
     ar: { 
       title:"تعليمات التقديم", 
-      text1:"بعد النقر على زر 'إرسال'، سيتم نقلك إلى صفحة التوجيه.",
+      text1:"بعد النقر على زر 'التالي'، سيتم نقلك إلى صفحة التوجيه.",
       text2:"يرجى اتباع كل خطوة من أجل تحقيق أفضل النتائج خلال جلسة التدريب المدفوعة.",
       text3:"بعد إكمال التدريب الخاص بك كجزء من طلبك، سنخبرك إذا كنت مؤهلاً، لذا يرجى محاولة اتباع التعليمات بدقة.",
-      text4:"انقر على الزر أدناه لتقديم هذا الطلب:",
+      text4:"انقر على الزر أدناه للمتابعة:",
       agreeLabel:"لقد قرأت وفهمت الإعلان أعلاه وأوافق على جميع الشروط.",
       backBtn:"رجوع", 
-      submitBtn:"إرسال",
+      nextBtn:"التالي",
       declaration:"أعلن بموجب هذا أن جميع المعلومات والبيانات والمستندات المقدمة من قبلي في هذا الطلب صحيحة ودقيقة وكاملة وصحيحة حسب علمي واعتقادي. لم أخف أو أحرف أي حقيقة جوهرية، ولم أقدم أي مستند مزور أو مزيف.<br><br>أتفهم أنه إذا تبين أن أي معلومات قدمتها خاطئة أو غير صحيحة أو غير كاملة أو مضللة في أي مرحلة، فقد يتم رفض طلبي دون إشعار مسبق. إذا تم اختياري أو تعييني بالفعل، فقد يتم أيضًا إلغاء اختياري أو إنهاء عملي.<br><br>أوافق على تقديم جميع المستندات الأصلية كلما طلبت السلطة المختصة ذلك والتعاون الكامل في أي عملية تحقق. أتحمل المسؤولية القانونية والإدارية الكاملة عن أي معلومات كاذبة أو غير صحيحة مقدمة في هذا الطلب."
     },
     zh: { 
       title:"申请说明", 
-      text1:"点击“提交”按钮后，您将被带到一个迎新页面。",
+      text1:"点击“下一步”按钮后，您将被带到一个迎新页面。",
       text2:"请遵循每一个步骤，以便在带薪培训课程中取得最佳效果。",
       text3:"在完成作为申请一部分的培训后，我们将通知您是否符合资格，因此请尽量严格遵循说明。",
-      text4:"点击下方按钮提交此申请：",
+      text4:"点击下方按钮继续：",
       agreeLabel:"我已阅读并理解上述声明，我同意所有条款。",
       backBtn:"返回", 
-      submitBtn:"提交",
+      nextBtn:"下一步",
       declaration:"我特此声明，我在本申请中提供的所有信息、陈述和文件均真实、正确、完整和准确，据我所知所信。我没有隐瞒或歪曲任何重要事实，也没有提交任何虚假或伪造的文件。<br><br>我明白，如果在任何阶段发现我提供的任何信息虚假、不正确、不完整或具有误导性，我的申请可能会在不事先通知的情况下被拒绝。如果我已被选中或任命，我的选择或就业也可能被取消或终止。<br><br>我同意在有关当局要求时出示所有原始文件，并在任何核实过程中充分合作。我对本申请中提供的任何虚假或错误信息承担全部法律和行政责任。"
     },
     ja: { 
       title:"申請手順", 
-      text1:"「送信」ボタンをクリックすると、オリエンテーションページに移動します。",
+      text1:"「次へ」ボタンをクリックすると、オリエンテーションページに移動します。",
       text2:"有給トレーニングセッションで最高の結果を得るために、すべてのステップに従ってください。",
       text3:"申請の一環としてトレーニングを完了した後、資格があるかどうかをお知らせしますので、指示に正確に従ってください。",
-      text4:"この申請を送信するには、下のボタンをクリックしてください：",
+      text4:"続行するには、下のボタンをクリックしてください：",
       agreeLabel:"上記の宣言を読み、理解し、すべての条件に同意します。",
       backBtn:"戻る", 
-      submitBtn:"送信",
+      nextBtn:"次へ",
       declaration:"私はここに、この申請で提供したすべての情報、陳述、および文書が、私の知る限りおよび信じる限りにおいて真実、正確、完全、かつ正確であることを宣言します。私は重要な事実を隠したり偽ったりしておらず、偽造または偽造文書を提出していません。<br><br>いずれかの段階で私が提供した情報が虚偽、不正確、不完全、または誤解を招くものであることが判明した場合、私の申請は事前の通知なしに拒否される可能性があることを理解しています。私がすでに選考または任命されている場合、私の選考または雇用もキャンセルまたは終了される可能性があります。<br><br>私は、関係当局から要求されたときはいつでもすべての原本を提出し、いかなる検証プロセスにも完全に協力することに同意します。この申請で提供された虚偽または不正確な情報については、すべての法的および管理的責任を負います。"
     }
   };
@@ -287,14 +288,22 @@ a{text-decoration:none;color:inherit}
       submitBtn.disabled = !checkbox.checked;
   }
 
-  function submitFinal(event) {
+  // ==========================================
+  // ⚠️ পরবর্তী পেজে (Step 4) পাঠানোর ফাংশন
+  // ==========================================
+  function nextPage(event) {
     event.preventDefault();
     
-    // এখানে আপনার ডেটা সার্ভারে পাঠানোর লজিক থাকবে
-    alert("Thank you! Your application has been submitted successfully.");
+    // URL থেকে চাকরির নামটি নিয়ে পরবর্তী পেজে পাঠানো
+    const urlParams = new URLSearchParams(window.location.search);
+    const job = urlParams.get('job');
     
-    // সাবমিট হওয়ার পর চাইলে হোম পেজে পাঠিয়ে দিতে পারেন
-    // window.location.href = 'index.html';
+    // এখানে apply-step4.html এ পাঠানো হচ্ছে
+    if(job){
+        window.location.href = 'apply-step4.html?job=' + encodeURIComponent(job);
+    } else {
+        window.location.href = 'apply-step4.html';
+    }
   }
 
   // Initial Setup
