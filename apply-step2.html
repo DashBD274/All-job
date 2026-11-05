@@ -264,7 +264,6 @@ input[type="checkbox"], input[type="radio"] {width:16px; height:16px; cursor:poi
     const urlParams = new URLSearchParams(window.location.search);
     const jobTitleParam = urlParams.get('job');
     if(jobTitleParam) {
-      // যদি URL-এ থাকা জবটি ড্রপডাউনে থাকে, তবে সেটি সিলেক্ট হয়ে থাকবে
       for(let i=0; i<posSelect.options.length; i++){
         if(posSelect.options[i].text.toLowerCase().includes(jobTitleParam.toLowerCase()) || jobTitleParam.toLowerCase().includes(posSelect.options[i].text.toLowerCase())){
             posSelect.selectedIndex = i;
@@ -285,10 +284,20 @@ input[type="checkbox"], input[type="radio"] {width:16px; height:16px; cursor:poi
     applyI18n();
   });
 
+  // ==========================================
+  // ⚠️ তৃতীয় পেজে পাঠানোর ফাংশন
+  // ==========================================
   function submitStep2(event) {
     event.preventDefault();
-    // এখানে আপনি সাবমিট করার পরের লজিক দিতে পারেন (যেমন: ধন্যবাদ পেজে পাঠানো)
-    alert("Step 2 submitted successfully!");
+    
+    // URL থেকে চাকরির নামটি নিয়ে তৃতীয় পেজে পাঠানো
+    const urlParams = new URLSearchParams(window.location.search);
+    const job = urlParams.get('job');
+    if(job){
+        window.location.href = 'apply-step3.html?job=' + encodeURIComponent(job);
+    } else {
+        window.location.href = 'apply-step3.html';
+    }
   }
 
   // Initial Setup
