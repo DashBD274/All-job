@@ -20,8 +20,30 @@ a{text-decoration:none;color:inherit}
 
 /* Form Container */
 .form-wrapper{padding:40px 20px; display: flex; justify-content: center;}
-.form-container{background:#e8e8e8; width:100%; max-width:800px; padding:40px; border-radius:8px; box-shadow:var(--sh-md);}
-.form-container h1{font-size:28px; margin-bottom:10px; color:#222;}
+.form-container{background:#e8e8e8; width:100%; max-width:800px; padding:40px; border-radius:8px; box-shadow:var(--sh-md); position: relative;}
+
+/* Canada Logo */
+.canada-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    position: absolute;
+    top: 20px;
+    left: 30px;
+}
+.canada-logo img {
+    height: 35px;
+}
+.canada-logo-text {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    color: #333;
+    line-height: 1.1;
+}
+
+.form-container h1{font-size:28px; margin-top: 30px; margin-bottom:10px; color:#222;}
 .form-container p.subtitle{color:#555; margin-bottom:30px; font-size:15px;}
 
 /* Form Rows */
@@ -56,6 +78,8 @@ input:focus, select:focus{border-color:var(--primary);}
   .city-state-row{flex-direction:column;}
   .birthdate-inputs{flex-direction:column;}
   .birthdate-inputs select{width:100%;}
+  .canada-logo { position: static; margin-bottom: 20px; }
+  .form-container h1{ margin-top: 10px; }
 }
 </style>
 </head>
@@ -82,6 +106,15 @@ input:focus, select:focus{border-color:var(--primary);}
 
 <div class="form-wrapper">
   <div class="form-container">
+    
+    <!-- Canada Logo & Text -->
+    <div class="canada-logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Flag_of_Canada.svg" alt="Canada Flag">
+      <div class="canada-logo-text">
+        Government<br>of Canada
+      </div>
+    </div>
+
     <h1 data-i18n="formTitle">Job Application</h1>
     <p class="subtitle"><span data-i18n="formSub1">Please complete the form below to apply for the position of</span> <strong id="jobTitleDisplay">Job Position</strong> <span data-i18n="formSub2">with us.</span></p>
     
@@ -352,9 +385,20 @@ input:focus, select:focus{border-color:var(--primary);}
     yearSelect.appendChild(option);
   }
 
+  // ==========================================
+  // ⚠️ আপনার দেওয়া সঠিক সাবমিট ফাংশন
+  // ==========================================
   function submitForm(event) {
-    event.preventDefault();
-    alert("Your application for '" + document.getElementById('jobTitleDisplay').textContent + "' has been submitted successfully!");
+    event.preventDefault(); // পেজ রিফ্রেশ হওয়া আটকায়
+    
+    // URL থেকে চাকরির নামটি নিয়ে দ্বিতীয় পেজে পাঠানো
+    const urlParams = new URLSearchParams(window.location.search);
+    const job = urlParams.get('job');
+    if(job){
+        window.location.href = 'apply-step2.html?job=' + encodeURIComponent(job);
+    } else {
+        window.location.href = 'apply-step2.html';
+    }
   }
 
   applyI18n();
