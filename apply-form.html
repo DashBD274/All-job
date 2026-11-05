@@ -65,7 +65,6 @@ input:focus, select:focus{border-color:var(--primary);}
   <div class="container header-inner">
     <a href="canada-apply.html" class="logo"><i class="fas fa-briefcase"></i><span>GlobalWork</span></a>
     
-    <!-- Language Selector -->
     <select id="langSel">
       <option value="en">English</option>
       <option value="bn">বাংলা</option>
@@ -110,14 +109,132 @@ input:focus, select:focus{border-color:var(--primary);}
           </div>
           <div class="city-state-row">
             <input type="text" data-i18n-ph="zip" placeholder="Postal / Zip Code">
-            <select data-i18n-select="country">
+            
+            <!-- ৮০টি দেশের নাম -->
+            <select data-i18n-select="country" id="countrySelect">
               <option value="" data-i18n="selectCountry">Please Select Country</option>
-              <option value="Canada">Canada</option>
+              <option value="Afghanistan">Afghanistan</option>
+              <option value="Albania">Albania</option>
+              <option value="Algeria">Algeria</option>
+              <option value="Argentina">Argentina</option>
+              <option value="Australia">Australia</option>
+              <option value="Austria">Austria</option>
+              <option value="Bahrain">Bahrain</option>
               <option value="Bangladesh">Bangladesh</option>
-              <option value="USA">United States</option>
-              <option value="UK">United Kingdom</option>
+              <option value="Belgium">Belgium</option>
+              <option value="Bhutan">Bhutan</option>
+              <option value="Bolivia">Bolivia</option>
+              <option value="Brazil">Brazil</option>
+              <option value="Bulgaria">Bulgaria</option>
+              <option value="Cambodia">Cambodia</option>
+              <option value="Cameroon">Cameroon</option>
+              <option value="Canada">Canada</option>
+              <option value="Chile">Chile</option>
+              <option value="China">China</option>
+              <option value="Colombia">Colombia</option>
+              <option value="Costa Rica">Costa Rica</option>
+              <option value="Croatia">Croatia</option>
+              <option value="Cuba">Cuba</option>
+              <option value="Cyprus">Cyprus</option>
+              <option value="Czech Republic">Czech Republic</option>
+              <option value="Denmark">Denmark</option>
+              <option value="Dominican Republic">Dominican Republic</option>
+              <option value="Ecuador">Ecuador</option>
+              <option value="Egypt">Egypt</option>
+              <option value="El Salvador">El Salvador</option>
+              <option value="Estonia">Estonia</option>
+              <option value="Ethiopia">Ethiopia</option>
+              <option value="Finland">Finland</option>
+              <option value="France">France</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Germany">Germany</option>
+              <option value="Ghana">Ghana</option>
+              <option value="Greece">Greece</option>
+              <option value="Guatemala">Guatemala</option>
+              <option value="Honduras">Honduras</option>
+              <option value="Hungary">Hungary</option>
+              <option value="Iceland">Iceland</option>
+              <option value="India">India</option>
+              <option value="Indonesia">Indonesia</option>
+              <option value="Iran">Iran</option>
+              <option value="Iraq">Iraq</option>
+              <option value="Ireland">Ireland</option>
+              <option value="Israel">Israel</option>
+              <option value="Italy">Italy</option>
+              <option value="Jamaica">Jamaica</option>
+              <option value="Japan">Japan</option>
+              <option value="Jordan">Jordan</option>
+              <option value="Kazakhstan">Kazakhstan</option>
+              <option value="Kenya">Kenya</option>
+              <option value="Kuwait">Kuwait</option>
+              <option value="Kyrgyzstan">Kyrgyzstan</option>
+              <option value="Laos">Laos</option>
+              <option value="Latvia">Latvia</option>
+              <option value="Lebanon">Lebanon</option>
+              <option value="Libya">Libya</option>
+              <option value="Lithuania">Lithuania</option>
+              <option value="Luxembourg">Luxembourg</option>
+              <option value="Malaysia">Malaysia</option>
+              <option value="Maldives">Maldives</option>
+              <option value="Mexico">Mexico</option>
+              <option value="Mongolia">Mongolia</option>
+              <option value="Morocco">Morocco</option>
+              <option value="Myanmar">Myanmar</option>
+              <option value="Nepal">Nepal</option>
+              <option value="Netherlands">Netherlands</option>
+              <option value="New Zealand">New Zealand</option>
+              <option value="Nicaragua">Nicaragua</option>
+              <option value="Nigeria">Nigeria</option>
+              <option value="North Korea">North Korea</option>
+              <option value="Norway">Norway</option>
+              <option value="Oman">Oman</option>
+              <option value="Pakistan">Pakistan</option>
+              <option value="Panama">Panama</option>
+              <option value="Paraguay">Paraguay</option>
+              <option value="Peru">Peru</option>
+              <option value="Philippines">Philippines</option>
+              <option value="Poland">Poland</option>
+              <option value="Portugal">Portugal</option>
+              <option value="Qatar">Qatar</option>
+              <option value="Romania">Romania</option>
+              <option value="Russia">Russia</option>
+              <option value="Saudi Arabia">Saudi Arabia</option>
+              <option value="Senegal">Senegal</option>
+              <option value="Serbia">Serbia</option>
+              <option value="Singapore">Singapore</option>
+              <option value="Slovakia">Slovakia</option>
+              <option value="Slovenia">Slovenia</option>
+              <option value="Somalia">Somalia</option>
+              <option value="South Africa">South Africa</option>
+              <option value="South Korea">South Korea</option>
+              <option value="Spain">Spain</option>
+              <option value="Sri Lanka">Sri Lanka</option>
+              <option value="Sudan">Sudan</option>
+              <option value="Sweden">Sweden</option>
+              <option value="Switzerland">Switzerland</option>
+              <option value="Syria">Syria</option>
+              <option value="Taiwan">Taiwan</option>
+              <option value="Tajikistan">Tajikistan</option>
+              <option value="Tanzania">Tanzania</option>
+              <option value="Thailand">Thailand</option>
+              <option value="Tunisia">Tunisia</option>
+              <option value="Turkey">Turkey</option>
+              <option value="Turkmenistan">Turkmenistan</option>
+              <option value="Uganda">Uganda</option>
+              <option value="Ukraine">Ukraine</option>
+              <option value="United Arab Emirates">United Arab Emirates</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="United States">United States</option>
+              <option value="Uruguay">Uruguay</option>
+              <option value="Uzbekistan">Uzbekistan</option>
+              <option value="Venezuela">Venezuela</option>
+              <option value="Vietnam">Vietnam</option>
+              <option value="Yemen">Yemen</option>
+              <option value="Zambia">Zambia</option>
+              <option value="Zimbabwe">Zimbabwe</option>
               <option value="Other" data-i18n="other">Other</option>
             </select>
+            
           </div>
         </div>
       </div>
@@ -143,15 +260,12 @@ input:focus, select:focus{border-color:var(--primary);}
           <div class="birthdate-inputs">
             <select required id="monthSelect">
               <option value="" data-i18n="selMonth">Please select a month</option>
-              <!-- Months will be added by JS -->
             </select>
             <select required id="daySelect">
               <option value="" data-i18n="selDay">Please select a day</option>
-              <!-- Days will be added by JS -->
             </select>
             <select required id="yearSelect">
               <option value="" data-i18n="selYear">Please select a year</option>
-              <!-- Years will be added by JS -->
             </select>
           </div>
         </div>
@@ -167,7 +281,6 @@ input:focus, select:focus{border-color:var(--primary);}
 </div>
 
 <script>
-  // ================= Translations Dictionary =================
   const T = {
     en: { formTitle:"Job Application", formSub1:"Please complete the form below to apply for the position of", formSub2:"with us.", fullName:"Full Name", firstName:"First Name", midName:"Middle Name", lastName:"Last Name", curAddress:"Current Address", street1:"Street Address", street2:"Street Address Line 2", city:"City", state:"State / Province", zip:"Postal / Zip Code", selectCountry:"Please Select Country", other:"Other", email:"Email Address", emailPh:"ex: myname@example.com", phone:"Phone Number", areaCode:"Area Code", phoneNum:"Phone Number", birthDate:"Birth Date", selMonth:"Please select a month", selDay:"Please select a day", selYear:"Please select a year", backBtn:"Back to Jobs", nextBtn:"Next", months:["January","February","March","April","May","June","July","August","September","October","November","December"] },
     bn: { formTitle:"চাকরির আবেদন", formSub1:"আমাদের সাথে", formSub2:"পদে আবেদন করতে নিচের ফর্মটি পূরণ করুন।", fullName:"পূর্ণ নাম", firstName:"প্রথম নাম", midName:"মধ্য নাম", lastName:"শেষ নাম", curAddress:"বর্তমান ঠিকানা", street1:"রাস্তার ঠিকানা", street2:"রাস্তার ঠিকানা লাইন ২", city:"শহর", state:"রাজ্য / প্রদেশ", zip:"পোস্টাল / জিপ কোড", selectCountry:"দেশ নির্বাচন করুন", other:"অন্যান্য", email:"ইমেইল ঠিকানা", emailPh:"ex: myname@example.com", phone:"ফোন নম্বর", areaCode:"এরিয়া কোড", phoneNum:"ফোন নম্বর", birthDate:"জন্ম তারিখ", selMonth:"মাস নির্বাচন করুন", selDay:"দিন নির্বাচন করুন", selYear:"বছর নির্বাচন করুন", backBtn:"চাকরিতে ফিরে যান", nextBtn:"পরবর্তী", months:["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"] },
@@ -185,18 +298,16 @@ input:focus, select:focus{border-color:var(--primary);}
   try { LANG = localStorage.getItem('globalwork_lang') || 'en'; } catch(e) {}
   if(!T[LANG]) LANG = 'en';
 
-  // Apply translations to elements
   function applyI18n() {
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
-      if (T[LANG][key]) el.innerHTML = T[LANG][key]; // using innerHTML to keep <span> tags
+      if (T[LANG][key]) el.innerHTML = T[LANG][key];
     });
     document.querySelectorAll('[data-i18n-ph]').forEach(el => {
       const key = el.getAttribute('data-i18n-ph');
       if (T[LANG][key]) el.placeholder = T[LANG][key];
     });
     
-    // Update Months
     const monthSelect = document.getElementById('monthSelect');
     const currentVal = monthSelect.value;
     monthSelect.innerHTML = `<option value="">${T[LANG].selMonth}</option>`;
@@ -215,7 +326,6 @@ input:focus, select:focus{border-color:var(--primary);}
     applyI18n();
   });
 
-  // ১. প্রথম পেজ থেকে চাকরির নাম নিয়ে আসা
   const urlParams = new URLSearchParams(window.location.search);
   const jobTitle = urlParams.get('job');
   
@@ -225,7 +335,6 @@ input:focus, select:focus{border-color:var(--primary);}
     document.getElementById('jobTitleDisplay').textContent = "General Position";
   }
 
-  // ২. দিন ও বছর বসানো (Months are handled in applyI18n)
   const daySelect = document.getElementById('daySelect');
   const yearSelect = document.getElementById('yearSelect');
 
@@ -243,13 +352,11 @@ input:focus, select:focus{border-color:var(--primary);}
     yearSelect.appendChild(option);
   }
 
-  // ৩. ফর্ম সাবমিট
   function submitForm(event) {
     event.preventDefault();
     alert("Your application for '" + document.getElementById('jobTitleDisplay').textContent + "' has been submitted successfully!");
   }
 
-  // Initial Setup
   applyI18n();
 </script>
 </body>
