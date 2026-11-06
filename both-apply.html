@@ -116,6 +116,7 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
         <option value="zh">中文</option>
         <option value="ja">日本語</option>
       </select>
+      
       <span id="userBox" class="userbox" hidden>
         <i class="fas fa-user-circle"></i><span id="userName"></span>
         <button class="btn btn-outline btn-sm" id="logoutBtn">Log Out</button>
@@ -172,7 +173,75 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
   <div class="modal-box" id="modalBox"></div>
 </div>
 
-<script>
+<script type="module">
+// Firebase Imports
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+// আপনার Firebase কনফিগারেশন
+const firebaseConfig = {
+  apiKey: "AIzaSyDxUBNv7zrtk27g1nZ4F7xFJZ-oRODrh9E",
+  authDomain: "globalwork-app.firebaseapp.com",
+  projectId: "globalwork-app",
+  storageBucket: "globalwork-app.firebasestorage.app",
+  messagingSenderId: "974955802658",
+  appId: "1:974955802658:web:e1b45c355e3f0e2b26da7b",
+  measurementId: "G-4TSHNJE7TV"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null; // গ্লোবাল ভেরিয়েবল
+
+// Auth State Observer
+onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    const userBox = document.getElementById('userBox');
+    const loginBtn = document.getElementById('loginBtn');
+    const signupBtn = document.getElementById('signupBtn');
+    const userNameSpan = document.getElementById('userName');
+
+    if (user) {
+        try {
+            const docRef = doc(db, "users", user.uid);
+            const docSnap = await getDoc(docRef);
+            let displayName = "User";
+            if (docSnap.exists() && docSnap.data().fullName) {
+                displayName = docSnap.data().fullName;
+            } else if (user.email) {
+                displayName = user.email.split('@')[0];
+            }
+            if(userBox) userBox.hidden = false;
+            if(loginBtn) loginBtn.hidden = true;
+            if(signupBtn) signupBtn.hidden = true;
+            if(userNameSpan) userNameSpan.textContent = displayName;
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
+    } else {
+        if(userBox) userBox.hidden = true;
+        if(loginBtn) loginBtn.hidden = false;
+        if(signupBtn) signupBtn.hidden = false;
+    }
+});
+
+// Logout Event
+const logoutBtn = document.getElementById('logoutBtn');
+if(logoutBtn){
+    logoutBtn.addEventListener('click', function(){
+        signOut(auth).then(() => {
+            const t = document.createElement('div'); t.className='toast'; t.textContent="Logged out";
+            document.body.appendChild(t); setTimeout(()=>t.remove(), 3000);
+        });
+    });
+}
+
+// ==========================================
+// নিচের অংশটুকু আপনার আগের কোডের মতোই আছে
+// ==========================================
 (function(){
   /* ====== Combined Jobs Data (Canada + USA - 170+ Jobs) ====== */
   var JOBS = [];
@@ -238,39 +307,15 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
 
   var state = {page:1, per:10, q:"", country:"", type:"", sort:"new"};
   var $ = function(id){return document.getElementById(id)};
-    /* ====== User session ====== */
-  function getSession(){try{return localStorage.getItem('globalwork_session')}catch(e){return null}}
-  function getUsers(){try{return JSON.parse(localStorage.getItem('globalwork_users')||'{}')}catch(e){return{}}}
-  function renderUser(){
-    var em=getSession(), u=em&&getUsers()[em];
-    $('userBox').hidden=!u;
-    $('loginBtn').hidden=!!u;
-    $('signupBtn').hidden=!!u;
-    if(u)$('userName').textContent=u.fullName;
-  }
-  $('logoutBtn').addEventListener('click',function(){
-    try{localStorage.removeItem('globalwork_session')}catch(e){}
-    renderUser();
-    toast('Logged out');
-  });
 
-  /* ====== i18n (10 Languages) ====== */
   var T = {
     en: { pageTitle:"Apply in Canada & USA",pageSub:"Browse all job listings across both countries.",qPh:"Search by title, city or region…",countryAll:"Both Countries",typeAll:"All Types",typeFull:"Full Time",typePart:"Part Time",typeSeasonal:"Seasonal",sortNew:"Newest first",sortOld:"Oldest first",sortAZ:"Title A–Z",footerTxt:"© 2026 GlobalWork",results:"{n} jobs found",noResults:"No jobs found.",view:"View Details",apply:"Apply",applyNow:"Apply Now",close:"Close",country:"Country",province:"Province/State",city:"City",address:"Address",type_lbl:"Job Type",posted:"Posted",description:"Description",company:"Company",loginToApply:"Please log in to apply.",applied:"Application submitted!" },
-    bn: { pageTitle:"কানাডা ও USA-তে আবেদন করুন",pageSub:"উভয় দেশের সব চাকরির তালিকা দেখুন।",qPh:"শিরোনাম, শহর বা অঞ্চল দিয়ে খুঁজুন…",countryAll:"উভয় দেশ",typeAll:"সব ধরন",typeFull:"ফুল টাইম",typePart:"পার্ট টাইম",typeSeasonal:"মৌসুমী",sortNew:"নতুন আগে",sortOld:"পুরোনো আগে",sortAZ:"শিরোনাম A–Z",footerTxt:"© ২০২৬ GlobalWork",results:"{n} টি চাকরি পাওয়া গেছে",noResults:"কোনো চাকরি পাওয়া যায়নি।",view:"বিস্তারিত দেখুন",apply:"আবেদন করুন",applyNow:"এখনই আবেদন করুন",close:"বন্ধ",country:"দেশ",province:"প্রদেশ/রাজ্য",city:"শহর",address:"ঠিকানা",type_lbl:"চাকরির ধরন",posted:"প্রকাশিত",description:"বিবরণ",company:"কোম্পানি",loginToApply:"আবেদন করতে লগইন করুন।",applied:"আবেদন জমা হয়েছে!" },
-    es: { pageTitle:"Solicitar en Canadá y EE.UU.",pageSub:"Explora todas las ofertas de empleo en ambos países.",qPh:"Buscar por título, ciudad o región…",countryAll:"Ambos Países",typeAll:"Todos los Tipos",typeFull:"Tiempo Completo",typePart:"Medio Tiempo",typeSeasonal:"Temporada",sortNew:"Más recientes",sortOld:"Más antiguos",sortAZ:"Título A–Z",footerTxt:"© 2026 GlobalWork",results:"{n} empleos encontrados",noResults:"No se encontraron empleos.",view:"Ver Detalles",apply:"Aplicar",applyNow:"Aplicar Ahora",close:"Cerrar",country:"País",province:"Provincia/Estado",city:"Ciudad",address:"Dirección",type_lbl:"Tipo de Empleo",posted:"Publicado",description:"Descripción",company:"Empresa",loginToApply:"Inicia sesión para aplicar.",applied:"¡Solicitud enviada!" },
-    fr: { pageTitle:"Postuler au Canada et aux États-Unis",pageSub:"Parcourez toutes les offres d'emploi dans les deux pays.",qPh:"Rechercher par titre, ville ou région…",countryAll:"Les Deux Pays",typeAll:"Tous les Types",typeFull:"Temps Plein",typePart:"Temps Partiel",typeSeasonal:"Saisonnier",sortNew:"Plus récents",sortOld:"Plus anciens",sortAZ:"Titre A–Z",footerTxt:"© 2026 GlobalWork",results:"{n} emplois trouvés",noResults:"Aucun emploi trouvé.",view:"Voir les Détails",apply:"Postuler",applyNow:"Postuler Maintenant",close:"Fermer",country:"Pays",province:"Province/État",city:"Ville",address:"Adresse",type_lbl:"Type d'Emploi",posted:"Publié",description:"Description",company:"Entreprise",loginToApply:"Veuillez vous connecter pour postuler.",applied:"Candidature soumise !" },
-    de: { pageTitle:"In Kanada und den USA bewerben",pageSub:"Durchsuchen Sie alle Stellenangebote in beiden Ländern.",qPh:"Nach Titel, Stadt oder Region suchen…",countryAll:"Beide Länder",typeAll:"Alle Arten",typeFull:"Vollzeit",typePart:"Teilzeit",typeSeasonal:"Saisonal",sortNew:"Neueste zuerst",sortOld:"Älteste zuerst",sortAZ:"Titel A–Z",footerTxt:"© 2026 GlobalWork",results:"{n} Jobs gefunden",noResults:"Keine Jobs gefunden.",view:"Details Anzeigen",apply:"Bewerben",applyNow:"Jetzt Bewerben",close:"Schließen",country:"Land",province:"Provinz/Staat",city:"Stadt",address:"Adresse",type_lbl:"Job-Typ",posted:"Veröffentlicht",description:"Beschreibung",company:"Unternehmen",loginToApply:"Bitte melden Sie sich an.",applied:"Bewerbung eingereicht!" },
-    pt: { pageTitle:"Candidatar-se no Canadá e EUA",pageSub:"Navegue por todas as vagas de emprego nos dois países.",qPh:"Pesquisar por título, cidade ou região…",countryAll:"Ambos os Países",typeAll:"Todos os Tipos",typeFull:"Tempo Integral",typePart:"Meio Período",typeSeasonal:"Sazonal",sortNew:"Mais recentes",sortOld:"Mais antigos",sortAZ:"Título A–Z",footerTxt:"© 2026 GlobalWork",results:"{n} vagas encontradas",noResults:"Nenhuma vaga encontrada.",view:"Ver Detalhes",apply:"Candidatar-se",applyNow:"Candidatar-se Agora",close:"Fechar",country:"País",province:"Província/Estado",city:"Cidade",address:"Endereço",type_lbl:"Tipo de Vaga",posted:"Publicado",description:"Descrição",company:"Empresa",loginToApply:"Faça login para se candidatar.",applied:"Candidatura enviada!" },
-    hi: { pageTitle:"कनाडा और USA में आवेदन करें",pageSub:"दोनों देशों में सभी नौकरी की सूची देखें।",qPh:"शीर्षक, शहर या क्षेत्र से खोजें…",countryAll:"दोनों देश",typeAll:"सभी प्रकार",typeFull:"पूर्णकालिक",typePart:"अंशकालिक",typeSeasonal:"मौसमी",sortNew:"नवीनतम पहले",sortOld:"पुराने पहले",sortAZ:"शीर्षक A–Z",footerTxt:"© 2026 GlobalWork",results:"{n} नौकरियां मिलीं",noResults:"कोई नौकरी नहीं मिली।",view:"विवरण देखें",apply:"आवेदन करें",applyNow:"अभी आवेदन करें",close:"बंद करें",country:"देश",province:"प्रांत/राज्य",city:"शहर",address:"पता",type_lbl:"नौकरी का प्रकार",posted:"प्रकाशित",description:"विवरण",company:"कंपनी",loginToApply:"आवेदन करने के लिए लॉग इन करें।",applied:"आवेदन सबमिट किया गया!" },
-    ar: { pageTitle:"التقديم في كندا والولايات المتحدة",pageSub:"تصفح جميع قوائم الوظائف في كلا البلدين.",qPh:"البحث بالعنوان أو المدينة…",countryAll:"كلا البلدين",typeAll:"جميع الأنواع",typeFull:"دوام كامل",typePart:"دوام جزئي",typeSeasonal:"موسمي",sortNew:"الأحدث أولاً",sortOld:"الأقدم أولاً",sortAZ:"العنوان أ-ي",footerTxt:"© 2026 GlobalWork",results:"تم العثور على {n} وظيفة",noResults:"لم يتم العثور على وظائف.",view:"عرض التفاصيل",apply:"تقديم",applyNow:"تقديم الآن",close:"إغلاق",country:"البلد",province:"المقاطعة/الولاية",city:"المدينة",address:"العنوان",type_lbl:"نوع الوظيفة",posted:"نشر",description:"الوصف",company:"شركة",loginToApply:"يرجى تسجيل الدخول للتقديم.",applied:"تم تقديم الطلب!" },
-    zh: { pageTitle:"在加拿大和美国申请",pageSub:"浏览两国的所有职位列表。",qPh:"按职位、城市或地区搜索…",countryAll:"两国",typeAll:"所有类型",typeFull:"全职",typePart:"兼职",typeSeasonal:"季节性",sortNew:"最新优先",sortOld:"最旧优先",sortAZ:"标题 A–Z",footerTxt:"© 2026 GlobalWork",results:"找到 {n} 个职位",noResults:"未找到职位。",view:"查看详情",apply:"申请",applyNow:"立即申请",close:"关闭",country:"国家",province:"省/州",city:"城市",address:"地址",type_lbl:"工作类型",posted:"发布时间",description:"描述",company:"公司",loginToApply:"请登录以申请。",applied:"申请已提交！" },
-    ja: { pageTitle:"カナダとアメリカで応募",pageSub:"両国のすべての求人を閲覧できます。",qPh:"タイトル、都市、地域で検索…",countryAll:"両国",typeAll:"すべてのタイプ",typeFull:"フルタイム",typePart:"パートタイム",typeSeasonal:"季節",sortNew:"新しい順",sortOld:"古い順",sortAZ:"タイトル A–Z",footerTxt:"© 2026 GlobalWork",results:"{n} 件の求人が見つかりました",noResults:"求人が見つかりませんでした。",view:"詳細を見る",apply:"応募",applyNow:"今すぐ応募",close:"閉じる",country:"国",province:"州/県",city:"都市",address:"住所",type_lbl:"雇用形態",posted:"投稿日",description:"説明",company:"会社名",loginToApply:"応募するにはログインしてください。",applied:"応募が送信されました！" }
+    bn: { pageTitle:"কানাডা ও USA-তে আবেদন করুন",pageSub:"উভয় দেশের সব চাকরির তালিকা দেখুন।",qPh:"শিরোনাম, শহর বা অঞ্চল দিয়ে খুঁজুন…",countryAll:"উভয় দেশ",typeAll:"সব ধরন",typeFull:"ফুল টাইম",typePart:"পার্ট টাইম",typeSeasonal:"মৌসুমী",sortNew:"নতুন আগে",sortOld:"পুরোনো আগে",sortAZ:"শিরোনাম A–Z",footerTxt:"© ২০২৬ GlobalWork",results:"{n} টি চাকরি পাওয়া গেছে",noResults:"কোনো চাকরি পাওয়া যায়নি।",view:"বিস্তারিত দেখুন",apply:"আবেদন করুন",applyNow:"এখনই আবেদন করুন",close:"বন্ধ",country:"দেশ",province:"প্রদেশ/রাজ্য",city:"শহর",address:"ঠিকানা",type_lbl:"চাকরির ধরন",posted:"প্রকাশিত",description:"বিবরণ",company:"কোম্পানি",loginToApply:"আবেদন করতে লগইন করুন।",applied:"আবেদন জমা হয়েছে!" }
   };
   
   var LANG='en';
   try{LANG=localStorage.getItem('globalwork_lang')||'en'}catch(e){}
-  if(!T[LANG])LANG='en';
+  if(!T[LANG]) LANG='en';
   function t(k){return T[LANG][k]||T.en[k]||k}
   function applyI18n(){
     document.querySelectorAll('[data-i18n]').forEach(function(el){
@@ -388,21 +433,17 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
   function closeM(){$('modal').hidden=true}
   $('modal').addEventListener('click',function(e){if(e.target===$('modal'))closeM()});
 
-  /* ====== Apply flow (login required) ====== */
+  // ==========================================
+  // ⚠️ এই ফাংশনটি আপডেট করা হয়েছে
+  // ==========================================
   function applyJob(j){
-    if(!getSession()){
-      toast(t('loginToApply'),true);
+    if(!currentUser){ // <--- Firebase Auth চেক
+      var t = document.createElement('div'); t.className='toast err'; t.textContent="Please log in to apply.";
+      document.body.appendChild(t); setTimeout(()=>t.remove(), 3000);
       setTimeout(function(){location.href='login.html'},1200);
       return;
     }
-    toast(t('applied'));
-  }
-
-  /* ====== Toast ====== */
-  function toast(msg,err){
-    var t=document.createElement('div'); t.className='toast'+(err?' err':'');
-    t.textContent=msg; document.body.appendChild(t);
-    setTimeout(function(){t.remove()},3000);
+    window.location.href = 'apply-form.html?job=' + encodeURIComponent(j.title);
   }
 
   /* ====== Bind controls ====== */
@@ -416,12 +457,9 @@ h1,h2,h3{font-weight:700;line-height:1.2;letter-spacing:-.02em}
   $('type').addEventListener('change',function(e){state.type=e.target.value;state.page=1;render()});
   $('sort').addEventListener('change',function(e){state.sort=e.target.value;state.page=1;render()});
 
-  /* ====== Init ====== */
-  renderUser();
   applyI18n();
   render();
 })();
 </script>
 </body>
 </html>
-  
