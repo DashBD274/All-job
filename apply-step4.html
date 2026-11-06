@@ -84,7 +84,7 @@ a{text-decoration:none;color:inherit}
       
       <!-- Rocket -->
       <button type="button" class="pay-btn" onclick="selectPayment('rocket', this)">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Rocket_logo.png" alt="Rocket" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'" style="height: 20px;">
+        <img src="https://cdnlogo.com/logos/r/47/rocket-mobile-banking.svg" alt="Rocket" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
         <span class="icon-fallback" style="display:none;">📱</span>
         <span>Rocket</span>
       </button>
@@ -193,7 +193,6 @@ a{text-decoration:none;color:inherit}
 </div>
 
 <script>
-  // অ্যাডমিন প্যানেল থেকে ডেটা লোড করা
   function getPaymentSettings() {
     try {
       return JSON.parse(localStorage.getItem('globalwork_payment_settings')) || {
@@ -206,7 +205,6 @@ a{text-decoration:none;color:inherit}
     }
   }
 
-  // পেজ লোড হওয়ার সময় ডেটা দেখানো
   const settings = getPaymentSettings();
   document.getElementById('show-bkash').value = settings.bkash;
   document.getElementById('show-nagad').value = settings.nagad;
@@ -219,7 +217,7 @@ a{text-decoration:none;color:inherit}
     if(type === 'USDT') input.value = settings.usdt;
     else input.value = settings.btc;
   }
-  updateCryptoAddress(); // ডিফল্ট USDT দেখানো
+  updateCryptoAddress();
 
   function selectPayment(method, btnElement) {
     document.querySelectorAll('.pay-btn').forEach(btn => btn.classList.remove('active'));
