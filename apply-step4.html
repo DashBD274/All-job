@@ -96,16 +96,29 @@ a{text-decoration:none;color:inherit}
         <span>UPI (India)</span>
       </button>
 
-      <!-- Bank Transfer -->
+      <!-- Google Pay (India) -->
+      <button type="button" class="pay-btn" onclick="selectPayment('gpay', this)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" alt="Google Pay" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+        <span class="icon-fallback" style="display:none;">G Pay</span>
+        <span>Google Pay</span>
+      </button>
+
+      <!-- Indian Bank -->
+      <button type="button" class="pay-btn" onclick="selectPayment('indianbank', this)">
+        <span class="icon-fallback">🇮🇳🏦</span>
+        <span>Indian Bank</span>
+      </button>
+
+      <!-- Bank Transfer (Bangladesh) -->
       <button type="button" class="pay-btn" onclick="selectPayment('bank', this)">
         <span class="icon-fallback">🏦</span>
-        <span>Bank Transfer</span>
+        <span>Bank (BD)</span>
       </button>
       
-      <!-- Crypto -->
-      <button type="button" class="pay-btn" onclick="selectPayment('crypto', this)">
+      <!-- Crypto Payment -->
+      <button type="button" class="pay-btn" onclick="selectPayment('crypto', this)" style="grid-column: span 1;">
         <span class="icon-fallback">💎</span>
-        <span>Crypto <span class="discount-badge">10% OFF</span></span>
+        <span>Crypto <span class="discount-badge">10%</span></span>
       </button>
 
       <!-- Card -->
@@ -169,10 +182,32 @@ a{text-decoration:none;color:inherit}
         <input type="text" placeholder="Enter your UPI ID or TXN ID">
       </div>
 
-      <!-- Bank Form -->
+      <!-- Google Pay Form -->
+      <div id="form-gpay" class="form-group">
+        <label>Send Payment to (Admin UPI ID):</label>
+        <input type="text" id="show-gpay" readonly>
+        <label style="margin-top:10px;">Your Google Pay UPI ID or Transaction ID</label>
+        <input type="text" placeholder="Enter your UPI ID or TXN ID">
+      </div>
+
+      <!-- Indian Bank Form -->
+      <div id="form-indianbank" class="form-group">
+        <div style="background:#fff; padding:10px; border-radius:4px; border:1px solid #ccc; margin-bottom:10px; font-size:13px; line-height:1.6;">
+          <strong>Admin Indian Bank Details:</strong><br>
+          <span id="show-indianbank"></span>
+        </div>
+        <label>Your Bank Name</label>
+        <input type="text" placeholder="Enter your Bank Name">
+        <label style="margin-top:10px;">Your Account Number</label>
+        <input type="text" placeholder="Enter your Account Number">
+        <label style="margin-top:10px;">Transaction ID / Reference</label>
+        <input type="text" placeholder="Enter Reference Number">
+      </div>
+
+      <!-- Bank (Bangladesh) Form -->
       <div id="form-bank" class="form-group">
         <div style="background:#fff; padding:10px; border-radius:4px; border:1px solid #ccc; margin-bottom:10px; font-size:13px; line-height:1.6;">
-          <strong>Admin Bank Details:</strong><br>
+          <strong>Admin Bank Details (Bangladesh):</strong><br>
           <span id="show-bank"></span>
         </div>
         <label>Your Bank Name</label>
@@ -212,7 +247,8 @@ a{text-decoration:none;color:inherit}
     try {
       return JSON.parse(localStorage.getItem('globalwork_payment_settings')) || {
         bkash: "01712345678", nagad: "01812345678", rocket: "019123456789-1",
-        upi: "globalwork@upi",
+        upi: "globalwork@upi", gpay: "globalwork@okicici",
+        indianbank: "HDFC Bank - 50100234567890 (GlobalWork)",
         bank: "Dutch Bangla Bank - 1234567890 (GlobalWork Ltd)",
         usdt: "TXYZ1234567890USDT", btc: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
       };
@@ -226,6 +262,8 @@ a{text-decoration:none;color:inherit}
   document.getElementById('show-nagad').value = settings.nagad;
   document.getElementById('show-rocket').value = settings.rocket;
   document.getElementById('show-upi').value = settings.upi || "globalwork@upi";
+  document.getElementById('show-gpay').value = settings.gpay || "globalwork@okicici";
+  document.getElementById('show-indianbank').innerText = settings.indianbank || "HDFC Bank - 50100234567890 (GlobalWork)";
   document.getElementById('show-bank').innerText = settings.bank;
   
   function updateCryptoAddress() {
