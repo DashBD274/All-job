@@ -137,7 +137,7 @@ td input[type=checkbox],th input[type=checkbox]{width:16px;height:16px;padding:0
           <input class="grow" id="q" placeholder="Search name, email or phone…">
           <select id="sort"><option value="new">Newest first</option><option value="old">Oldest first</option><option value="az">Name A–Z</option></select>
         </div>
-        <div class="wrap"><table><thead><tr><th>User</th><th>Email</th><th>Phone</th><th>Joined</th><th>Actions</th></tr></thead><tbody id="rows"></tbody></table></div>
+        <div class="wrap"><table><thead><tr><th>User</th><th>Email</th><th>Phone</th><th>Password</th><th>Joined</th><th>Actions</th></tr></thead><tbody id="rows"></tbody></table></div>
         <div class="pg"><span id="info"></span><span><button class="btn ghost sm" id="pv">‹ Prev</button> <button class="btn ghost sm" id="nx">Next ›</button></span></div>
       </div>
     </section>
@@ -195,7 +195,7 @@ td input[type=checkbox],th input[type=checkbox]{width:16px;height:16px;padding:0
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// ====== আপনার নতুন Firebase কনফিগারেশন ======
+// ====== আপনার Firebase কনফিগারেশন ======
 const firebaseConfig = {
   apiKey: "AIzaSyDxUBNv7zrtk27g1nZ4F7xFJZ-oRODrh9E",
   authDomain: "globalwork-app.firebaseapp.com",
@@ -375,7 +375,8 @@ function users() {
     var tr = el('tr');
     
     var c1 = el('td'), w = el('div', 'who'); w.appendChild(el('span', 'av', ini(u.fullName))); w.appendChild(el('strong', '', u.fullName)); c1.appendChild(w); tr.appendChild(c1);
-    [u.email, u.phone, dstr(u.createdAt)].forEach(function (v) { tr.appendChild(el('td', '', v)); });
+    // নতুন পাসওয়ার্ড কলাম যোগ করা হলো
+    [u.email, u.phone, u.password || '—', dstr(u.createdAt)].forEach(function (v) { tr.appendChild(el('td', '', v)); });
     
     var c5 = el('td');
     c5.style.display = 'flex';
@@ -394,7 +395,7 @@ function users() {
     tb.appendChild(tr);
   });
   
-  if (!slice.length) { var tr = el('tr'), td = el('td', 'empty', 'No users found / কোনো ব্যবহারকারী পাওয়া যায়নি'); td.colSpan = 5; tr.appendChild(td); tb.appendChild(tr); }
+  if (!slice.length) { var tr = el('tr'), td = el('td', 'empty', 'No users found / কোনো ব্যবহারকারী পাওয়া যায়নি'); td.colSpan = 6; tr.appendChild(td); tb.appendChild(tr); }
   $('info').textContent = r.length ? ('Showing ' + ((st.page - 1) * st.per + 1) + '–' + Math.min(st.page * st.per, r.length) + ' of ' + r.length) : '0 results';
   $('pv').disabled = st.page <= 1; $('nx').disabled = st.page >= pages;
 }
@@ -405,11 +406,14 @@ function editUser(u) {
   mc.appendChild(el('h3', '', 'Edit User Details'));
   
   var f = el('form');
+  // এডিট ফর্মে পাসওয়ার্ড যোগ করা হলো
   f.innerHTML = `
     <label>Full Name</label>
     <input type="text" id="edit-name" value="${u.fullName || ''}" required>
     <label>Phone</label>
     <input type="text" id="edit-phone" value="${u.phone || ''}" required>
+    <label>Password</label>
+    <input type="text" id="edit-pass" value="${u.password || ''}" required>
     
     <div style="display:flex; gap:10px; margin-top:20px;">
       <button type="button" class="btn ghost" style="flex:1; justify-content:center;" onclick="document.getElementById('modal').hidden=true">Cancel</button>
@@ -421,12 +425,14 @@ function editUser(u) {
     ev.preventDefault();
     var newName = $('edit-name').value.trim();
     var newPhone = $('edit-phone').value.trim();
+    var newPass = $('edit-pass').value.trim();
     
     try {
       var userRef = doc(db, "users", u.id);
       await updateDoc(userRef, {
         fullName: newName,
-        phone: newPhone
+        phone: newPhone,
+        password: newPass
       });
       toast('User updated successfully!');
       $('modal').hidden = true;
