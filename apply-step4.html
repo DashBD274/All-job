@@ -31,6 +31,11 @@ a{text-decoration:none;color:inherit}
 .pay-btn img { height: 22px; max-width: 100%; object-fit: contain; }
 .pay-btn .icon-fallback { font-size: 22px; line-height: 1; }
 
+/* Crypto Specific Styling */
+.pay-btn.crypto-btn img { height: 32px; } /* ক্রিপ্টো লোগো বড় করার জন্য */
+.pay-btn.crypto-btn { border-color: #f7931a; background: #fffaf5; } /* বিটকয়েনের কমলা রঙের হালকা ছোঁয়া */
+.pay-btn.crypto-btn.active { box-shadow: 0 0 0 2px rgba(247,147,26,0.4); border-color: #f7931a; }
+
 /* Discount Badge */
 .discount-badge { background: #16a34a; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 12px; margin-left: 5px; vertical-align: middle; }
 
@@ -68,8 +73,15 @@ a{text-decoration:none;color:inherit}
     <h1>Add a payment method</h1>
     
     <div class="payment-grid">
+      <!-- ১. Crypto (সবার আগে) -->
+      <button type="button" class="pay-btn crypto-btn active" onclick="selectPayment('crypto', this)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" alt="Bitcoin" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+        <span class="icon-fallback" style="display:none;">₿</span>
+        <span>Crypto <span class="discount-badge">10% OFF</span></span>
+      </button>
+
       <!-- bKash -->
-      <button type="button" class="pay-btn active" onclick="selectPayment('bkash', this)">
+      <button type="button" class="pay-btn" onclick="selectPayment('bkash', this)">
         <img src="bkash.png" alt="bKash" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
         <span class="icon-fallback" style="display:none;">📱</span>
         <span>bKash</span>
@@ -114,12 +126,6 @@ a{text-decoration:none;color:inherit}
         <span class="icon-fallback">🏦</span>
         <span>Bank (BD)</span>
       </button>
-      
-      <!-- Crypto Payment -->
-      <button type="button" class="pay-btn" onclick="selectPayment('crypto', this)" style="grid-column: span 1;">
-        <span class="icon-fallback">💎</span>
-        <span>Crypto <span class="discount-badge">10%</span></span>
-      </button>
 
       <!-- Card -->
       <button type="button" class="pay-btn" onclick="showComingSoon('Card')">
@@ -144,14 +150,30 @@ a{text-decoration:none;color:inherit}
 
     <form action="#" method="POST" onsubmit="processPayment(event)">
       
+      <!-- Crypto Form (সবার আগে ডিফল্টভাবে ওপেন থাকবে) -->
+      <div id="form-crypto" class="form-group show">
+        <div style="background:#fff; border:1px solid #16a34a; padding:10px; border-radius:6px; margin-bottom:15px; color:#16a34a; font-weight:600; font-size:12px;">
+          You will get a 10% discount on the total application fee by paying with cryptocurrency.
+        </div>
+        <label>Select Cryptocurrency</label>
+        <select id="crypto-type" onchange="updateCryptoAddress()">
+          <option value="BTC">Bitcoin (BTC)</option>
+          <option value="USDT">USDT (Tether)</option>
+        </select>
+        <label style="margin-top:10px;">Send Payment to (Admin Wallet):</label>
+        <input type="text" id="show-crypto" readonly>
+        <label style="margin-top:10px;">Your Wallet Address / TXID</label>
+        <input type="text" placeholder="Enter your TXID" required>
+      </div>
+
       <!-- bKash Form -->
-      <div id="form-bkash" class="form-group show">
+      <div id="form-bkash" class="form-group">
         <label>Send Payment to (Admin Number):</label>
         <input type="text" id="show-bkash" readonly>
         <label style="margin-top:10px;">Your bKash Number</label>
-        <input type="text" placeholder="e.g. 017XXXXXXXX" required>
+        <input type="text" placeholder="e.g. 017XXXXXXXX">
         <label style="margin-top:10px;">Transaction ID (TrxID)</label>
-        <input type="text" placeholder="Enter TrxID" required>
+        <input type="text" placeholder="Enter TrxID">
       </div>
 
       <!-- Nagad Form -->
@@ -218,22 +240,6 @@ a{text-decoration:none;color:inherit}
         <input type="text" placeholder="Enter Reference Number">
       </div>
 
-      <!-- Crypto Form -->
-      <div id="form-crypto" class="form-group">
-        <div style="background:#fff; border:1px solid #16a34a; padding:10px; border-radius:6px; margin-bottom:15px; color:#16a34a; font-weight:600; font-size:12px;">
-          You will get a 10% discount on the total application fee by paying with cryptocurrency.
-        </div>
-        <label>Select Cryptocurrency</label>
-        <select id="crypto-type" onchange="updateCryptoAddress()">
-          <option value="USDT">USDT (Tether)</option>
-          <option value="BTC">Bitcoin (BTC)</option>
-        </select>
-        <label style="margin-top:10px;">Send Payment to (Admin Wallet):</label>
-        <input type="text" id="show-crypto" readonly>
-        <label style="margin-top:10px;">Your Wallet Address / TXID</label>
-        <input type="text" placeholder="Enter your TXID">
-      </div>
-
       <div class="form-actions">
         <button type="button" class="btn btn-cancel" onclick="window.history.back()">Cancel</button>
         <button type="submit" class="btn btn-create">Submit Payment</button>
@@ -272,7 +278,7 @@ a{text-decoration:none;color:inherit}
     if(type === 'USDT') input.value = settings.usdt;
     else input.value = settings.btc;
   }
-  updateCryptoAddress();
+  updateCryptoAddress(); // পেজ লোড হওয়ার সময় ডিফল্ট বিটকয়েন অ্যাড্রেস দেখাবে
 
   function selectPayment(method, btnElement) {
     document.querySelectorAll('.pay-btn').forEach(btn => btn.classList.remove('active'));
