@@ -22,7 +22,7 @@ a{text-decoration:none;color:inherit}
 .form-wrapper{padding:40px 20px; display: flex; justify-content: center;}
 .form-container{background:#e8e8e8; width:100%; max-width:800px; padding:40px; border-radius:8px; box-shadow:var(--sh-md); position: relative;}
 
-/* Canada Logo */
+/* Country Logo */
 .canada-logo {
     display: flex;
     align-items: center;
@@ -107,10 +107,10 @@ input:focus, select:focus{border-color:var(--primary);}
 <div class="form-wrapper">
   <div class="form-container">
     
-    <!-- Canada Logo & Text -->
-    <div class="canada-logo">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Flag_of_Canada.svg" alt="Canada Flag">
-      <div class="canada-logo-text">
+    <!-- Dynamic Country Logo & Text -->
+    <div class="canada-logo" id="countryLogoBox">
+      <img id="dynamicFlag" src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Flag_of_Canada.svg" alt="Flag">
+      <div class="canada-logo-text" id="dynamicGovText">
         Government<br>of Canada
       </div>
     </div>
@@ -305,7 +305,7 @@ input:focus, select:focus{border-color:var(--primary);}
       </div>
 
       <div class="form-actions">
-        <button type="button" class="btn btn-back" data-i18n="backBtn" onclick="window.location.href='canada-apply.html'">Back to Jobs</button>
+        <button type="button" class="btn btn-back" data-i18n="backBtn" onclick="history.back()">Back to Jobs</button>
         <button type="submit" class="btn btn-next" data-i18n="nextBtn">Next</button>
       </div>
 
@@ -314,6 +314,20 @@ input:focus, select:focus{border-color:var(--primary);}
 </div>
 
 <script>
+  // ==========================================
+  // ⚠️ URL থেকে Country চেক করে পতাকা পরিবর্তন
+  // ==========================================
+  const urlParamsForCountry = new URLSearchParams(window.location.search);
+  const countryParam = urlParamsForCountry.get('country');
+
+  if (countryParam === 'USA') {
+      const flagImg = document.getElementById('dynamicFlag');
+      const govText = document.getElementById('dynamicGovText');
+      if(flagImg) flagImg.src = "https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg";
+      if(govText) govText.innerHTML = "Government<br>of USA";
+  }
+
+  // ================= Translations =================
   const T = {
     en: { formTitle:"Job Application", formSub1:"Please complete the form below to apply for the position of", formSub2:"with us.", fullName:"Full Name", firstName:"First Name", midName:"Middle Name", lastName:"Last Name", curAddress:"Current Address", street1:"Street Address", street2:"Street Address Line 2", city:"City", state:"State / Province", zip:"Postal / Zip Code", selectCountry:"Please Select Country", other:"Other", email:"Email Address", emailPh:"ex: myname@example.com", phone:"Phone Number", areaCode:"Area Code", phoneNum:"Phone Number", birthDate:"Birth Date", selMonth:"Please select a month", selDay:"Please select a day", selYear:"Please select a year", backBtn:"Back to Jobs", nextBtn:"Next", months:["January","February","March","April","May","June","July","August","September","October","November","December"] },
     bn: { formTitle:"চাকরির আবেদন", formSub1:"আমাদের সাথে", formSub2:"পদে আবেদন করতে নিচের ফর্মটি পূরণ করুন।", fullName:"পূর্ণ নাম", firstName:"প্রথম নাম", midName:"মধ্য নাম", lastName:"শেষ নাম", curAddress:"বর্তমান ঠিকানা", street1:"রাস্তার ঠিকানা", street2:"রাস্তার ঠিকানা লাইন ২", city:"শহর", state:"রাজ্য / প্রদেশ", zip:"পোস্টাল / জিপ কোড", selectCountry:"দেশ নির্বাচন করুন", other:"অন্যান্য", email:"ইমেইল ঠিকানা", emailPh:"ex: myname@example.com", phone:"ফোন নম্বর", areaCode:"এরিয়া কোড", phoneNum:"ফোন নম্বর", birthDate:"জন্ম তারিখ", selMonth:"মাস নির্বাচন করুন", selDay:"দিন নির্বাচন করুন", selYear:"বছর নির্বাচন করুন", backBtn:"চাকরিতে ফিরে যান", nextBtn:"পরবর্তী", months:["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"] },
@@ -386,19 +400,22 @@ input:focus, select:focus{border-color:var(--primary);}
   }
 
   // ==========================================
-  // ⚠️ আপনার দেওয়া সঠিক সাবমিট ফাংশন
+  // ⚠️ ফর্ম সাবমিট ফাংশন
   // ==========================================
   function submitForm(event) {
     event.preventDefault(); // পেজ রিফ্রেশ হওয়া আটকায়
     
-    // URL থেকে চাকরির নামটি নিয়ে দ্বিতীয় পেজে পাঠানো
     const urlParams = new URLSearchParams(window.location.search);
     const job = urlParams.get('job');
-    if(job){
-        window.location.href = 'apply-step2.html?job=' + encodeURIComponent(job);
-    } else {
-        window.location.href = 'apply-step2.html';
+    const country = urlParams.get('country'); // country প্যারামিটার নেওয়া হচ্ছে
+    
+    // পরবর্তী পেজে পাঠানোর সময় country প্যারামিটারটিও সাথে পাঠাতে হবে
+    let nextUrl = 'apply-step2.html?job=' + encodeURIComponent(job || '');
+    if (country) {
+        nextUrl += '&country=' + encodeURIComponent(country);
     }
+    
+    window.location.href = nextUrl;
   }
 
   applyI18n();
