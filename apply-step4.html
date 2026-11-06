@@ -344,9 +344,9 @@ a{text-decoration:none;color:inherit}
     applyI18n();
   });
 
+  // ✅ সঠিকভাবে LocalStorage থেকে ডেটা রিড করা
   function getPaymentSettings() {
     try {
-      // ✅ এখানে LocalStorage থেকে ডেটা রিড করা হচ্ছে
       const saved = localStorage.getItem('globalwork_payment_settings');
       if (saved) {
         return JSON.parse(saved);
@@ -354,7 +354,6 @@ a{text-decoration:none;color:inherit}
     } catch(e) {
       console.error("Error reading payment settings: ", e);
     }
-    // ডিফল্ট ভ্যালু
     return {
       bkash: "01712345678", nagad: "01812345678", rocket: "019123456789-1",
       upi: "globalwork@upi", gpay: "globalwork@okicici",
@@ -366,7 +365,6 @@ a{text-decoration:none;color:inherit}
 
   const settings = getPaymentSettings();
   
-  // ✅ সঠিকভাবে ডেটা সেট করা হচ্ছে
   document.getElementById('show-bkash').value = settings.bkash || "";
   document.getElementById('show-nagad').value = settings.nagad || "";
   document.getElementById('show-rocket').value = settings.rocket || "";
@@ -416,7 +414,6 @@ a{text-decoration:none;color:inherit}
     });
   }
 
-  // Init
   applyI18n();
 </script>
 </body>
