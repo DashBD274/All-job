@@ -195,15 +195,15 @@ td input[type=checkbox],th input[type=checkbox]{width:16px;height:16px;padding:0
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+// ====== আপনার নতুন Firebase কনফিগারেশন ======
 const firebaseConfig = {
-  apiKey: "AIzaSyCnWEeJ249mZef1-QmGzYk9Fr3un8mP3NI",
-  authDomain: "my-farm-job-app.firebaseapp.com",
-  databaseURL: "https://my-farm-job-app-default-rtdb.firebaseio.com",
-  projectId: "my-farm-job-app",
-  storageBucket: "my-farm-job-app.firebasestorage.app",
-  messagingSenderId: "185501371494",
-  appId: "1:185501371494:web:02580b927e5186ffb3f1a7",
-  measurementId: "G-WP4081HGL2"
+  apiKey: "AIzaSyDxUBNv7zrtk27g1nZ4F7xFJZ-oRODrh9E",
+  authDomain: "globalwork-app.firebaseapp.com",
+  projectId: "globalwork-app",
+  storageBucket: "globalwork-app.firebasestorage.app",
+  messagingSenderId: "974955802658",
+  appId: "1:974955802658:web:e1b45c355e3f0e2b26da7b",
+  measurementId: "G-4TSHNJE7TV"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -297,7 +297,6 @@ async function fetchFirebaseUsers() {
     const querySnapshot = await getDocs(collection(db, "users"));
     firebaseUsers = [];
     querySnapshot.forEach((doc) => {
-      // doc.id হলো ইউজারের UID, যা আপডেট বা ডিলিট করার জন্য দরকার হবে
       firebaseUsers.push({ id: doc.id, ...doc.data() });
     });
   } catch (e) {
@@ -378,7 +377,6 @@ function users() {
     var c1 = el('td'), w = el('div', 'who'); w.appendChild(el('span', 'av', ini(u.fullName))); w.appendChild(el('strong', '', u.fullName)); c1.appendChild(w); tr.appendChild(c1);
     [u.email, u.phone, dstr(u.createdAt)].forEach(function (v) { tr.appendChild(el('td', '', v)); });
     
-    // Actions Column (Edit & Delete)
     var c5 = el('td');
     c5.style.display = 'flex';
     c5.style.gap = '8px';
@@ -432,7 +430,7 @@ function editUser(u) {
       });
       toast('User updated successfully!');
       $('modal').hidden = true;
-      refresh(); // ডাটা রিফ্রেশ করা
+      refresh(); 
     } catch (error) {
       console.error("Error updating user: ", error);
       toast('Failed to update user', true);
