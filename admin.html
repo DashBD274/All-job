@@ -144,7 +144,7 @@ td input[type=checkbox],th input[type=checkbox]{width:16px;height:16px;padding:0
       </div>
     </section>
 
-    <!-- পেমেন্ট সেটিংস পেজ -->
+    <!-- পেমেন্ট সেটিংস পেজ (UPI সহ) -->
     <section id="v-payment" class="view" hidden>
       <div class="card set">
         <h3>💳 Payment Method Settings</h3>
@@ -158,6 +158,9 @@ td input[type=checkbox],th input[type=checkbox]{width:16px;height:16px;padding:0
         
         <label>Rocket Account Number</label>
         <input type="text" id="p-rocket" placeholder="01XXXXXXXXX-X">
+        
+        <label>UPI ID (India)</label>
+        <input type="text" id="p-upi" placeholder="yourname@upi">
         
         <label>Bank Name & Account</label>
         <input type="text" id="p-bank" placeholder="e.g. Dutch Bangla Bank - 1234567890">
@@ -252,16 +255,18 @@ document.querySelectorAll('nav button').forEach(function (b) { b.addEventListene
 $('burger').addEventListener('click', function () { $('side').classList.toggle('open'); });
 $('rf').addEventListener('click', function () { refresh(); loadPaymentSettings(); toast('Refreshed'); });
 
-/* ---------- Payment Settings (New) ---------- */
+/* ---------- Payment Settings ---------- */
 function loadPaymentSettings() {
   var p = store('globalwork_payment_settings') || {
     bkash: "01712345678", nagad: "01812345678", rocket: "019123456789-1",
+    upi: "globalwork@upi",
     bank: "Dutch Bangla Bank - 1234567890 (GlobalWork Ltd)",
     usdt: "TXYZ1234567890USDT", btc: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
   };
   $('p-bkash').value = p.bkash;
   $('p-nagad').value = p.nagad;
   $('p-rocket').value = p.rocket;
+  $('p-upi').value = p.upi || "";
   $('p-bank').value = p.bank;
   $('p-usdt').value = p.usdt;
   $('p-btc').value = p.btc;
@@ -272,6 +277,7 @@ function savePaymentSettings() {
     bkash: $('p-bkash').value,
     nagad: $('p-nagad').value,
     rocket: $('p-rocket').value,
+    upi: $('p-upi').value,
     bank: $('p-bank').value,
     usdt: $('p-usdt').value,
     btc: $('p-btc').value
