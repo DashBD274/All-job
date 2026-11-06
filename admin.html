@@ -136,8 +136,6 @@ td input[type=checkbox],th input[type=checkbox]{width:16px;height:16px;padding:0
         <div class="tools">
           <input class="grow" id="q" placeholder="Search name, email or phone…">
           <select id="sort"><option value="new">Newest first</option><option value="old">Oldest first</option><option value="az">Name A–Z</option></select>
-          <button class="btn danger sm" id="bulk" hidden>Delete selected</button>
-          <button class="btn ghost" id="csv">⬇ Export CSV</button>
         </div>
         <div class="wrap"><table><thead><tr><th><input type="checkbox" id="all"></th><th>User</th><th>Email</th><th>Phone</th><th>Joined</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
         <div class="pg"><span id="info"></span><span><button class="btn ghost sm" id="pv">‹ Prev</button> <button class="btn ghost sm" id="nx">Next ›</button></span></div>
@@ -186,12 +184,6 @@ td input[type=checkbox],th input[type=checkbox]{width:16px;height:16px;padding:0
         <form id="fp"><label>Current password</label><input id="c0" type="password" autocomplete="current-password">
         <label>New password (min 8)</label><input id="c1" type="password" autocomplete="new-password">
         <button class="btn" style="margin-top:14px">Update password</button></form></div>
-      <div class="card set"><h3>Backup &amp; restore</h3><p>Download all user data as JSON, or import a backup. Backups contain password hashes — keep them private.</p>
-        <button class="btn ghost" id="exp">⬇ Download backup</button>
-        <button class="btn ghost" id="impb">⬆ Import backup</button><input type="file" id="imp" accept=".json,application/json" hidden></div>
-      <div class="card set" style="border-color:#f3c4c0"><h3 style="color:var(--danger)">Danger zone</h3><p>Delete every registered user from this browser. This cannot be undone.</p>
-        <button class="btn danger" id="wipe">Delete all users</button></div>
-      <p class="set" style="font-size:.8rem;color:var(--mu)">Demo mode: data lives in this browser only (localStorage). For real users from any device, connect a backend such as Firebase or Supabase.</p>
     </section>
   </main>
 </div>
@@ -199,30 +191,41 @@ td input[type=checkbox],th input[type=checkbox]{width:16px;height:16px;padding:0
 <div id="modal" class="modal" hidden><div class="mc" id="mc"></div></div>
 <div id="toast"></div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCNWEeJ249mzef1-QMc2YiVk7F3un8eP3M",
+  authDomain: "my-farm-job-app.firebaseapp.com",
+  projectId: "my-farm-job-app",
+  storageBucket: "my-farm-job-app.firebasestorage.app",
+  messagingSenderId: "185581371494",
+  appId: "1:185581371494:web:02580d927e5186ffb3f1a7"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// LocalStorage Helper
 var $ = function (i) { return document.getElementById(i); };
-function hashPw(pw, salt) {
-  if (window.crypto && crypto.subtle) {
-    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(salt + pw)).then(function (b) {
-      return Array.from(new Uint8Array(b)).map(function (x) { return x.toString(16).padStart(2, '0'); }).join('');
-    });
-  }
-  var h = 5381, s = salt + pw; for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
-  return Promise.resolve('d' + h);
-}
 function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k) || 'null'); localStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } }
-function getUsers() { return store('globalwork_users') || {}; }
 function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt !== undefined) e.textContent = txt; return e; }
 function toast(m, err) { var t = el('div', 't' + (err ? ' err' : ''), m); $('toast').appendChild(t); setTimeout(function () { t.remove(); }, 3200); }
 function ini(n) { var p = String(n || '?').trim().split(/\s+/); return ((p[0] || '?')[0] + (p[1] ? p[1][0] : '')).toUpperCase(); }
-function dstr(a) { return a ? new Date(a).toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' }) : '—'; }
-function all() {
-  var u = getUsers();
-  return Object.keys(u).map(function (e) { return { email: e, name: u[e].fullName || '', phone: u[e].phone || '', at: u[e].createdAt || '' }; });
+function dstr(a) { 
+  if(!a) return '—';
+  let d = a.toDate ? a.toDate() : new Date(a);
+  return isNaN(d) ? '—' : d.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' }); 
 }
 
-/* ---------- auth ---------- */
+// Auth (LocalStorage Based)
 function admin() { return store('globalwork_admin'); }
+function hashPw(pw, salt) {
+  return crypto.subtle.digest('SHA-256', new TextEncoder().encode(salt + pw)).then(function (b) {
+    return Array.from(new Uint8Array(b)).map(function (x) { return x.toString(16).padStart(2, '0'); }).join('');
+  });
+}
 function route() {
   var ok = false; try { ok = sessionStorage.getItem('globalwork_admin_ok') === '1'; } catch (e) {}
   var a = admin();
@@ -270,41 +273,60 @@ function loadPaymentSettings() {
     bank: "Dutch Bangla Bank - 1234567890 (GlobalWork Ltd)",
     usdt: "TXYZ1234567890USDT", btc: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
   };
-  $('p-bkash').value = p.bkash;
-  $('p-nagad').value = p.nagad;
-  $('p-rocket').value = p.rocket;
-  $('p-upi').value = p.upi || "";
-  $('p-gpay').value = p.gpay || "";
-  $('p-indianbank').value = p.indianbank || "";
-  $('p-bank').value = p.bank;
-  $('p-usdt').value = p.usdt;
-  $('p-btc').value = p.btc;
+  $('p-bkash').value = p.bkash; $('p-nagad').value = p.nagad; $('p-rocket').value = p.rocket;
+  $('p-upi').value = p.upi || ""; $('p-gpay').value = p.gpay || ""; $('p-indianbank').value = p.indianbank || "";
+  $('p-bank').value = p.bank; $('p-usdt').value = p.usdt; $('p-btc').value = p.btc;
 }
-
 function savePaymentSettings() {
   var p = {
-    bkash: $('p-bkash').value,
-    nagad: $('p-nagad').value,
-    rocket: $('p-rocket').value,
-    upi: $('p-upi').value,
-    gpay: $('p-gpay').value,
-    indianbank: $('p-indianbank').value,
-    bank: $('p-bank').value,
-    usdt: $('p-usdt').value,
-    btc: $('p-btc').value
+    bkash: $('p-bkash').value, nagad: $('p-nagad').value, rocket: $('p-rocket').value,
+    upi: $('p-upi').value, gpay: $('p-gpay').value, indianbank: $('p-indianbank').value,
+    bank: $('p-bank').value, usdt: $('p-usdt').value, btc: $('p-btc').value
   };
   store('globalwork_payment_settings', p);
   toast('Payment settings saved successfully!');
 }
 
+/* ---------- Fetch Users from Firebase ---------- */
+let firebaseUsers = [];
+async function fetchFirebaseUsers() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "users"));
+    firebaseUsers = [];
+    querySnapshot.forEach((doc) => {
+      firebaseUsers.push(doc.data());
+    });
+  } catch (e) {
+    console.error("Error fetching users: ", e);
+    toast("Failed to load users", true);
+  }
+}
+
 /* ---------- dashboard ---------- */
 function dayKey(d) { return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
 function dash() {
-  var us = all(), now = new Date(), t0 = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime(), D = 864e5;
-  function since(ms) { return us.filter(function (u) { return u.at && new Date(u.at).getTime() >= ms; }).length; }
+  var us = firebaseUsers, now = new Date(), t0 = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime(), D = 864e5;
+  
+  function since(ms) { 
+    return us.filter(function (u) { 
+      let uDate = u.createdAt ? (u.createdAt.toDate ? u.createdAt.toDate().getTime() : new Date(u.createdAt).getTime()) : 0;
+      return uDate >= ms; 
+    }).length; 
+  }
+  
   $('s-all').textContent = us.length; $('s-today').textContent = since(t0);
   $('s-7').textContent = since(t0 - 6 * D); $('s-30').textContent = since(t0 - 29 * D);
-  var counts = {}; us.forEach(function (u) { if (u.at) { var k = dayKey(new Date(u.at)); counts[k] = (counts[k] || 0) + 1; } });
+  
+  var counts = {}; 
+  us.forEach(function (u) { 
+    if (u.createdAt) { 
+      let d = u.createdAt.toDate ? u.createdAt.toDate() : new Date(u.createdAt);
+      if(!isNaN(d)) {
+        var k = dayKey(d); counts[k] = (counts[k] || 0) + 1; 
+      }
+    } 
+  });
+  
   var days = [], max = 1;
   for (var i = 13; i >= 0; i--) { var d = new Date(t0 - i * D), c = counts[dayKey(d)] || 0; days.push({ d: d, c: c }); if (c > max) max = c; }
   var ch = $('chart'); ch.textContent = '';
@@ -313,10 +335,17 @@ function dash() {
     bar.title = x.d.toDateString() + ': ' + x.c;
     b.appendChild(n); b.appendChild(bar); b.appendChild(el('span', '', x.d.getDate())); ch.appendChild(b);
   });
+  
   var rc = $('recent'); rc.textContent = '';
-  us.slice().sort(function (a, b) { return (b.at || '').localeCompare(a.at || ''); }).slice(0, 5).forEach(function (u) {
-    var r = el('div', 'rec'), d = el('div'); d.appendChild(el('strong', '', u.name)); d.appendChild(el('span', '', u.email + ' · ' + dstr(u.at)));
-    r.appendChild(el('span', 'av', ini(u.name))); r.appendChild(d); rc.appendChild(r);
+  us.slice().sort(function (a, b) { 
+    let da = a.createdAt ? (a.createdAt.toDate ? a.createdAt.toDate().getTime() : new Date(a.createdAt).getTime()) : 0;
+    let db = b.createdAt ? (b.createdAt.toDate ? b.createdAt.toDate().getTime() : new Date(b.createdAt).getTime()) : 0;
+    return db - da; 
+  }).slice(0, 5).forEach(function (u) {
+    var r = el('div', 'rec'), d = el('div'); 
+    d.appendChild(el('strong', '', u.fullName)); 
+    d.appendChild(el('span', '', u.email + ' · ' + dstr(u.createdAt)));
+    r.appendChild(el('span', 'av', ini(u.fullName))); r.appendChild(d); rc.appendChild(r);
   });
   if (!us.length) rc.appendChild(el('div', 'empty', 'No users yet / কোনো ব্যবহারকারী নেই'));
 }
@@ -325,10 +354,12 @@ function dash() {
 var st = { page: 1, per: 10, sel: {} };
 function filtered() {
   var q = $('q').value.trim().toLowerCase(), s = $('sort').value;
-  var r = all().filter(function (u) { return !q || (u.name + ' ' + u.email + ' ' + u.phone).toLowerCase().indexOf(q) > -1; });
+  var r = firebaseUsers.filter(function (u) { return !q || (u.fullName + ' ' + u.email + ' ' + u.phone).toLowerCase().indexOf(q) > -1; });
   r.sort(function (a, b) {
-    if (s === 'az') return a.name.localeCompare(b.name);
-    var c = (a.at || '').localeCompare(b.at || ''); return s === 'old' ? c : -c;
+    if (s === 'az') return (a.fullName || '').localeCompare(b.fullName || '');
+    let da = a.createdAt ? (a.createdAt.toDate ? a.createdAt.toDate().getTime() : new Date(a.createdAt).getTime()) : 0;
+    let db = b.createdAt ? (b.createdAt.toDate ? b.createdAt.toDate().getTime() : new Date(b.createdAt).getTime()) : 0;
+    return s === 'old' ? da - db : db - da;
   });
   return r;
 }
@@ -340,33 +371,28 @@ function users() {
     var tr = el('tr'), c0 = el('td'), cb = el('input'); cb.type = 'checkbox'; cb.checked = !!st.sel[u.email];
     cb.onchange = function () { if (cb.checked) st.sel[u.email] = 1; else delete st.sel[u.email]; bulkUi(); };
     c0.appendChild(cb); tr.appendChild(c0);
-    var c1 = el('td'), w = el('div', 'who'); w.appendChild(el('span', 'av', ini(u.name))); w.appendChild(el('strong', '', u.name)); c1.appendChild(w); tr.appendChild(c1);
-    [u.email, u.phone, dstr(u.at)].forEach(function (v) { tr.appendChild(el('td', '', v)); });
-    var c5 = el('td'), v = el('button', 'btn ghost sm', 'View'), d = el('button', 'btn danger sm', 'Delete');
-    v.onclick = function () { detail(u); }; d.onclick = function () { del([u.email]); }; d.style.marginLeft = '6px';
-    c5.appendChild(v); c5.appendChild(d); tr.appendChild(c5); tb.appendChild(tr);
+    var c1 = el('td'), w = el('div', 'who'); w.appendChild(el('span', 'av', ini(u.fullName))); w.appendChild(el('strong', '', u.fullName)); c1.appendChild(w); tr.appendChild(c1);
+    [u.email, u.phone, dstr(u.createdAt)].forEach(function (v) { tr.appendChild(el('td', '', v)); });
+    var c5 = el('td'), v = el('button', 'btn ghost sm', 'View');
+    v.onclick = function () { detail(u); };
+    c5.appendChild(v); tr.appendChild(c5); tb.appendChild(tr);
   });
   if (!slice.length) { var tr = el('tr'), td = el('td', 'empty', 'No users found / কোনো ব্যবহারকারী পাওয়া যায়নি'); td.colSpan = 6; tr.appendChild(td); tb.appendChild(tr); }
   $('info').textContent = r.length ? ('Showing ' + ((st.page - 1) * st.per + 1) + '–' + Math.min(st.page * st.per, r.length) + ' of ' + r.length) : '0 results';
   $('pv').disabled = st.page <= 1; $('nx').disabled = st.page >= pages; $('all').checked = false; bulkUi();
 }
 function bulkUi() { var n = Object.keys(st.sel).length; $('bulk').hidden = !n; $('bulk').textContent = 'Delete selected (' + n + ')'; }
-function del(list) {
-  if (!confirm('Delete ' + list.length + ' user(s)? This cannot be undone.')) return;
-  var u = getUsers(); list.forEach(function (e) { delete u[e]; delete st.sel[e]; });
-  store('globalwork_users', u); refresh(); toast(list.length + ' user(s) deleted');
-}
 function detail(u) {
   var mc = $('mc'); mc.textContent = '';
   mc.appendChild(el('h3', '', 'User details'));
-  var top = el('div', 'who'); top.style.marginBottom = '16px'; var a = el('span', 'av', ini(u.name)); a.style.cssText = 'width:48px;height:48px;font-size:1rem';
-  top.appendChild(a); top.appendChild(el('strong', '', u.name)); mc.appendChild(top);
+  var top = el('div', 'who'); top.style.marginBottom = '16px'; var a = el('span', 'av', ini(u.fullName)); a.style.cssText = 'width:48px;height:48px;font-size:1rem';
+  top.appendChild(a); top.appendChild(el('strong', '', u.fullName)); mc.appendChild(top);
   var dl = el('dl', 'dl');
-  [['Email', u.email], ['Phone', u.phone || '—'], ['Joined', u.at ? new Date(u.at).toLocaleString() : '—']].forEach(function (p) { dl.appendChild(el('dt', '', p[0])); dl.appendChild(el('dd', '', p[1])); });
+  [['Email', u.email], ['Phone', u.phone || '—'], ['Joined', dstr(u.createdAt)]].forEach(function (p) { dl.appendChild(el('dt', '', p[0])); dl.appendChild(el('dd', '', p[1])); });
   mc.appendChild(dl);
-  var row = el('div'), c = el('button', 'btn ghost', 'Close'), d = el('button', 'btn danger', 'Delete user'); d.style.marginLeft = '8px';
-  c.onclick = closeM; d.onclick = function () { closeM(); del([u.email]); };
-  row.appendChild(c); row.appendChild(d); mc.appendChild(row); $('modal').hidden = false;
+  var row = el('div'), c = el('button', 'btn ghost', 'Close');
+  c.onclick = closeM;
+  row.appendChild(c); mc.appendChild(row); $('modal').hidden = false;
 }
 function closeM() { $('modal').hidden = true; }
 $('modal').addEventListener('click', function (e) { if (e.target === $('modal')) closeM(); });
@@ -374,19 +400,6 @@ $('q').addEventListener('input', function () { st.page = 1; users(); });
 $('sort').addEventListener('change', function () { st.page = 1; users(); });
 $('pv').addEventListener('click', function () { st.page--; users(); });
 $('nx').addEventListener('click', function () { st.page++; users(); });
-$('bulk').addEventListener('click', function () { del(Object.keys(st.sel)); });
-$('all').addEventListener('change', function () {
-  var on = this.checked; document.querySelectorAll('#rows input[type=checkbox]').forEach(function (cb, i) { cb.checked = on; });
-  var r = filtered().slice((st.page - 1) * st.per, st.page * st.per); st.sel = {}; if (on) r.forEach(function (u) { st.sel[u.email] = 1; }); bulkUi();
-});
-function download(name, text, type) {
-  var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: type })); a.download = name; a.click();
-}
-$('csv').addEventListener('click', function () {
-  function c(v) { v = String(v); if (/^[=+\-@]/.test(v)) v = "'" + v; return '"' + v.replace(/"/g, '""') + '"'; }
-  var rows = [['Name', 'Email', 'Phone', 'Joined']].concat(filtered().map(function (u) { return [u.name, u.email, u.phone, u.at]; }));
-  download('users.csv', '\ufeff' + rows.map(function (r) { return r.map(c).join(','); }).join('\n'), 'text/csv;charset=utf-8');
-});
 
 /* ---------- settings ---------- */
 $('fp').addEventListener('submit', function (ev) {
@@ -399,25 +412,12 @@ $('fp').addEventListener('submit', function (ev) {
     hashPw(n, salt).then(function (nh) { store('globalwork_admin', { salt: salt, hash: nh }); $('fp').reset(); toast('Password updated'); });
   });
 });
-$('exp').addEventListener('click', function () { download('globalwork-backup.json', JSON.stringify(getUsers(), null, 2), 'application/json'); });
-$('impb').addEventListener('click', function () { $('imp').click(); });
-$('imp').addEventListener('change', function () {
-  var f = this.files[0]; if (!f) return; var rd = new FileReader();
-  rd.onload = function () {
-    try {
-      var d = JSON.parse(rd.result), u = getUsers(), n = 0;
-      Object.keys(d).forEach(function (e) { var x = d[e]; if (x && typeof x.fullName === 'string' && typeof x.hash === 'string' && typeof x.salt === 'string') { u[e.toLowerCase()] = { fullName: x.fullName, phone: String(x.phone || ''), salt: x.salt, hash: x.hash, createdAt: x.createdAt || '' }; n++; } });
-      store('globalwork_users', u); refresh(); toast(n + ' user(s) imported');
-    } catch (e) { toast('Invalid backup file', true); }
-  };
-  rd.readAsText(f); this.value = '';
-});
-$('wipe').addEventListener('click', function () {
-  if (prompt('Type DELETE to remove ALL users') === 'DELETE') { store('globalwork_users', {}); st.sel = {}; refresh(); toast('All users deleted'); }
-});
 
-function refresh() { dash(); users(); }
-window.addEventListener('storage', function () { if (!$('app').hidden) refresh(); });
+async function refresh() { 
+  await fetchFirebaseUsers(); 
+  dash(); 
+  users(); 
+}
 route();
 </script>
 </body>
