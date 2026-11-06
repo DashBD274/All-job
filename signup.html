@@ -3,424 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Admin Panel | GlobalWork</title>
+<title data-i18n="pageTitle">Sign Up | GlobalWork</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--p:#12355b;--pl:#245587;--a:#c8102e;--bd:#E2E8F0;--mu:#64748b;--bg:#F1F5F9;--ok:#16a34a;--danger:#B42318}
-body{font-family:Inter,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:#1E2A3A;min-height:100vh}
-[hidden]{display:none!important}
-button{font:inherit;cursor:pointer}
-input,select{font:inherit;font-size:15px;padding:10px 12px;border:1.5px solid var(--bd);border-radius:10px;background:#fff;outline:none;width:100%}
-input:focus,select:focus{border-color:var(--p)}
-label{display:block;font-size:.82rem;font-weight:600;margin:12px 0 5px}
-.btn{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:10px;padding:10px 16px;font-weight:600;font-size:.88rem;background:var(--p);color:#fff;transition:.15s}
-.btn:hover{background:var(--pl)}
-.btn.ghost{background:#fff;color:var(--p);border:1.5px solid var(--bd)}
-.btn.ghost:hover{border-color:var(--p)}
-.btn.danger{background:var(--danger)}
-.btn.sm{padding:6px 12px;font-size:.8rem}
-.f{display:inline-block;width:28px;height:19px;border-radius:3px;box-shadow:0 2px 6px rgba(0,0,0,.25);vertical-align:middle}
-.f.ca{background:linear-gradient(90deg,#d52b1e 25%,#fff 25% 75%,#d52b1e 75%)}
+:root{--p:#12355b;--pl:#245587;--a:#c8102e;--bd:#E2E8F0;--mu:#5E6F8D;--bg:#F5F7FA}
+body{font-family:Inter,-apple-system,"Segoe UI",Roboto,sans-serif;background:linear-gradient(135deg,#eaf1fb,#fff,#fdeceb);color:#1E2A3A;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.box{width:100%;max-width:440px;background:#fff;border:1px solid var(--bd);border-top:4px solid var(--a);border-radius:16px;padding:32px 28px;box-shadow:0 8px 24px rgba(0,0,0,.08);position:relative}
+.top-bar{display:flex;justify-content:flex-end;margin-bottom:15px}
+select.lang-sel{padding:6px 10px;border:1px solid var(--bd);border-radius:8px;font-family:inherit;font-size:14px;background:var(--bg);cursor:pointer;outline:none}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.3rem;color:var(--p);margin-bottom:18px}
+.f{display:inline-block;width:30px;height:20px;border-radius:3px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.f.ca{background:linear-gradient(90deg,#d52b1e 25%,#fff 25% 75%,#d52b1e 75%);position:relative}
+.f.ca::after{content:"\1F341";position:absolute;inset:0;font-size:11px;text-align:center;line-height:20px}
 .f.us{background:repeating-linear-gradient(180deg,#b22234 0 7.692%,#fff 7.692% 15.384%);position:relative;margin-left:-8px}
 .f.us::after{content:"";position:absolute;left:0;top:0;width:40%;height:54%;background:#3c3b6e}
-/* auth */
-#auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#0b2240,#12355b 55%,#7a1020)}
-.box{width:100%;max-width:400px;background:#fff;border-radius:16px;padding:30px 28px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
-.box h1{font-size:1.3rem;color:var(--p);margin:12px 0 4px}.box p.s{color:var(--mu);font-size:.88rem;margin-bottom:8px}
-.msg{margin-top:12px;font-size:.85rem;padding:9px 12px;border-radius:9px;background:#FDECEC;color:#9B1C1C}
-/* layout */
-#app{display:flex;min-height:100vh}
-aside{width:250px;background:linear-gradient(180deg,#0b2240,#12355b);color:#cfe0f5;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;flex:none;transition:transform .25s;z-index:30}
-.brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:1.1rem;padding:22px 20px;border-bottom:1px solid rgba(255,255,255,.1)}
-nav{padding:14px 12px;flex:1}
-nav button{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;color:#cfe0f5;padding:12px 14px;border-radius:10px;font-weight:500;margin-bottom:4px;text-align:left}
-nav button:hover{background:rgba(255,255,255,.08)}
-nav button.on{background:rgba(255,255,255,.14);color:#fff;box-shadow:inset 3px 0 0 #e8b04a}
-nav small{display:block;font-size:.7rem;opacity:.65;font-weight:400}
-.side-foot{padding:14px 12px;border-top:1px solid rgba(255,255,255,.1)}
-.side-foot .btn{width:100%;justify-content:center;background:rgba(255,255,255,.1)}
-main{flex:1;min-width:0}
-.top{display:flex;align-items:center;gap:14px;background:#fff;padding:14px 26px;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:20}
-.top h2{font-size:1.15rem;color:var(--p);flex:1}
-.adm{display:flex;align-items:center;gap:8px;font-size:.85rem;font-weight:600;color:var(--p)}
-.av{width:34px;height:34px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;flex:none}
-#burger{display:none;background:none;border:0;font-size:1.5rem;color:var(--p)}
-.view{padding:26px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}
-.card{background:#fff;border:1px solid var(--bd);border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(15,23,42,.04)}
-.stat .lbl{font-size:.8rem;color:var(--mu);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
-.stat .num{font-size:2rem;font-weight:700;color:var(--p);margin:6px 0 2px}
-.stat .sub{font-size:.78rem;color:var(--mu)}
-.stat{border-top:3px solid var(--a)}.stat:nth-child(2){border-color:#e8b04a}.stat:nth-child(3){border-color:var(--pl)}.stat:nth-child(4){border-color:var(--ok)}
-.cols{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin-top:18px}
-.card h3{font-size:1rem;color:var(--p);margin-bottom:14px}
-.chart{display:flex;align-items:flex-end;gap:8px;height:190px;padding-top:10px}
-.bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:.7rem;color:var(--mu)}
-.bar i{display:block;width:100%;max-width:34px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--a),var(--p));min-height:3px;transition:height .4s}
-.bar b{font-size:.72rem;color:var(--p);margin-bottom:3px}
-.rec{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd)}.rec:last-child{border:0}
-.rec div{min-width:0}.rec strong{display:block;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rec span{font-size:.78rem;color:var(--mu)}
-.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
-.tools .grow{flex:1;min-width:200px}.tools select{width:auto}
-.wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:.9rem}
-th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--bd);white-space:nowrap}
-th{font-size:.74rem;text-transform:uppercase;letter-spacing:.5px;color:var(--mu);background:#f8fafc}
-tr:hover td{background:#fafcff}
-.who{display:flex;align-items:center;gap:10px}
-td input[type=checkbox],th input[type=checkbox]{width:16px;height:16px;padding:0}
-.pg{display:flex;align-items:center;justify-content:space-between;margin-top:14px;font-size:.85rem;color:var(--mu);flex-wrap:wrap;gap:8px}
-.empty{text-align:center;color:var(--mu);padding:30px}
-.set{max-width:560px;margin-bottom:18px}
-.set p{font-size:.85rem;color:var(--mu);margin-bottom:8px}
-.modal{position:fixed;inset:0;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50}
-.mc{background:#fff;border-radius:16px;padding:26px;width:100%;max-width:420px}
-.mc h3{color:var(--p);margin-bottom:14px}
-.dl{display:grid;grid-template-columns:110px 1fr;gap:10px 8px;font-size:.9rem;margin-bottom:18px}.dl dt{color:var(--mu);font-weight:600}.dl dd{word-break:break-all}
-#toast{position:fixed;right:20px;bottom:20px;display:flex;flex-direction:column;gap:8px;z-index:60}
-.t{background:#0b2240;color:#fff;padding:11px 16px;border-radius:10px;font-size:.88rem;box-shadow:0 8px 20px rgba(0,0,0,.25)}
-.t.err{background:var(--danger)}
-@media(max-width:860px){aside{position:fixed;left:0;transform:translateX(-100%)}aside.open{transform:none}#burger{display:block}.cols{grid-template-columns:1fr}.view{padding:16px}.top{padding:12px 16px}.adm span.n{display:none}}
+h1{font-size:1.4rem;color:var(--p);margin-bottom:4px}
+.sub{color:var(--mu);font-size:.9rem;margin-bottom:22px}
+label{display:block;font-size:.85rem;font-weight:600;margin:14px 0 6px}
+input{width:100%;padding:12px 14px;font:inherit;font-size:16px;border:1.5px solid var(--bd);border-radius:12px;background:var(--bg);outline:none}
+input:focus{border-color:var(--p);background:#fff}
+button,.btn{display:inline-block;font:inherit;font-weight:600;padding:12px 20px;border:0;border-radius:40px;background:var(--p);color:#fff;cursor:pointer;text-align:center;text-decoration:none}
+button:hover{background:var(--pl)}
+.full{width:100%;margin-top:22px}
+.msg{margin-top:14px;font-size:.88rem;padding:10px 12px;border-radius:10px;display:none}
+.msg.err{display:block;background:#FDECEC;color:#9B1C1C}
+.msg.ok{display:block;background:#E8F6EC;color:#1E6B34}
+.alt{text-align:center;margin-top:16px;font-size:.88rem;color:var(--mu)}
+.alt a{color:var(--p);font-weight:600;text-decoration:none}
+.note{margin-top:14px;font-size:.78rem;color:var(--mu);text-align:center}
 </style>
 </head>
 <body>
-
-<!-- ===== Admin sign-in / setup ===== -->
-<div id="auth">
-  <div class="box">
-    <span class="f ca"></span><span class="f us"></span>
-    <div id="setup" hidden>
-      <h1>Create Admin Password</h1><p class="s">অ্যাডমিন পাসওয়ার্ড তৈরি করুন (min 8 characters)</p>
-      <form id="fs"><label for="s1">New password</label><input id="s1" type="password" autocomplete="new-password">
-      <label for="s2">Confirm password</label><input id="s2" type="password" autocomplete="new-password">
-      <button class="btn" style="width:100%;justify-content:center;margin-top:18px">Create &amp; Continue</button><div id="ms" class="msg" hidden></div></form>
-    </div>
-    <div id="gate" hidden>
-      <h1>Admin Sign In</h1><p class="s">সীমাবদ্ধ এলাকা — শুধু অ্যাডমিনদের জন্য</p>
-      <form id="fg"><label for="g1">Password</label><input id="g1" type="password" autocomplete="current-password">
-      <button class="btn" style="width:100%;justify-content:center;margin-top:18px">Sign In</button><div id="mg" class="msg" hidden></div></form>
-    </div>
+<div class="box">
+  <div class="top-bar">
+    <select id="langSel" class="lang-sel">
+      <option value="en">English</option>
+      <option value="bn">বাংলা</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+      <option value="de">Deutsch</option>
+      <option value="pt">Português</option>
+      <option value="hi">हिन्दी</option>
+      <option value="ar">العربية</option>
+      <option value="zh">中文</option>
+      <option value="ja">日本語</option>
+    </select>
   </div>
+
+  <div class="brand"><span><span class="f ca"></span><span class="f us"></span></span> GlobalWork</div>
+  
+  <h1 data-i18n="heading">Sign Up</h1>
+  <p class="sub" data-i18n="subheading">Create your account</p>
+  
+  <form id="f" novalidate>
+    <label for="n" data-i18n="lblName">Full Name</label>
+    <input id="n" autocomplete="name">
+    
+    <label for="e" data-i18n="lblEmail">Email</label>
+    <input id="e" type="email" autocomplete="email">
+    
+    <label for="p" data-i18n="lblPhone">Phone</label>
+    <input id="p" type="tel" autocomplete="tel">
+    
+    <label for="w" data-i18n="lblPass">Password (min 6)</label>
+    <input id="w" type="password" autocomplete="new-password">
+    
+    <button class="full" type="submit" data-i18n="btnSignup">Create Account</button>
+    <div id="m" class="msg"></div>
+  </form>
+  
+  <p class="alt"><span data-i18n="hasAccount">Already have an account?</span> <a href="login.html" data-i18n="logIn">Log In</a></p>
+  <p class="note" data-i18n="demoNote">Your data will be securely saved online.</p>
 </div>
-
-<!-- ===== Dashboard app ===== -->
-<div id="app" hidden>
-  <aside id="side">
-    <div class="brand"><span><span class="f ca"></span><span class="f us"></span></span> GlobalWork</div>
-    <nav>
-      <button data-v="dash" class="on">📊 <span>Dashboard<small>ড্যাশবোর্ড</small></span></button>
-      <button data-v="users">👥 <span>Users<small>ব্যবহারকারী</small></span></button>
-      <button data-v="payment">💳 <span>Payment<small>পেমেন্ট সেটিংস</small></span></button>
-      <button data-v="set">⚙️ <span>Settings<small>সেটিংস</small></span></button>
-    </nav>
-    <div class="side-foot"><button class="btn" id="out">Sign Out</button></div>
-  </aside>
-  <main>
-    <div class="top"><button id="burger" aria-label="Menu">☰</button><h2 id="title">Dashboard</h2><button class="btn ghost sm" id="rf">⟳ Refresh</button><div class="adm"><span class="av">AD</span><span class="n">Admin</span></div></div>
-
-    <section id="v-dash" class="view">
-      <div class="grid">
-        <div class="card stat"><div class="lbl">Total users</div><div class="num" id="s-all">0</div><div class="sub">মোট নিবন্ধিত</div></div>
-        <div class="card stat"><div class="lbl">New today</div><div class="num" id="s-today">0</div><div class="sub">আজকে নতুন</div></div>
-        <div class="card stat"><div class="lbl">Last 7 days</div><div class="num" id="s-7">0</div><div class="sub">গত ৭ দিন</div></div>
-        <div class="card stat"><div class="lbl">Last 30 days</div><div class="num" id="s-30">0</div><div class="sub">গত ৩০ দিন</div></div>
-      </div>
-      <div class="cols">
-        <div class="card"><h3>Sign-ups — last 14 days</h3><div class="chart" id="chart"></div></div>
-        <div class="card"><h3>Recent users</h3><div id="recent"></div></div>
-      </div>
-    </section>
-
-    <section id="v-users" class="view" hidden>
-      <div class="card">
-        <div class="tools">
-          <input class="grow" id="q" placeholder="Search name, email or phone…">
-          <select id="sort"><option value="new">Newest first</option><option value="old">Oldest first</option><option value="az">Name A–Z</option></select>
-          <button class="btn danger sm" id="bulk" hidden>Delete selected</button>
-        </div>
-        <div class="wrap"><table><thead><tr><th><input type="checkbox" id="all"></th><th>User</th><th>Email</th><th>Phone</th><th>Joined</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
-        <div class="pg"><span id="info"></span><span><button class="btn ghost sm" id="pv">‹ Prev</button> <button class="btn ghost sm" id="nx">Next ›</button></span></div>
-      </div>
-    </section>
-
-    <!-- পেমেন্ট সেটিংস পেজ -->
-    <section id="v-payment" class="view" hidden>
-      <div class="card set">
-        <h3>💳 Payment Method Settings</h3>
-        <p>এখানে আপনার পেমেন্ট নাম্বার ও অ্যাড্রেসগুলো পরিবর্তন করুন। এই তথ্যগুলোই গ্রাহকদের কাছে দেখানো হবে।</p>
-        
-        <label>bKash Number</label>
-        <input type="text" id="p-bkash" placeholder="01XXXXXXXXX">
-        
-        <label>Nagad Number</label>
-        <input type="text" id="p-nagad" placeholder="01XXXXXXXXX">
-        
-        <label>Rocket Account Number</label>
-        <input type="text" id="p-rocket" placeholder="01XXXXXXXXX-X">
-        
-        <label>UPI ID (India)</label>
-        <input type="text" id="p-upi" placeholder="yourname@upi">
-
-        <label>Google Pay UPI ID (India)</label>
-        <input type="text" id="p-gpay" placeholder="yourname@okicici">
-
-        <label>Indian Bank Name & Account</label>
-        <input type="text" id="p-indianbank" placeholder="e.g. HDFC Bank - 50100234567890">
-        
-        <label>Bank Name & Account (Bangladesh)</label>
-        <input type="text" id="p-bank" placeholder="e.g. Dutch Bangla Bank - 1234567890">
-        
-        <label>Crypto USDT (TRC20) Address</label>
-        <input type="text" id="p-usdt" placeholder="TXYZ...">
-        
-        <label>Crypto BTC Address</label>
-        <input type="text" id="p-btc" placeholder="1A1z...">
-        
-        <button class="btn" style="margin-top:20px;" onclick="savePaymentSettings()">Save Settings</button>
-      </div>
-    </section>
-
-    <section id="v-set" class="view" hidden>
-      <div class="card set"><h3>Change admin password</h3>
-        <form id="fp"><label>Current password</label><input id="c0" type="password" autocomplete="current-password">
-        <label>New password (min 8)</label><input id="c1" type="password" autocomplete="new-password">
-        <button class="btn" style="margin-top:14px">Update password</button></form></div>
-    </section>
-  </main>
-</div>
-
-<div id="modal" class="modal" hidden><div class="mc" id="mc"></div></div>
-<div id="toast"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+// ====== ১. আপনার Firebase কনফিগারেশন ======
 const firebaseConfig = {
   apiKey: "AIzaSyCNWEeJ249mzef1-QMc2YiVk7F3un8eP3M",
   authDomain: "my-farm-job-app.firebaseapp.com",
+  databaseURL: "https://my-farm-job-app-default-rtdb.firebaseio.com",
   projectId: "my-farm-job-app",
   storageBucket: "my-farm-job-app.firebasestorage.app",
   messagingSenderId: "185581371494",
-  appId: "1:185581371494:web:02580d927e5186ffb3f1a7"
+  appId: "1:185581371494:web:02580d927e5186ffb3f1a7",
+  measurementId: "G-WP48B1HGL2"
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
-// LocalStorage Helper
-var $ = function (i) { return document.getElementById(i); };
-function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k) || 'null'); localStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } }
-function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt !== undefined) e.textContent = txt; return e; }
-function toast(m, err) { var t = el('div', 't' + (err ? ' err' : ''), m); $('toast').appendChild(t); setTimeout(function () { t.remove(); }, 3200); }
-function ini(n) { var p = String(n || '?').trim().split(/\s+/); return ((p[0] || '?')[0] + (p[1] ? p[1][0] : '')).toUpperCase(); }
-function dstr(a) { 
-  if(!a) return '—';
-  let d = a.toDate ? a.toDate() : new Date(a);
-  return isNaN(d) ? '—' : d.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' }); 
-}
+// ====== ২. Translation Logic ======
+var T = {
+  en: { pageTitle: "Sign Up | GlobalWork", heading: "Sign Up", subheading: "Create your account", lblName: "Full Name", lblEmail: "Email", lblPhone: "Phone", lblPass: "Password (min 6)", btnSignup: "Create Account", hasAccount: "Already have an account?", logIn: "Log In", demoNote: "Your data will be securely saved online.", errFill: "Fill in all fields", errEmail: "Enter a valid email", errPass: "Password min 6 characters", errExists: "Email already registered", errPhone: "Phone number already registered", errSave: "Could not save", okSignup: "Account created! Redirecting..." },
+  bn: { pageTitle: "সাইন আপ | GlobalWork", heading: "সাইন আপ", subheading: "আপনার অ্যাকাউন্ট তৈরি করুন", lblName: "পুরো নাম", lblEmail: "ইমেল", lblPhone: "ফোন নম্বর", lblPass: "পাসওয়ার্ড (কমপক্ষে ৬)", btnSignup: "অ্যাকাউন্ট তৈরি করুন", hasAccount: "অ্যাকাউন্ট আছে?", logIn: "লগইন", demoNote: "আপনার তথ্য নিরাপদে অনলাইনে সেভ হবে।", errFill: "সব ঘর পূরণ করুন", errEmail: "সঠিক ইমেল দিন", errPass: "পাসওয়ার্ড কমপক্ষে ৬ অক্ষর", errExists: "এই ইমেল আগে থেকেই আছে", errPhone: "এই ফোন নম্বর আগে থেকেই আছে", errSave: "সংরক্ষণ করা যায়নি", okSignup: "অ্যাকাউন্ট তৈরি হয়েছে! অপেক্ষা করুন..." },
+  es: { pageTitle: "Registrarse | GlobalWork", heading: "Registrarse", subheading: "Crea tu cuenta", lblName: "Nombre completo", lblEmail: "Correo electrónico", lblPhone: "Teléfono", lblPass: "Contraseña (mín 6)", btnSignup: "Crear cuenta", hasAccount: "¿Ya tienes cuenta?", logIn: "Iniciar sesión", demoNote: "Tus datos se guardarán de forma segura en línea.", errFill: "Complete todos los campos", errEmail: "Ingrese un correo válido", errPass: "Contraseña mín 6 caracteres", errExists: "Correo ya registrado", errPhone: "Teléfono ya registrado", errSave: "No se pudo guardar", okSignup: "¡Cuenta creada! Redirigiendo..." },
+  fr: { pageTitle: "S'inscrire | GlobalWork", heading: "S'inscrire", subheading: "Créez votre compte", lblName: "Nom complet", lblEmail: "E-mail", lblPhone: "Téléphone", lblPass: "Mot de passe (min 6)", btnSignup: "Créer un compte", hasAccount: "Déjà un compte ?", logIn: "Se connecter", demoNote: "Vos données seront enregistrées en ligne en toute sécurité.", errFill: "Remplissez tous les champs", errEmail: "Entrez un e-mail valide", errPass: "Mot de passe min 6 caractères", errExists: "E-mail déjà enregistré", errPhone: "Téléphone déjà enregistré", errSave: "Impossible d'enregistrer", okSignup: "Compte créé ! Redirection..." },
+  de: { pageTitle: "Registrieren | GlobalWork", heading: "Registrieren", subheading: "Erstelle dein Konto", lblName: "Vollständiger Name", lblEmail: "E-Mail", lblPhone: "Telefon", lblPass: "Passwort (min. 6)", btnSignup: "Konto erstellen", hasAccount: "Bereits ein Konto?", logIn: "Anmelden", demoNote: "Ihre Daten werden sicher online gespeichert.", errFill: "Alle Felder ausfüllen", errEmail: "Gültige E-Mail eingeben", errPass: "Passwort min. 6 Zeichen", errExists: "E-Mail bereits registriert", errPhone: "Telefonnummer bereits registriert", errSave: "Speichern fehlgeschlagen", okSignup: "Konto erstellt! Weiterleitung..." },
+  pt: { pageTitle: "Cadastrar-se | GlobalWork", heading: "Cadastrar-se", subheading: "Crie sua conta", lblName: "Nome completo", lblEmail: "E-mail", lblPhone: "Telefone", lblPass: "Senha (mín 6)", btnSignup: "Criar conta", hasAccount: "Já tem conta?", logIn: "Entrar", demoNote: "Seus dados serão salvos online com segurança.", errFill: "Preencha todos os campos", errEmail: "Digite um e-mail válido", errPass: "Senha mín 6 caracteres", errExists: "E-mail já cadastrado", errPhone: "Telefone já cadastrado", errSave: "Não foi possível salvar", okSignup: "Conta criada! Redirecionando..." },
+  hi: { pageTitle: "साइन अप | GlobalWork", heading: "साइन अप", subheading: "अपना खाता बनाएं", lblName: "पूरा नाम", lblEmail: "ईमेल", lblPhone: "फ़ोन", lblPass: "पासवर्ड (कम से कम 6)", btnSignup: "खाता बनाएं", hasAccount: "पहले से खाता है?", logIn: "लॉग इन करें", demoNote: "आपका डेटा सुरक्षित रूप से ऑनलाइन सहेजा जाएगा।", errFill: "सभी फ़ील्ड भरें", errEmail: "मान्य ईमेल दर्ज करें", errPass: "पासवर्ड कम से कम 6 अक्षर", errExists: "ईमेल पहले से पंजीकृत है", errPhone: "फ़ोन नंबर पहले से पंजीकृत है", errSave: "सहेजा नहीं जा सका", okSignup: "खाता बन गया! रीडायरेक्ट हो रहा है..." },
+  ar: { pageTitle: "إنشاء حساب | GlobalWork", heading: "إنشاء حساب", subheading: "أنشئ حسابك", lblName: "الاسم الكامل", lblEmail: "البريد الإلكتروني", lblPhone: "الهاتف", lblPass: "كلمة المرور (6 على الأقل)", btnSignup: "إنشاء حساب", hasAccount: "لديك حساب بالفعل؟", logIn: "تسجيل الدخول", demoNote: "سيتم حفظ بياناتك عبر الإنترنت بأمان.", errFill: "املأ جميع الحقول", errEmail: "أدخل بريدًا إلكترونيًا صحيحًا", errPass: "كلمة المرور 6 أحرف على الأقل", errExists: "البريد الإلكتروني مسجل بالفعل", errPhone: "رقم الهاتف مسجل بالفعل", errSave: "تعذر الحفظ", okSignup: "تم إنشاء الحساب! جارٍ إعادة التوجيه..." },
+  zh: { pageTitle: "注册 | GlobalWork", heading: "注册", subheading: "创建您的账户", lblName: "全名", lblEmail: "电子邮箱", lblPhone: "电话", lblPass: "密码（至少6位）", btnSignup: "创建账户", hasAccount: "已经有账户？", logIn: "登录", demoNote: "您的数据将安全地保存在线。", errFill: "请填写所有字段", errEmail: "请输入有效的电子邮箱", errPass: "密码至少6个字符", errExists: "邮箱已注册", errPhone: "电话号码已注册", errSave: "无法保存", okSignup: "账户已创建！正在跳转..." },
+  ja: { pageTitle: "新規登録 | GlobalWork", heading: "新規登録", subheading: "アカウントを作成", lblName: "氏名", lblEmail: "メールアドレス", lblPhone: "電話番号", lblPass: "パスワード（6文字以上）", btnSignup: "アカウント作成", hasAccount: "すでにアカウントをお持ちですか？", logIn: "ログイン", demoNote: "データは安全にオンラインで保存されます。", errFill: "すべての項目を入力してください", errEmail: "有効なメールアドレスを入力してください", errPass: "パスワードは6文字以上", errExists: "メールアドレスは既に登録されています", errPhone: "電話番号は既に登録されています", errSave: "保存できませんでした", okSignup: "アカウントが作成されました！リダイレクト中..." }
+};
 
-// Auth (LocalStorage Based)
-function admin() { return store('globalwork_admin'); }
-function hashPw(pw, salt) {
-  return crypto.subtle.digest('SHA-256', new TextEncoder().encode(salt + pw)).then(function (b) {
-    return Array.from(new Uint8Array(b)).map(function (x) { return x.toString(16).padStart(2, '0'); }).join('');
-  });
-}
-function route() {
-  var ok = false; try { ok = sessionStorage.getItem('globalwork_admin_ok') === '1'; } catch (e) {}
-  var a = admin();
-  $('auth').hidden = !!(a && ok);
-  $('app').hidden = !(a && ok);
-  $('setup').hidden = !!a; $('gate').hidden = !a;
-  if (a && ok) { refresh(); loadPaymentSettings(); }
-}
-function err(id, m) { var e = $(id); e.textContent = m; e.hidden = false; }
-$('fs').addEventListener('submit', function (ev) {
-  ev.preventDefault();
-  var p = $('s1').value;
-  if (p.length < 8) return err('ms', 'Minimum 8 characters.');
-  if (p !== $('s2').value) return err('ms', 'Passwords do not match.');
-  var salt = Math.random().toString(36).slice(2);
-  hashPw(p, salt).then(function (h) { store('globalwork_admin', { salt: salt, hash: h }); sessionStorage.setItem('globalwork_admin_ok', '1'); route(); });
-});
-$('fg').addEventListener('submit', function (ev) {
-  ev.preventDefault();
-  var a = admin();
-  hashPw($('g1').value, a.salt).then(function (h) {
-    if (h !== a.hash) return err('mg', 'Incorrect password.');
-    sessionStorage.setItem('globalwork_admin_ok', '1'); $('g1').value = ''; route();
-  });
-});
-$('out').addEventListener('click', function () { sessionStorage.removeItem('globalwork_admin_ok'); route(); });
+var currentLang = 'en';
+try { currentLang = localStorage.getItem('globalwork_lang') || 'en'; } catch(e){}
+if (!T[currentLang]) currentLang = 'en';
 
-/* ---------- navigation ---------- */
-var titles = { dash: 'Dashboard', users: 'Users', payment: 'Payment Settings', set: 'Settings' };
-function view(v) {
-  ['dash', 'users', 'payment', 'set'].forEach(function (k) { $('v-' + k).hidden = k !== v; });
-  document.querySelectorAll('nav button').forEach(function (b) { b.classList.toggle('on', b.dataset.v === v); });
-  $('title').textContent = titles[v]; $('side').classList.remove('open');
-}
-document.querySelectorAll('nav button').forEach(function (b) { b.addEventListener('click', function () { view(b.dataset.v); }); });
-$('burger').addEventListener('click', function () { $('side').classList.toggle('open'); });
-$('rf').addEventListener('click', function () { refresh(); loadPaymentSettings(); toast('Refreshed'); });
-
-/* ---------- Payment Settings ---------- */
-function loadPaymentSettings() {
-  var p = store('globalwork_payment_settings') || {
-    bkash: "01712345678", nagad: "01812345678", rocket: "019123456789-1",
-    upi: "globalwork@upi", gpay: "globalwork@okicici",
-    indianbank: "HDFC Bank - 50100234567890 (GlobalWork)",
-    bank: "Dutch Bangla Bank - 1234567890 (GlobalWork Ltd)",
-    usdt: "TXYZ1234567890USDT", btc: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
-  };
-  $('p-bkash').value = p.bkash; $('p-nagad').value = p.nagad; $('p-rocket').value = p.rocket;
-  $('p-upi').value = p.upi || ""; $('p-gpay').value = p.gpay || ""; $('p-indianbank').value = p.indianbank || "";
-  $('p-bank').value = p.bank; $('p-usdt').value = p.usdt; $('p-btc').value = p.btc;
-}
-function savePaymentSettings() {
-  var p = {
-    bkash: $('p-bkash').value, nagad: $('p-nagad').value, rocket: $('p-rocket').value,
-    upi: $('p-upi').value, gpay: $('p-gpay').value, indianbank: $('p-indianbank').value,
-    bank: $('p-bank').value, usdt: $('p-usdt').value, btc: $('p-btc').value
-  };
-  store('globalwork_payment_settings', p);
-  toast('Payment settings saved successfully!');
-}
-
-/* ---------- Fetch Users from Firebase ---------- */
-let firebaseUsers = []; // গ্লোবাল ভেরিয়েবল
-async function fetchFirebaseUsers() {
-  try {
-    const querySnapshot = await getDocs(collection(db, "users"));
-    firebaseUsers = [];
-    querySnapshot.forEach((doc) => {
-      firebaseUsers.push(doc.data());
-    });
-  } catch (e) {
-    console.error("Error fetching users: ", e);
-    toast("Failed to load users", true);
-  }
-}
-
-/* ---------- dashboard ---------- */
-function dayKey(d) { return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
-function dash() {
-  var us = firebaseUsers, now = new Date(), t0 = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime(), D = 864e5;
-  
-  function since(ms) { 
-    return us.filter(function (u) { 
-      let uDate = u.createdAt ? (u.createdAt.toDate ? u.createdAt.toDate().getTime() : new Date(u.createdAt).getTime()) : 0;
-      return uDate >= ms; 
-    }).length; 
-  }
-  
-  $('s-all').textContent = us.length; $('s-today').textContent = since(t0);
-  $('s-7').textContent = since(t0 - 6 * D); $('s-30').textContent = since(t0 - 29 * D);
-  
-  var counts = {}; 
-  us.forEach(function (u) { 
-    if (u.createdAt) { 
-      let d = u.createdAt.toDate ? u.createdAt.toDate() : new Date(u.createdAt);
-      if(!isNaN(d)) {
-        var k = dayKey(d); counts[k] = (counts[k] || 0) + 1; 
+function applyI18n() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (T[currentLang][key]) {
+      if (el.tagName === 'TITLE') {
+        document.title = T[currentLang][key];
+      } else {
+        el.textContent = T[currentLang][key];
       }
-    } 
+    }
   });
-  
-  var days = [], max = 1;
-  for (var i = 13; i >= 0; i--) { var d = new Date(t0 - i * D), c = counts[dayKey(d)] || 0; days.push({ d: d, c: c }); if (c > max) max = c; }
-  var ch = $('chart'); ch.textContent = '';
-  days.forEach(function (x) {
-    var b = el('div', 'bar'), n = el('b', '', x.c || ''), bar = el('i'); bar.style.height = (x.c / max * 85) + '%';
-    bar.title = x.d.toDateString() + ': ' + x.c;
-    b.appendChild(n); b.appendChild(bar); b.appendChild(el('span', '', x.d.getDate())); ch.appendChild(b);
-  });
-  
-  var rc = $('recent'); rc.textContent = '';
-  us.slice().sort(function (a, b) { 
-    let da = a.createdAt ? (a.createdAt.toDate ? a.createdAt.toDate().getTime() : new Date(a.createdAt).getTime()) : 0;
-    let db = b.createdAt ? (b.createdAt.toDate ? b.createdAt.toDate().getTime() : new Date(b.createdAt).getTime()) : 0;
-    return db - da; 
-  }).slice(0, 5).forEach(function (u) {
-    var r = el('div', 'rec'), d = el('div'); 
-    d.appendChild(el('strong', '', u.fullName)); 
-    d.appendChild(el('span', '', u.email + ' · ' + dstr(u.createdAt)));
-    r.appendChild(el('span', 'av', ini(u.fullName))); r.appendChild(d); rc.appendChild(r);
-  });
-  if (!us.length) rc.appendChild(el('div', 'empty', 'No users yet / কোনো ব্যবহারকারী নেই'));
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
 }
 
-/* ---------- users ---------- */
-var st = { page: 1, per: 10, sel: {} };
-function filtered() {
-  var q = $('q').value.trim().toLowerCase(), s = $('sort').value;
-  var r = firebaseUsers.filter(function (u) { return !q || (u.fullName + ' ' + u.email + ' ' + u.phone).toLowerCase().indexOf(q) > -1; });
-  r.sort(function (a, b) {
-    if (s === 'az') return (a.fullName || '').localeCompare(b.fullName || '');
-    let da = a.createdAt ? (a.createdAt.toDate ? a.createdAt.toDate().getTime() : new Date(a.createdAt).getTime()) : 0;
-    let db = b.createdAt ? (b.createdAt.toDate ? b.createdAt.toDate().getTime() : new Date(b.createdAt).getTime()) : 0;
-    return s === 'old' ? da - db : db - da;
-  });
-  return r;
-}
-function users() {
-  var r = filtered(), pages = Math.max(1, Math.ceil(r.length / st.per));
-  if (st.page > pages) st.page = pages;
-  var slice = r.slice((st.page - 1) * st.per, st.page * st.per), tb = $('rows'); tb.textContent = '';
-  slice.forEach(function (u) {
-    var tr = el('tr'), c0 = el('td'), cb = el('input'); cb.type = 'checkbox'; cb.checked = !!st.sel[u.email];
-    cb.onchange = function () { if (cb.checked) st.sel[u.email] = 1; else delete st.sel[u.email]; bulkUi(); };
-    c0.appendChild(cb); tr.appendChild(c0);
-    var c1 = el('td'), w = el('div', 'who'); w.appendChild(el('span', 'av', ini(u.fullName))); w.appendChild(el('strong', '', u.fullName)); c1.appendChild(w); tr.appendChild(c1);
-    [u.email, u.phone, dstr(u.createdAt)].forEach(function (v) { tr.appendChild(el('td', '', v)); });
-    var c5 = el('td'), v = el('button', 'btn ghost sm', 'View');
-    v.onclick = function () { detail(u); };
-    c5.appendChild(v); tr.appendChild(c5); tb.appendChild(tr);
-  });
-  if (!slice.length) { var tr = el('tr'), td = el('td', 'empty', 'No users found / কোনো ব্যবহারকারী পাওয়া যায়নি'); td.colSpan = 6; tr.appendChild(td); tb.appendChild(tr); }
-  $('info').textContent = r.length ? ('Showing ' + ((st.page - 1) * st.per + 1) + '–' + Math.min(st.page * st.per, r.length) + ' of ' + r.length) : '0 results';
-  $('pv').disabled = st.page <= 1; $('nx').disabled = st.page >= pages; $('all').checked = false; bulkUi();
-}
-function bulkUi() { var n = Object.keys(st.sel).length; $('bulk').hidden = !n; $('bulk').textContent = 'Delete selected (' + n + ')'; }
-function detail(u) {
-  var mc = $('mc'); mc.textContent = '';
-  mc.appendChild(el('h3', '', 'User details'));
-  var top = el('div', 'who'); top.style.marginBottom = '16px'; var a = el('span', 'av', ini(u.fullName)); a.style.cssText = 'width:48px;height:48px;font-size:1rem';
-  top.appendChild(a); top.appendChild(el('strong', '', u.fullName)); mc.appendChild(top);
-  var dl = el('dl', 'dl');
-  [['Email', u.email], ['Phone', u.phone || '—'], ['Joined', dstr(u.createdAt)]].forEach(function (p) { dl.appendChild(el('dt', '', p[0])); dl.appendChild(el('dd', '', p[1])); });
-  mc.appendChild(dl);
-  var row = el('div'), c = el('button', 'btn ghost', 'Close');
-  c.onclick = closeM;
-  row.appendChild(c); mc.appendChild(row); $('modal').hidden = false;
-}
-function closeM() { $('modal').hidden = true; }
-$('modal').addEventListener('click', function (e) { if (e.target === $('modal')) closeM(); });
-$('q').addEventListener('input', function () { st.page = 1; users(); });
-$('sort').addEventListener('change', function () { st.page = 1; users(); });
-$('pv').addEventListener('click', function () { st.page--; users(); });
-$('nx').addEventListener('click', function () { st.page++; users(); });
+var langSel = document.getElementById('langSel');
+langSel.value = currentLang;
+applyI18n();
 
-/* ---------- settings ---------- */
-$('fp').addEventListener('submit', function (ev) {
-  ev.preventDefault();
-  var a = admin(), n = $('c1').value;
-  if (n.length < 8) return toast('New password: minimum 8 characters', true);
-  hashPw($('c0').value, a.salt).then(function (h) {
-    if (h !== a.hash) return toast('Current password is incorrect', true);
-    var salt = Math.random().toString(36).slice(2);
-    hashPw(n, salt).then(function (nh) { store('globalwork_admin', { salt: salt, hash: nh }); $('fp').reset(); toast('Password updated'); });
-  });
+langSel.addEventListener('change', function(e) {
+  currentLang = e.target.value;
+  try { localStorage.setItem('globalwork_lang', currentLang); } catch(e){}
+  applyI18n();
 });
 
-// নতুন করে ডেটা লোড করা
-async function refresh() { 
-  await fetchFirebaseUsers(); 
-  dash(); 
-  users(); 
-}
-route();
+// ====== ৩. Firebase Signup Logic ======
+function show(el,cls,t){el.className='msg '+cls;el.textContent=t}
+
+document.getElementById('f').addEventListener('submit', async function(ev){
+  ev.preventDefault();
+  var m = document.getElementById('m');
+  var n = document.getElementById('n').value.trim();
+  var e = document.getElementById('e').value.trim().toLowerCase();
+  var p = document.getElementById('p').value.trim();
+  var w = document.getElementById('w').value;
+  var t = T[currentLang];
+
+  // ফর্ম ভ্যালিডেশন
+  if(!n || !e || !p || !w){ show(m,'err',t.errFill); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){ show(m,'err',t.errEmail); return; }
+  if(w.length < 6){ show(m,'err',t.errPass); return; }
+
+  show(m, 'ok', 'Processing...'); // লোডিং মেসেজ
+
+  try {
+    // 🔴 ফোন নম্বরটি আগে থেকে ডেটাবেসে আছে কিনা চেক করা (Firestore)
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("phone", "==", p));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      show(m, 'err', t.errPhone); // ফোন নম্বর আগে থেকে থাকলে এরর
+      return;
+    }
+
+    // 🔴 নতুন ইউজার তৈরি (Firebase Authentication)
+    const userCredential = await createUserWithEmailAndPassword(auth, e, w);
+    const user = userCredential.user;
+
+    // 🔴 ইউজারের তথ্য Firestore-এ সেভ করা
+    await setDoc(doc(db, "users", user.uid), {
+      fullName: n,
+      email: e,
+      phone: p,
+      role: "user", // ডিফল্ট রোল
+      createdAt: new Date()
+    });
+
+    // সফল হলে মেসেজ দেখানো এবং রিডাইরেক্ট করা
+    show(m, 'ok', t.okSignup);
+    setTimeout(function(){ location.href = 'index.html'; }, 1500);
+
+  } catch (error) {
+    // Firebase থেকে আসা এরর (যেমন: ইমেইল আগে থেকে থাকলে)
+    if (error.code === 'auth/email-already-in-use') {
+      show(m, 'err', t.errExists);
+    } else {
+      show(m, 'err', 'Error: ' + error.message);
+    }
+  }
+});
 </script>
 </body>
 </html>
