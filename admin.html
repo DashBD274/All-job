@@ -137,7 +137,7 @@ td input[type=checkbox],th input[type=checkbox]{width:16px;height:16px;padding:0
           <input class="grow" id="q" placeholder="Search name, email or phone…">
           <select id="sort"><option value="new">Newest first</option><option value="old">Oldest first</option><option value="az">Name A–Z</option></select>
         </div>
-        <div class="wrap"><table><thead><tr><th><input type="checkbox" id="all"></th><th>User</th><th>Email</th><th>Phone</th><th>Joined</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+        <div class="wrap"><table><thead><tr><th>User</th><th>Email</th><th>Phone</th><th>Joined</th><th>Actions</th></tr></thead><tbody id="rows"></tbody></table></div>
         <div class="pg"><span id="info"></span><span><button class="btn ghost sm" id="pv">‹ Prev</button> <button class="btn ghost sm" id="nx">Next ›</button></span></div>
       </div>
     </section>
@@ -193,15 +193,17 @@ td input[type=checkbox],th input[type=checkbox]{width:16px;height:16px;padding:0
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCNWEeJ249mzef1-QMc2YiVk7F3un8eP3M",
+  apiKey: "AIzaSyCnWEeJ249mZef1-QmGzYk9Fr3un8mP3NI",
   authDomain: "my-farm-job-app.firebaseapp.com",
+  databaseURL: "https://my-farm-job-app-default-rtdb.firebaseio.com",
   projectId: "my-farm-job-app",
   storageBucket: "my-farm-job-app.firebasestorage.app",
-  messagingSenderId: "185581371494",
-  appId: "1:185581371494:web:02580d927e5186ffb3f1a7"
+  messagingSenderId: "185501371494",
+  appId: "1:185501371494:web:02580b927e5186ffb3f1a7",
+  measurementId: "G-WP4081HGL2"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -286,6 +288,7 @@ function savePaymentSettings() {
   store('globalwork_payment_settings', p);
   toast('Payment settings saved successfully!');
 }
+window.savePaymentSettings = savePaymentSettings;
 
 /* ---------- Fetch Users from Firebase ---------- */
 let firebaseUsers = [];
@@ -294,7 +297,8 @@ async function fetchFirebaseUsers() {
     const querySnapshot = await getDocs(collection(db, "users"));
     firebaseUsers = [];
     querySnapshot.forEach((doc) => {
-      firebaseUsers.push(doc.data());
+      // doc.id হলো ইউজারের UID, যা আপডেট বা ডিলিট করার জন্য দরকার হবে
+      firebaseUsers.push({ id: doc.id, ...doc.data() });
     });
   } catch (e) {
     console.error("Error fetching users: ", e);
@@ -351,7 +355,7 @@ function dash() {
 }
 
 /* ---------- users ---------- */
-var st = { page: 1, per: 10, sel: {} };
+var st = { page: 1, per: 10 };
 function filtered() {
   var q = $('q').value.trim().toLowerCase(), s = $('sort').value;
   var r = firebaseUsers.filter(function (u) { return !q || (u.fullName + ' ' + u.email + ' ' + u.phone).toLowerCase().indexOf(q) > -1; });
@@ -367,35 +371,91 @@ function users() {
   var r = filtered(), pages = Math.max(1, Math.ceil(r.length / st.per));
   if (st.page > pages) st.page = pages;
   var slice = r.slice((st.page - 1) * st.per, st.page * st.per), tb = $('rows'); tb.textContent = '';
+  
   slice.forEach(function (u) {
-    var tr = el('tr'), c0 = el('td'), cb = el('input'); cb.type = 'checkbox'; cb.checked = !!st.sel[u.email];
-    cb.onchange = function () { if (cb.checked) st.sel[u.email] = 1; else delete st.sel[u.email]; bulkUi(); };
-    c0.appendChild(cb); tr.appendChild(c0);
+    var tr = el('tr');
+    
     var c1 = el('td'), w = el('div', 'who'); w.appendChild(el('span', 'av', ini(u.fullName))); w.appendChild(el('strong', '', u.fullName)); c1.appendChild(w); tr.appendChild(c1);
     [u.email, u.phone, dstr(u.createdAt)].forEach(function (v) { tr.appendChild(el('td', '', v)); });
-    var c5 = el('td'), v = el('button', 'btn ghost sm', 'View');
-    v.onclick = function () { detail(u); };
-    c5.appendChild(v); tr.appendChild(c5); tb.appendChild(tr);
+    
+    // Actions Column (Edit & Delete)
+    var c5 = el('td');
+    c5.style.display = 'flex';
+    c5.style.gap = '8px';
+
+    var editBtn = el('button', 'btn ghost sm', 'Edit');
+    editBtn.onclick = function () { editUser(u); };
+    
+    var delBtn = el('button', 'btn danger sm', 'Delete');
+    delBtn.onclick = function () { deleteUser(u.id, u.fullName); };
+
+    c5.appendChild(editBtn); 
+    c5.appendChild(delBtn);
+    tr.appendChild(c5); 
+    
+    tb.appendChild(tr);
   });
-  if (!slice.length) { var tr = el('tr'), td = el('td', 'empty', 'No users found / কোনো ব্যবহারকারী পাওয়া যায়নি'); td.colSpan = 6; tr.appendChild(td); tb.appendChild(tr); }
+  
+  if (!slice.length) { var tr = el('tr'), td = el('td', 'empty', 'No users found / কোনো ব্যবহারকারী পাওয়া যায়নি'); td.colSpan = 5; tr.appendChild(td); tb.appendChild(tr); }
   $('info').textContent = r.length ? ('Showing ' + ((st.page - 1) * st.per + 1) + '–' + Math.min(st.page * st.per, r.length) + ' of ' + r.length) : '0 results';
-  $('pv').disabled = st.page <= 1; $('nx').disabled = st.page >= pages; $('all').checked = false; bulkUi();
+  $('pv').disabled = st.page <= 1; $('nx').disabled = st.page >= pages;
 }
-function bulkUi() { var n = Object.keys(st.sel).length; $('bulk').hidden = !n; $('bulk').textContent = 'Delete selected (' + n + ')'; }
-function detail(u) {
+
+/* ---------- Edit & Delete Functions ---------- */
+function editUser(u) {
   var mc = $('mc'); mc.textContent = '';
-  mc.appendChild(el('h3', '', 'User details'));
-  var top = el('div', 'who'); top.style.marginBottom = '16px'; var a = el('span', 'av', ini(u.fullName)); a.style.cssText = 'width:48px;height:48px;font-size:1rem';
-  top.appendChild(a); top.appendChild(el('strong', '', u.fullName)); mc.appendChild(top);
-  var dl = el('dl', 'dl');
-  [['Email', u.email], ['Phone', u.phone || '—'], ['Joined', dstr(u.createdAt)]].forEach(function (p) { dl.appendChild(el('dt', '', p[0])); dl.appendChild(el('dd', '', p[1])); });
-  mc.appendChild(dl);
-  var row = el('div'), c = el('button', 'btn ghost', 'Close');
-  c.onclick = closeM;
-  row.appendChild(c); mc.appendChild(row); $('modal').hidden = false;
+  mc.appendChild(el('h3', '', 'Edit User Details'));
+  
+  var f = el('form');
+  f.innerHTML = `
+    <label>Full Name</label>
+    <input type="text" id="edit-name" value="${u.fullName || ''}" required>
+    <label>Phone</label>
+    <input type="text" id="edit-phone" value="${u.phone || ''}" required>
+    
+    <div style="display:flex; gap:10px; margin-top:20px;">
+      <button type="button" class="btn ghost" style="flex:1; justify-content:center;" onclick="document.getElementById('modal').hidden=true">Cancel</button>
+      <button type="submit" class="btn" style="flex:1; justify-content:center;">Save Changes</button>
+    </div>
+  `;
+
+  f.onsubmit = async function(ev) {
+    ev.preventDefault();
+    var newName = $('edit-name').value.trim();
+    var newPhone = $('edit-phone').value.trim();
+    
+    try {
+      var userRef = doc(db, "users", u.id);
+      await updateDoc(userRef, {
+        fullName: newName,
+        phone: newPhone
+      });
+      toast('User updated successfully!');
+      $('modal').hidden = true;
+      refresh(); // ডাটা রিফ্রেশ করা
+    } catch (error) {
+      console.error("Error updating user: ", error);
+      toast('Failed to update user', true);
+    }
+  };
+
+  mc.appendChild(f); 
+  $('modal').hidden = false;
 }
-function closeM() { $('modal').hidden = true; }
-$('modal').addEventListener('click', function (e) { if (e.target === $('modal')) closeM(); });
+
+async function deleteUser(id, name) {
+  if (!confirm(`Are you sure you want to delete ${name}?`)) return;
+  try {
+    await deleteDoc(doc(db, "users", id));
+    toast('User deleted successfully!');
+    refresh();
+  } catch (error) {
+    console.error("Error deleting user: ", error);
+    toast('Failed to delete user', true);
+  }
+}
+
+/* ---------- search & pagination ---------- */
 $('q').addEventListener('input', function () { st.page = 1; users(); });
 $('sort').addEventListener('change', function () { st.page = 1; users(); });
 $('pv').addEventListener('click', function () { st.page--; users(); });
