@@ -89,6 +89,13 @@ a{text-decoration:none;color:inherit}
         <span>Rocket</span>
       </button>
       
+      <!-- UPI (India) -->
+      <button type="button" class="pay-btn" onclick="selectPayment('upi', this)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" alt="UPI" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+        <span class="icon-fallback" style="display:none;">🇮🇳</span>
+        <span>UPI (India)</span>
+      </button>
+
       <!-- Bank Transfer -->
       <button type="button" class="pay-btn" onclick="selectPayment('bank', this)">
         <span class="icon-fallback">🏦</span>
@@ -96,7 +103,7 @@ a{text-decoration:none;color:inherit}
       </button>
       
       <!-- Crypto -->
-      <button type="button" class="pay-btn" onclick="selectPayment('crypto', this)" style="grid-column: span 2;">
+      <button type="button" class="pay-btn" onclick="selectPayment('crypto', this)">
         <span class="icon-fallback">💎</span>
         <span>Crypto <span class="discount-badge">10% OFF</span></span>
       </button>
@@ -154,6 +161,14 @@ a{text-decoration:none;color:inherit}
         <input type="text" placeholder="Enter TrxID">
       </div>
 
+      <!-- UPI Form -->
+      <div id="form-upi" class="form-group">
+        <label>Send Payment to (Admin UPI ID):</label>
+        <input type="text" id="show-upi" readonly>
+        <label style="margin-top:10px;">Your UPI ID or Transaction ID</label>
+        <input type="text" placeholder="Enter your UPI ID or TXN ID">
+      </div>
+
       <!-- Bank Form -->
       <div id="form-bank" class="form-group">
         <div style="background:#fff; padding:10px; border-radius:4px; border:1px solid #ccc; margin-bottom:10px; font-size:13px; line-height:1.6;">
@@ -197,6 +212,7 @@ a{text-decoration:none;color:inherit}
     try {
       return JSON.parse(localStorage.getItem('globalwork_payment_settings')) || {
         bkash: "01712345678", nagad: "01812345678", rocket: "019123456789-1",
+        upi: "globalwork@upi",
         bank: "Dutch Bangla Bank - 1234567890 (GlobalWork Ltd)",
         usdt: "TXYZ1234567890USDT", btc: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
       };
@@ -209,6 +225,7 @@ a{text-decoration:none;color:inherit}
   document.getElementById('show-bkash').value = settings.bkash;
   document.getElementById('show-nagad').value = settings.nagad;
   document.getElementById('show-rocket').value = settings.rocket;
+  document.getElementById('show-upi').value = settings.upi || "globalwork@upi";
   document.getElementById('show-bank').innerText = settings.bank;
   
   function updateCryptoAddress() {
