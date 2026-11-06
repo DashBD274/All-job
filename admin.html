@@ -110,6 +110,7 @@ td input[type=checkbox],th input[type=checkbox]{width:16px;height:16px;padding:0
     <nav>
       <button data-v="dash" class="on">📊 <span>Dashboard<small>ড্যাশবোর্ড</small></span></button>
       <button data-v="users">👥 <span>Users<small>ব্যবহারকারী</small></span></button>
+      <button data-v="payment">💳 <span>Payment<small>পেমেন্ট সেটিংস</small></span></button>
       <button data-v="set">⚙️ <span>Settings<small>সেটিংস</small></span></button>
     </nav>
     <div class="side-foot"><button class="btn" id="out">Sign Out</button></div>
@@ -140,6 +141,34 @@ td input[type=checkbox],th input[type=checkbox]{width:16px;height:16px;padding:0
         </div>
         <div class="wrap"><table><thead><tr><th><input type="checkbox" id="all"></th><th>User</th><th>Email</th><th>Phone</th><th>Joined</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
         <div class="pg"><span id="info"></span><span><button class="btn ghost sm" id="pv">‹ Prev</button> <button class="btn ghost sm" id="nx">Next ›</button></span></div>
+      </div>
+    </section>
+
+    <!-- পেমেন্ট সেটিংস পেজ -->
+    <section id="v-payment" class="view" hidden>
+      <div class="card set">
+        <h3>💳 Payment Method Settings</h3>
+        <p>এখানে আপনার পেমেন্ট নাম্বার ও অ্যাড্রেসগুলো পরিবর্তন করুন। এই তথ্যগুলোই গ্রাহকদের কাছে দেখানো হবে।</p>
+        
+        <label>bKash Number</label>
+        <input type="text" id="p-bkash" placeholder="01XXXXXXXXX">
+        
+        <label>Nagad Number</label>
+        <input type="text" id="p-nagad" placeholder="01XXXXXXXXX">
+        
+        <label>Rocket Account Number</label>
+        <input type="text" id="p-rocket" placeholder="01XXXXXXXXX-X">
+        
+        <label>Bank Name & Account</label>
+        <input type="text" id="p-bank" placeholder="e.g. Dutch Bangla Bank - 1234567890">
+        
+        <label>Crypto USDT (TRC20) Address</label>
+        <input type="text" id="p-usdt" placeholder="TXYZ...">
+        
+        <label>Crypto BTC Address</label>
+        <input type="text" id="p-btc" placeholder="1A1z...">
+        
+        <button class="btn" style="margin-top:20px;" onclick="savePaymentSettings()">Save Settings</button>
       </div>
     </section>
 
@@ -191,7 +220,7 @@ function route() {
   $('auth').hidden = !!(a && ok);
   $('app').hidden = !(a && ok);
   $('setup').hidden = !!a; $('gate').hidden = !a;
-  if (a && ok) refresh();
+  if (a && ok) { refresh(); loadPaymentSettings(); }
 }
 function err(id, m) { var e = $(id); e.textContent = m; e.hidden = false; }
 $('fs').addEventListener('submit', function (ev) {
@@ -213,15 +242,43 @@ $('fg').addEventListener('submit', function (ev) {
 $('out').addEventListener('click', function () { sessionStorage.removeItem('globalwork_admin_ok'); route(); });
 
 /* ---------- navigation ---------- */
-var titles = { dash: 'Dashboard', users: 'Users', set: 'Settings' };
+var titles = { dash: 'Dashboard', users: 'Users', payment: 'Payment Settings', set: 'Settings' };
 function view(v) {
-  ['dash', 'users', 'set'].forEach(function (k) { $('v-' + k).hidden = k !== v; });
+  ['dash', 'users', 'payment', 'set'].forEach(function (k) { $('v-' + k).hidden = k !== v; });
   document.querySelectorAll('nav button').forEach(function (b) { b.classList.toggle('on', b.dataset.v === v); });
   $('title').textContent = titles[v]; $('side').classList.remove('open');
 }
 document.querySelectorAll('nav button').forEach(function (b) { b.addEventListener('click', function () { view(b.dataset.v); }); });
 $('burger').addEventListener('click', function () { $('side').classList.toggle('open'); });
-$('rf').addEventListener('click', function () { refresh(); toast('Refreshed'); });
+$('rf').addEventListener('click', function () { refresh(); loadPaymentSettings(); toast('Refreshed'); });
+
+/* ---------- Payment Settings (New) ---------- */
+function loadPaymentSettings() {
+  var p = store('globalwork_payment_settings') || {
+    bkash: "01712345678", nagad: "01812345678", rocket: "019123456789-1",
+    bank: "Dutch Bangla Bank - 1234567890 (GlobalWork Ltd)",
+    usdt: "TXYZ1234567890USDT", btc: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
+  };
+  $('p-bkash').value = p.bkash;
+  $('p-nagad').value = p.nagad;
+  $('p-rocket').value = p.rocket;
+  $('p-bank').value = p.bank;
+  $('p-usdt').value = p.usdt;
+  $('p-btc').value = p.btc;
+}
+
+function savePaymentSettings() {
+  var p = {
+    bkash: $('p-bkash').value,
+    nagad: $('p-nagad').value,
+    rocket: $('p-rocket').value,
+    bank: $('p-bank').value,
+    usdt: $('p-usdt').value,
+    btc: $('p-btc').value
+  };
+  store('globalwork_payment_settings', p);
+  toast('Payment settings saved successfully!');
+}
 
 /* ---------- dashboard ---------- */
 function dayKey(d) { return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
@@ -343,7 +400,7 @@ $('wipe').addEventListener('click', function () {
 });
 
 function refresh() { dash(); users(); }
-window.addEventListener('storage', function () { if (!$('app').hidden) refresh(); }); // live update from other tabs
+window.addEventListener('storage', function () { if (!$('app').hidden) refresh(); });
 route();
 </script>
 </body>
