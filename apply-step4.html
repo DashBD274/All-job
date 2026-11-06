@@ -13,49 +13,55 @@ a{text-decoration:none;color:inherit}
 
 /* Header */
 .site-header{background:var(--white);box-shadow:var(--sh-sm);padding:12px 0;border-bottom:3px solid transparent;border-image:linear-gradient(90deg,#d52b1e 0 33%,#fff 33% 50%,#3c3b6e 50% 66%,#b22234 66%) 1; width: 100%;}
-.container{width:100%;max-width:1000px;margin:0 auto;padding:0 20px}
+.container{width:100%;max-width:1200px;margin:0 auto;padding:0 20px}
 .header-inner{display:flex;align-items:center;justify-content:space-between}
 .logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.4rem;color:var(--primary)}
 .logo i{color:var(--accent);font-size:1.6rem}
 
+/* Main Layout */
+.main-layout { display: flex; gap: 20px; padding: 40px 20px; max-width: 1200px; margin: 0 auto; width: 100%; flex: 1; align-items: flex-start;}
+
 /* Form Container */
-.form-wrapper{padding:40px 20px; display: flex; justify-content: center; flex: 1;}
-.form-container{background:#e8e8e8; width:100%; max-width:800px; padding:40px; border-radius:8px; box-shadow:var(--sh-md);}
-.form-container h1{font-size:24px; margin-bottom:20px; color:#222; border-bottom:1px solid #ccc; padding-bottom:10px; display: flex; justify-content: space-between; align-items: center;}
+.form-container{background:#e8e8e8; width:100%; max-width:600px; padding:30px; border-radius:8px; box-shadow:var(--sh-md);}
+.form-container h1{font-size:22px; margin-bottom:20px; color:#222; border-bottom:1px solid #ccc; padding-bottom:10px; display: flex; justify-content: space-between; align-items: center;}
 
 /* Payment Grid */
-.payment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
-.pay-btn { background: #fff; border: 1px solid #ccc; padding: 15px; border-radius: 6px; text-align: center; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.2s; color: #333; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;}
+.payment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px; }
+.pay-btn { background: #fff; border: 1px solid #ccc; padding: 10px; border-radius: 6px; text-align: center; cursor: pointer; font-weight: 600; font-size: 12px; transition: all 0.2s; color: #333; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;}
 .pay-btn:hover { border-color: var(--primary); background: #f8f9fa; }
 .pay-btn.active { border-color: var(--primary); background: #eaf1fb; box-shadow: 0 0 0 2px rgba(18,53,91,0.2); }
-.pay-btn i { font-size: 24px; color: var(--primary); }
+.pay-btn img { height: 24px; object-fit: contain; }
 
 /* Discount Badge */
-.discount-badge { background: #16a34a; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 12px; margin-left: 5px; vertical-align: middle; }
+.discount-badge { background: #16a34a; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 12px; margin-left: 5px; vertical-align: middle; }
 
 /* Form Fields */
 .form-group { margin-bottom: 20px; display: none; }
 .form-group.show { display: block; }
-.form-group label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 8px; color: #222; }
-.form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; font-size: 14px; outline: none; }
+.form-group label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 6px; color: #222; }
+.form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; font-size: 13px; outline: none; }
 .form-group input:focus, .form-group select:focus { border-color: var(--primary); }
 
+/* Admin Panel */
+.admin-panel { background: #fff; width: 100%; max-width: 400px; padding: 30px; border-radius: 8px; box-shadow: var(--sh-md); border-top: 4px solid var(--accent);}
+.admin-panel h2 { font-size: 18px; margin-bottom: 15px; color: #c8102e; }
+.admin-panel p { font-size: 12px; color: #666; margin-bottom: 15px; }
+.admin-group { margin-bottom: 15px; }
+.admin-group label { display: block; font-weight: 600; font-size: 12px; margin-bottom: 5px; }
+.admin-group input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 12px; }
+.save-btn { background: #12355b; color: #fff; border: none; padding: 10px; width: 100%; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px;}
+
 /* Buttons */
-.form-actions{display:flex; justify-content:flex-end; gap: 15px; margin-top:30px; border-top: 1px solid #ccc; padding-top: 20px;}
-.btn{display:inline-flex; align-items:center; justify-content:center; font-weight:600; font-size:14px; padding:10px 30px; border:none; border-radius:4px; cursor:pointer; transition:all .2s;}
+.form-actions{display:flex; justify-content:flex-end; gap: 15px; margin-top:20px; border-top: 1px solid #ccc; padding-top: 15px;}
+.btn{display:inline-flex; align-items:center; justify-content:center; font-weight:600; font-size:13px; padding:8px 24px; border:none; border-radius:4px; cursor:pointer; transition:all .2s;}
 .btn-cancel{background:#e8e8e8; color:#333; border:1px solid #999;}
 .btn-cancel:hover{background:#ddd;}
 .btn-create{background:#4f46e5; color:#fff; border:none;}
 .btn-create:hover{background:#4338ca;}
 
-/* Toast */
-.toast{position:fixed; right:20px; bottom:20px; background:var(--primary); color:#fff; padding:12px 18px; border-radius:10px; font-size:.9rem; box-shadow:0 8px 20px rgba(0,0,0,.25); z-index:300; animation:slideIn .3s ease}
-@keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:none;opacity:1}}
-
-#langSel {padding:8px 12px;border:1px solid var(--border);border-radius:40px;font:inherit;font-size:14px;background:var(--light-bg);cursor:pointer}
-
-@media(max-width:640px){
-  .payment-grid { grid-template-columns: repeat(2, 1fr); }
+@media(max-width:900px){
+  .main-layout { flex-direction: column; }
+  .admin-panel { max-width: 100%; }
 }
 </style>
 </head>
@@ -64,167 +70,255 @@ a{text-decoration:none;color:inherit}
 <header class="site-header">
   <div class="container header-inner">
     <a href="canada-apply.html" class="logo"><i class="fas fa-briefcase"></i><span>GlobalWork</span></a>
-    
-    <select id="langSel">
-      <option value="en">English</option>
-      <option value="bn">বাংলা</option>
-    </select>
+    <div id="langSel-container"></div>
   </div>
 </header>
 
-<div class="form-wrapper">
+<div class="main-layout">
+  
+  <!-- Payment Form -->
   <div class="form-container">
     <h1>
       <span data-i18n="title">Add a payment method</span>
-      <button type="button" style="background:none; border:none; font-size:24px; cursor:pointer; color:#666;" onclick="window.location.href='canada-apply.html'">&times;</button>
     </h1>
     
-    <!-- Payment Options Grid -->
     <div class="payment-grid">
-      <!-- Bangladesh Local Methods -->
-      <button type="button" class="pay-btn active" onclick="selectPayment('bkash', this)"><i>📱</i> <span>bKash</span></button>
-      <button type="button" class="pay-btn" onclick="selectPayment('nagad', this)"><i>📱</i> <span>Nagad</span></button>
-      <button type="button" class="pay-btn" onclick="selectPayment('rocket', this)"><i>📱</i> <span>Rocket</span></button>
-      <button type="button" class="pay-btn" onclick="selectPayment('bank', this)"><i>🏦</i> <span data-i18n="bank">Bank Transfer</span></button>
+      <!-- bKash -->
+      <button type="button" class="pay-btn active" onclick="selectPayment('bkash', this)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/BKash_Logo.svg" alt="bKash">
+      </button>
       
-      <!-- Crypto Method with Discount -->
-      <button type="button" class="pay-btn" onclick="selectPayment('crypto', this)" style="grid-column: span 2;">
-        <i>💎</i> 
-        <span><span data-i18n="crypto">Crypto Payment</span> <span class="discount-badge">10% OFF</span></span>
+      <!-- Nagad -->
+      <button type="button" class="pay-btn" onclick="selectPayment('nagad', this)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Nagad-Logo.png/320px-Nagad-Logo.png" alt="Nagad" style="height: 20px;">
+      </button>
+      
+      <!-- Rocket -->
+      <button type="button" class="pay-btn" onclick="selectPayment('rocket', this)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Rocket_logo.png" alt="Rocket" style="height: 20px;">
+      </button>
+      
+      <!-- Bank Transfer -->
+      <button type="button" class="pay-btn" onclick="selectPayment('bank', this)">
+        <img src="https://cdn-icons-png.flaticon.com/512/2830/2830284.png" alt="Bank">
+      </button>
+      
+      <!-- Crypto -->
+      <button type="button" class="pay-btn" onclick="selectPayment('crypto', this)" style="grid-column: span 2; flex-direction: row; gap: 10px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/6001/6001344.png" alt="Crypto">
+        <span>Crypto <span class="discount-badge">10% OFF</span></span>
       </button>
 
-      <!-- Coming Soon Methods -->
-      <button type="button" class="pay-btn" onclick="showComingSoon('Card')"><i>💳</i> <span>Card</span></button>
-      <button type="button" class="pay-btn" onclick="showComingSoon('PayPal')"><i>🅿️</i> <span>PayPal</span></button>
-      <button type="button" class="pay-btn" onclick="showComingSoon('Apple Pay')"><i>🍎</i> <span>Apple Pay</span></button>
+      <!-- Card -->
+      <button type="button" class="pay-btn" onclick="showComingSoon('Card')">
+        <img src="https://cdn-icons-png.flaticon.com/512/6963/6963703.png" alt="Card">
+      </button>
+
+      <!-- PayPal -->
+      <button type="button" class="pay-btn" onclick="showComingSoon('PayPal')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+      </button>
+
+      <!-- Apple Pay -->
+      <button type="button" class="pay-btn" onclick="showComingSoon('Apple Pay')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" alt="Apple Pay">
+      </button>
     </div>
 
+    <!-- Forms -->
     <form action="#" method="POST" onsubmit="processPayment(event)">
       
       <!-- bKash Form -->
       <div id="form-bkash" class="form-group show">
-        <label data-i18n="bkashLabel">bKash Account Number</label>
+        <label data-i18n="sendTo">Send Payment to (Admin Number):</label>
+        <input type="text" id="admin-bkash" readonly style="background:#f0f0f0; font-weight:bold;">
+        <label data-i18n="bkashLabel" style="margin-top:10px;">Your bKash Number</label>
         <input type="text" placeholder="e.g. 017XXXXXXXX" required>
+        <label style="margin-top:10px;" data-i18n="trxId">Transaction ID (TrxID)</label>
+        <input type="text" placeholder="Enter TrxID" required>
       </div>
 
       <!-- Nagad Form -->
       <div id="form-nagad" class="form-group">
-        <label data-i18n="nagadLabel">Nagad Account Number</label>
+        <label data-i18n="sendTo">Send Payment to (Admin Number):</label>
+        <input type="text" id="admin-nagad" readonly style="background:#f0f0f0; font-weight:bold;">
+        <label style="margin-top:10px;" data-i18n="nagadLabel">Your Nagad Number</label>
         <input type="text" placeholder="e.g. 017XXXXXXXX">
+        <label style="margin-top:10px;" data-i18n="trxId">Transaction ID (TrxID)</label>
+        <input type="text" placeholder="Enter TrxID">
       </div>
 
       <!-- Rocket Form -->
       <div id="form-rocket" class="form-group">
-        <label data-i18n="rocketLabel">Rocket Account Number</label>
+        <label data-i18n="sendTo">Send Payment to (Admin Number):</label>
+        <input type="text" id="admin-rocket" readonly style="background:#f0f0f0; font-weight:bold;">
+        <label style="margin-top:10px;" data-i18n="rocketLabel">Your Rocket Number</label>
         <input type="text" placeholder="e.g. 017XXXXXXXX-1">
+        <label style="margin-top:10px;" data-i18n="trxId">Transaction ID (TrxID)</label>
+        <input type="text" placeholder="Enter TrxID">
       </div>
 
       <!-- Bank Form -->
       <div id="form-bank" class="form-group">
-        <label data-i18n="bankLabel">Bank Name</label>
-        <select>
-          <option value="">Select Bank</option>
-          <option value="DBBL">Dutch-Bangla Bank</option>
-          <option value="BRAC">BRAC Bank</option>
-          <option value="City">City Bank</option>
-          <option value="Other">Other Bank</option>
-        </select>
-        <label style="margin-top:15px;" data-i18n="accNo">Account Number</label>
-        <input type="text" placeholder="Enter Bank Account Number">
+        <div style="background:#fff; padding:10px; border-radius:4px; border:1px solid #ccc; margin-bottom:10px; font-size:13px; line-height:1.6;">
+          <strong data-i18n="adminBankDetails">Admin Bank Details:</strong><br>
+          <span id="admin-bank-name"></span><br>
+          <span id="admin-bank-acc"></span>
+        </div>
+        <label data-i18n="yourBankName">Your Bank Name</label>
+        <input type="text" placeholder="Enter your Bank Name">
+        <label style="margin-top:10px;" data-i18n="yourAccNo">Your Account Number</label>
+        <input type="text" placeholder="Enter your Account Number">
+        <label style="margin-top:10px;" data-i18n="trxId">Transaction ID / Reference</label>
+        <input type="text" placeholder="Enter Reference Number">
       </div>
 
       <!-- Crypto Form -->
       <div id="form-crypto" class="form-group">
-        <div style="background:#fff; border:1px solid #16a34a; padding:15px; border-radius:6px; margin-bottom:15px; color:#16a34a; font-weight:600; font-size:14px;">
+        <div style="background:#fff; border:1px solid #16a34a; padding:10px; border-radius:6px; margin-bottom:15px; color:#16a34a; font-weight:600; font-size:12px;">
           <span data-i18n="cryptoMsg">You will get a 10% discount on the total application fee by paying with cryptocurrency.</span>
         </div>
         <label data-i18n="cryptoSelect">Select Cryptocurrency</label>
-        <select>
+        <select id="crypto-type" onchange="updateCryptoAddress()">
           <option value="USDT">USDT (Tether)</option>
           <option value="BTC">Bitcoin (BTC)</option>
           <option value="ETH">Ethereum (ETH)</option>
         </select>
-        <label style="margin-top:15px;" data-i18n="wallet">Your Wallet Address</label>
-        <input type="text" placeholder="Enter your crypto wallet address">
+        <label style="margin-top:10px;" data-i18n="sendTo">Send Payment to (Admin Wallet):</label>
+        <input type="text" id="admin-crypto" readonly style="background:#f0f0f0; font-weight:bold;">
+        <label style="margin-top:10px;" data-i18n="wallet">Your Wallet Address / TXID</label>
+        <input type="text" placeholder="Enter your TXID">
       </div>
 
       <div class="form-actions">
         <button type="button" class="btn btn-cancel" data-i18n="cancelBtn" onclick="window.history.back()">Cancel</button>
-        <button type="submit" class="btn btn-create" data-i18n="payBtn">Pay Now</button>
+        <button type="submit" class="btn btn-create" data-i18n="payBtn">Submit Payment</button>
       </div>
     </form>
   </div>
+
+  <!-- Admin Panel (For You to Change Numbers) -->
+  <div class="admin-panel">
+    <h2>⚙️ Admin Settings</h2>
+    <p>Change payment numbers here. The website will update instantly.</p>
+    
+    <div class="admin-group">
+      <label>bKash Number</label>
+      <input type="text" id="set-bkash" onchange="saveAdminData()">
+    </div>
+    <div class="admin-group">
+      <label>Nagad Number</label>
+      <input type="text" id="set-nagad" onchange="saveAdminData()">
+    </div>
+    <div class="admin-group">
+      <label>Rocket Number</label>
+      <input type="text" id="set-rocket" onchange="saveAdminData()">
+    </div>
+    <div class="admin-group">
+      <label>Bank Name & Account</label>
+      <input type="text" id="set-bank" onchange="saveAdminData()" placeholder="e.g. DBBL - 123456789">
+    </div>
+    <div class="admin-group">
+      <label>Crypto USDT (TRC20)</label>
+      <input type="text" id="set-usdt" onchange="saveAdminData()">
+    </div>
+    <div class="admin-group">
+      <label>Crypto BTC</label>
+      <input type="text" id="set-btc" onchange="saveAdminData()">
+    </div>
+    <button class="save-btn" onclick="saveAdminData()">Save Settings</button>
+    <div id="save-msg" style="color:green; font-size:12px; margin-top:10px; text-align:center; display:none;">Settings Saved!</div>
+  </div>
+
 </div>
 
 <script>
-  // Translations
-  const T = {
-    en: { 
-      title:"Add a payment method", bank:"Bank Transfer", crypto:"Crypto Payment",
-      bkashLabel:"bKash Account Number", nagadLabel:"Nagad Account Number", rocketLabel:"Rocket Account Number",
-      bankLabel:"Bank Name", accNo:"Account Number", cryptoMsg:"You will get a 10% discount on the total application fee by paying with cryptocurrency.",
-      cryptoSelect:"Select Cryptocurrency", wallet:"Your Wallet Address", cancelBtn:"Cancel", payBtn:"Pay Now"
-    },
-    bn: { 
-      title:"পেমেন্ট পদ্ধতি যুক্ত করুন", bank:"ব্যাংক ট্রান্সফার", crypto:"ক্রিপ্টো পেমেন্ট",
-      bkashLabel:"বিকাশ অ্যাকাউন্ট নম্বর", nagadLabel:"নগদ অ্যাকাউন্ট নম্বর", rocketLabel:"রকেট অ্যাকাউন্ট নম্বর",
-      bankLabel:"ব্যাংকের নাম", accNo:"অ্যাকাউন্ট নম্বর", cryptoMsg:"ক্রিপ্টোকারেন্সি দিয়ে পেমেন্ট করলে মোট আবেদন ফি-তে ১০% ছাড় পাবেন।",
-      cryptoSelect:"ক্রিপ্টোকারেন্সি নির্বাচন করুন", wallet:"আপনার ওয়ালেট ঠিকানা", cancelBtn:"বাতিল", payBtn:"পেমেন্ট করুন"
-    }
+  // Default Admin Data
+  const defaultAdmin = {
+    bkash: "01712345678",
+    nagad: "01812345678",
+    rocket: "019123456789-1",
+    bank: "Dutch Bangla Bank - 1234567890 (GlobalWork Ltd)",
+    usdt: "TXYZ1234567890USDT",
+    btc: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
   };
 
-  let LANG = 'en';
-  try { LANG = localStorage.getItem('globalwork_lang') || 'en'; } catch(e) {}
-  if(!T[LANG]) LANG = 'en';
+  // Load Admin Data from LocalStorage
+  function loadAdminData() {
+    let data = JSON.parse(localStorage.getItem('adminPaymentData'));
+    if(!data) data = defaultAdmin;
+    
+    document.getElementById('set-bkash').value = data.bkash;
+    document.getElementById('set-nagad').value = data.nagad;
+    document.getElementById('set-rocket').value = data.rocket;
+    document.getElementById('set-bank').value = data.bank;
+    document.getElementById('set-usdt').value = data.usdt;
+    document.getElementById('set-btc').value = data.btc;
 
-  function applyI18n() {
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (T[LANG][key]) el.innerHTML = T[LANG][key];
-    });
-    document.documentElement.lang = LANG;
-    document.getElementById('langSel').value = LANG;
+    // Show on frontend
+    document.getElementById('admin-bkash').value = data.bkash;
+    document.getElementById('admin-nagad').value = data.nagad;
+    document.getElementById('admin-rocket').value = data.rocket;
+    document.getElementById('admin-bank-name').textContent = data.bank;
+    updateCryptoAddress();
   }
 
-  document.getElementById('langSel').addEventListener('change', function(e) {
-    LANG = e.target.value;
-    try { localStorage.setItem('globalwork_lang', LANG); } catch(x) {}
-    applyI18n();
-  });
+  // Save Admin Data
+  function saveAdminData() {
+    const data = {
+      bkash: document.getElementById('set-bkash').value,
+      nagad: document.getElementById('set-nagad').value,
+      rocket: document.getElementById('set-rocket').value,
+      bank: document.getElementById('set-bank').value,
+      usdt: document.getElementById('set-usdt').value,
+      btc: document.getElementById('set-btc').value
+    };
+    localStorage.setItem('adminPaymentData', JSON.stringify(data));
+    
+    // Update frontend instantly
+    document.getElementById('admin-bkash').value = data.bkash;
+    document.getElementById('admin-nagad').value = data.nagad;
+    document.getElementById('admin-rocket').value = data.rocket;
+    document.getElementById('admin-bank-name').textContent = data.bank;
+    updateCryptoAddress();
+
+    // Show save message
+    const msg = document.getElementById('save-msg');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 2000);
+  }
+
+  function updateCryptoAddress() {
+    const type = document.getElementById('crypto-type').value;
+    const data = JSON.parse(localStorage.getItem('adminPaymentData')) || defaultAdmin;
+    const cryptoInput = document.getElementById('admin-crypto');
+    
+    if(type === 'USDT') cryptoInput.value = data.usdt;
+    else if(type === 'BTC') cryptoInput.value = data.btc;
+    else cryptoInput.value = "ETH Address Not Set";
+  }
 
   // Tab Switching Logic
   function selectPayment(method, btnElement) {
-    // Remove active class from all buttons
     document.querySelectorAll('.pay-btn').forEach(btn => btn.classList.remove('active'));
-    // Add active class to clicked button
     btnElement.classList.add('active');
-
-    // Hide all forms
     document.querySelectorAll('.form-group').forEach(form => form.classList.remove('show'));
     
-    // Show specific form
     const targetForm = document.getElementById('form-' + method);
-    if(targetForm) {
-        targetForm.classList.add('show');
-    }
+    if(targetForm) targetForm.classList.add('show');
   }
 
-  // Coming Soon Toast
   function showComingSoon(method) {
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = method + " is coming soon!";
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
+    alert(method + " payment method is coming soon!");
   }
 
   function processPayment(event) {
     event.preventDefault();
-    alert("Payment processed successfully! (This is a demo)");
+    alert("Payment details submitted successfully! Admin will verify shortly.");
   }
 
-  // Initial Setup
-  applyI18n();
+  // Init
+  loadAdminData();
 </script>
 </body>
 </html>
