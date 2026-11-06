@@ -18,6 +18,9 @@ a{text-decoration:none;color:inherit}
 .logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.4rem;color:var(--primary)}
 .logo i{color:var(--accent);font-size:1.6rem}
 
+/* Lang Select */
+#langSel {padding:8px 12px;border:1px solid var(--border);border-radius:40px;font:inherit;font-size:14px;background:var(--light-bg);cursor:pointer}
+
 /* Form Container */
 .form-wrapper{padding:40px 20px; display: flex; justify-content: center; flex: 1;}
 .form-container{background:#e8e8e8; width:100%; max-width:600px; padding:30px; border-radius:8px; box-shadow:var(--sh-md);}
@@ -36,11 +39,6 @@ a{text-decoration:none;color:inherit}
 .pay-btn.crypto-btn { border-color: #f7931a; background: #fffaf5; }
 .pay-btn.crypto-btn.active { box-shadow: 0 0 0 2px rgba(247,147,26,0.4); border-color: #f7931a; }
 
-/* Coffee Specific Styling */
-.pay-btn.coffee-btn img { height: 28px; }
-.pay-btn.coffee-btn { border-color: #8b4513; background: #fdf8f5; }
-.pay-btn.coffee-btn.active { box-shadow: 0 0 0 2px rgba(139,69,19,0.4); border-color: #8b4513; }
-
 /* Discount Badge */
 .discount-badge { background: #16a34a; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 12px; margin-left: 5px; vertical-align: middle; }
 
@@ -48,9 +46,22 @@ a{text-decoration:none;color:inherit}
 .form-group { margin-bottom: 20px; display: none; }
 .form-group.show { display: block; }
 .form-group label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 6px; color: #222; }
-.form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; font-size: 13px; outline: none; }
-.form-group input:focus, .form-group select:focus { border-color: var(--primary); }
-.form-group input[readonly] { background: #f0f0f0; font-weight: bold; color: #c8102e; }
+
+/* Input with Copy Button Layout */
+.input-group { display: flex; gap: 8px; }
+.input-group input { flex: 1; width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; font-size: 13px; outline: none; }
+.input-group input[readonly] { background: #f0f0f0; font-weight: bold; color: #c8102e; }
+.input-group input:focus { border-color: var(--primary); }
+
+/* Copy Button Style */
+.copy-btn { display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid #ccc; border-radius: 4px; width: 42px; cursor: pointer; transition: all 0.2s; padding: 0; }
+.copy-btn:hover { background: #eaf1fb; border-color: var(--primary); }
+.copy-btn svg { width: 18px; height: 18px; fill: #555; }
+.copy-btn:hover svg { fill: var(--primary); }
+
+/* Regular Inputs */
+.form-group > input, .form-group > select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; font-size: 13px; outline: none; }
+.form-group > input:focus, .form-group > select:focus { border-color: var(--primary); }
 
 /* Buttons */
 .form-actions{display:flex; justify-content:flex-end; gap: 15px; margin-top:20px; border-top: 1px solid #ccc; padding-top: 15px;}
@@ -59,6 +70,10 @@ a{text-decoration:none;color:inherit}
 .btn-cancel:hover{background:#ddd;}
 .btn-create{background:#4f46e5; color:#fff; border:none;}
 .btn-create:hover{background:#4338ca;}
+
+/* Toast Message */
+#toast{position:fixed; bottom:20px; left: 50%; transform: translateX(-50%); background:#16a34a; color:#fff; padding:10px 20px; border-radius:8px; font-size:14px; font-weight: 600; box-shadow:0 4px 12px rgba(0,0,0,.15); opacity:0; transition: opacity 0.3s; pointer-events: none; z-index: 1000;}
+#toast.show{opacity:1;}
 
 @media(max-width:640px){
   .payment-grid { grid-template-columns: repeat(2, 1fr); }
@@ -70,89 +85,83 @@ a{text-decoration:none;color:inherit}
 <header class="site-header">
   <div class="container header-inner">
     <a href="canada-apply.html" class="logo"><i class="fas fa-briefcase"></i><span>GlobalWork</span></a>
+    <select id="langSel">
+      <option value="en">English</option>
+      <option value="bn">বাংলা</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+      <option value="de">Deutsch</option>
+      <option value="pt">Português</option>
+      <option value="hi">हिन्दी</option>
+      <option value="ar">العربية</option>
+      <option value="zh">中文</option>
+      <option value="ja">日本語</option>
+    </select>
   </div>
 </header>
 
 <div class="form-wrapper">
   <div class="form-container">
-    <h1>Add a payment method</h1>
+    <h1 data-i18n="title">Add a payment method</h1>
     
     <div class="payment-grid">
-      <!-- ১. Crypto (সবার আগে) -->
       <button type="button" class="pay-btn crypto-btn active" onclick="selectPayment('crypto', this)">
         <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" alt="Bitcoin" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
         <span class="icon-fallback" style="display:none;">₿</span>
-        <span>Crypto <span class="discount-badge">10% OFF</span></span>
+        <span data-i18n="crypto">Crypto</span> <span class="discount-badge">10% OFF</span>
       </button>
 
-      <!-- bKash -->
       <button type="button" class="pay-btn" onclick="selectPayment('bkash', this)">
         <img src="bkash.png" alt="bKash" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
         <span class="icon-fallback" style="display:none;">📱</span>
         <span>bKash</span>
       </button>
       
-      <!-- Nagad -->
       <button type="button" class="pay-btn" onclick="selectPayment('nagad', this)">
         <img src="nagad.png" alt="Nagad" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
         <span class="icon-fallback" style="display:none;">📱</span>
         <span>Nagad</span>
       </button>
       
-      <!-- Rocket -->
       <button type="button" class="pay-btn" onclick="selectPayment('rocket', this)">
         <img src="rocket.png" alt="Rocket" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
         <span class="icon-fallback" style="display:none;">📱</span>
         <span>Rocket</span>
       </button>
       
-      <!-- UPI (India) -->
       <button type="button" class="pay-btn" onclick="selectPayment('upi', this)">
         <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" alt="UPI" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
         <span class="icon-fallback" style="display:none;">🇮🇳</span>
         <span>UPI (India)</span>
       </button>
 
-      <!-- Google Pay (India) -->
       <button type="button" class="pay-btn" onclick="selectPayment('gpay', this)">
         <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" alt="Google Pay" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
         <span class="icon-fallback" style="display:none;">G Pay</span>
         <span>Google Pay</span>
       </button>
 
-      <!-- Indian Bank -->
       <button type="button" class="pay-btn" onclick="selectPayment('indianbank', this)">
         <span class="icon-fallback">🇮🇳🏦</span>
-        <span>Indian Bank</span>
+        <span data-i18n="indianbank">Indian Bank</span>
       </button>
 
-      <!-- Bank Transfer (Bangladesh) -->
       <button type="button" class="pay-btn" onclick="selectPayment('bank', this)">
         <span class="icon-fallback">🏦</span>
-        <span>Bank (BD)</span>
+        <span data-i18n="bank">Bank (BD)</span>
       </button>
 
-      <!-- Coffee (নতুন যুক্ত করা হয়েছে) -->
-      <button type="button" class="pay-btn coffee-btn" onclick="selectPayment('coffee', this)">
-        <img src="https://cdn-icons-png.flaticon.com/512/3126/3126632.png" alt="Coffee" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-        <span class="icon-fallback" style="display:none;">☕</span>
-        <span>Coffee</span>
-      </button>
-
-      <!-- Card -->
       <button type="button" class="pay-btn" onclick="showComingSoon('Card')">
         <span class="icon-fallback">💳</span>
-        <span>Card</span>
+        <span data-i18n="card">Card</span>
       </button>
 
-      <!-- PayPal -->
       <button type="button" class="pay-btn" onclick="showComingSoon('PayPal')">
         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
         <span class="icon-fallback" style="display:none;">🅿️</span>
         <span>PayPal</span>
       </button>
 
-      <!-- Apple Pay -->
       <button type="button" class="pay-btn" onclick="showComingSoon('Apple Pay')">
         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" alt="Apple Pay" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
         <span class="icon-fallback" style="display:none;">🍎</span>
@@ -162,119 +171,179 @@ a{text-decoration:none;color:inherit}
 
     <form action="#" method="POST" onsubmit="processPayment(event)">
       
-      <!-- Crypto Form (সবার আগে ডিফল্টভাবে ওপেন থাকবে) -->
+      <!-- Crypto Form -->
       <div id="form-crypto" class="form-group show">
-        <div style="background:#fff; border:1px solid #16a34a; padding:10px; border-radius:6px; margin-bottom:15px; color:#16a34a; font-weight:600; font-size:12px;">
+        <div style="background:#fff; border:1px solid #16a34a; padding:10px; border-radius:6px; margin-bottom:15px; color:#16a34a; font-weight:600; font-size:12px;" data-i18n="cryptoMsg">
           You will get a 10% discount on the total application fee by paying with cryptocurrency.
         </div>
-        <label>Select Cryptocurrency</label>
+        <label data-i18n="selectCrypto">Select Cryptocurrency</label>
         <select id="crypto-type" onchange="updateCryptoAddress()">
           <option value="BTC">Bitcoin (BTC)</option>
           <option value="USDT">USDT (Tether)</option>
         </select>
-        <label style="margin-top:10px;">Send Payment to (Admin Wallet):</label>
-        <input type="text" id="show-crypto" readonly>
-        <label style="margin-top:10px;">Your Wallet Address / TXID</label>
+        <label style="margin-top:10px;" data-i18n="sendToWallet">Send Payment to (Admin Wallet):</label>
+        <div class="input-group">
+          <input type="text" id="show-crypto" readonly>
+          <button type="button" class="copy-btn" onclick="copyToClipboard('show-crypto')" title="Copy Address">
+            <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          </button>
+        </div>
+        <label style="margin-top:10px;" data-i18n="yourTxid">Your Wallet Address / TXID</label>
         <input type="text" placeholder="Enter your TXID" required>
       </div>
 
       <!-- bKash Form -->
       <div id="form-bkash" class="form-group">
-        <label>Send Payment to (Admin Number):</label>
-        <input type="text" id="show-bkash" readonly>
-        <label style="margin-top:10px;">Your bKash Number</label>
+        <label data-i18n="sendToNumber">Send Payment to (Admin Number):</label>
+        <div class="input-group">
+          <input type="text" id="show-bkash" readonly>
+          <button type="button" class="copy-btn" onclick="copyToClipboard('show-bkash')" title="Copy Number">
+            <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          </button>
+        </div>
+        <label style="margin-top:10px;" data-i18n="yourBkash">Your bKash Number</label>
         <input type="text" placeholder="e.g. 017XXXXXXXX">
-        <label style="margin-top:10px;">Transaction ID (TrxID)</label>
+        <label style="margin-top:10px;" data-i18n="trxid">Transaction ID (TrxID)</label>
         <input type="text" placeholder="Enter TrxID">
       </div>
 
       <!-- Nagad Form -->
       <div id="form-nagad" class="form-group">
-        <label>Send Payment to (Admin Number):</label>
-        <input type="text" id="show-nagad" readonly>
-        <label style="margin-top:10px;">Your Nagad Number</label>
+        <label data-i18n="sendToNumber">Send Payment to (Admin Number):</label>
+        <div class="input-group">
+          <input type="text" id="show-nagad" readonly>
+          <button type="button" class="copy-btn" onclick="copyToClipboard('show-nagad')" title="Copy Number">
+            <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          </button>
+        </div>
+        <label style="margin-top:10px;" data-i18n="yourNagad">Your Nagad Number</label>
         <input type="text" placeholder="e.g. 017XXXXXXXX">
-        <label style="margin-top:10px;">Transaction ID (TrxID)</label>
+        <label style="margin-top:10px;" data-i18n="trxid">Transaction ID (TrxID)</label>
         <input type="text" placeholder="Enter TrxID">
       </div>
 
       <!-- Rocket Form -->
       <div id="form-rocket" class="form-group">
-        <label>Send Payment to (Admin Number):</label>
-        <input type="text" id="show-rocket" readonly>
-        <label style="margin-top:10px;">Your Rocket Number</label>
+        <label data-i18n="sendToNumber">Send Payment to (Admin Number):</label>
+        <div class="input-group">
+          <input type="text" id="show-rocket" readonly>
+          <button type="button" class="copy-btn" onclick="copyToClipboard('show-rocket')" title="Copy Number">
+            <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          </button>
+        </div>
+        <label style="margin-top:10px;" data-i18n="yourRocket">Your Rocket Number</label>
         <input type="text" placeholder="e.g. 017XXXXXXXX-1">
-        <label style="margin-top:10px;">Transaction ID (TrxID)</label>
+        <label style="margin-top:10px;" data-i18n="trxid">Transaction ID (TrxID)</label>
         <input type="text" placeholder="Enter TrxID">
       </div>
 
       <!-- UPI Form -->
       <div id="form-upi" class="form-group">
-        <label>Send Payment to (Admin UPI ID):</label>
-        <input type="text" id="show-upi" readonly>
-        <label style="margin-top:10px;">Your UPI ID or Transaction ID</label>
+        <label data-i18n="sendToUPI">Send Payment to (Admin UPI ID):</label>
+        <div class="input-group">
+          <input type="text" id="show-upi" readonly>
+          <button type="button" class="copy-btn" onclick="copyToClipboard('show-upi')" title="Copy UPI ID">
+            <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          </button>
+        </div>
+        <label style="margin-top:10px;" data-i18n="yourUpi">Your UPI ID or Transaction ID</label>
         <input type="text" placeholder="Enter your UPI ID or TXN ID">
       </div>
 
       <!-- Google Pay Form -->
       <div id="form-gpay" class="form-group">
-        <label>Send Payment to (Admin UPI ID):</label>
-        <input type="text" id="show-gpay" readonly>
-        <label style="margin-top:10px;">Your Google Pay UPI ID or Transaction ID</label>
+        <label data-i18n="sendToUPI">Send Payment to (Admin UPI ID):</label>
+        <div class="input-group">
+          <input type="text" id="show-gpay" readonly>
+          <button type="button" class="copy-btn" onclick="copyToClipboard('show-gpay')" title="Copy UPI ID">
+            <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          </button>
+        </div>
+        <label style="margin-top:10px;" data-i18n="yourGpay">Your Google Pay UPI ID or Transaction ID</label>
         <input type="text" placeholder="Enter your UPI ID or TXN ID">
       </div>
 
       <!-- Indian Bank Form -->
       <div id="form-indianbank" class="form-group">
         <div style="background:#fff; padding:10px; border-radius:4px; border:1px solid #ccc; margin-bottom:10px; font-size:13px; line-height:1.6;">
-          <strong>Admin Indian Bank Details:</strong><br>
-          <span id="show-indianbank"></span>
+          <strong data-i18n="adminBankDetails">Admin Indian Bank Details:</strong><br>
+          <div style="display:flex; align-items:center; gap:8px; margin-top:5px;">
+             <span id="show-indianbank" style="flex:1; font-weight:bold; color:#c8102e;"></span>
+             <button type="button" class="copy-btn" style="height: 30px; width: 30px; padding: 5px;" onclick="copyToClipboard('show-indianbank')" title="Copy Bank Details">
+               <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+             </button>
+          </div>
         </div>
-        <label>Your Bank Name</label>
+        <label data-i18n="yourBank">Your Bank Name</label>
         <input type="text" placeholder="Enter your Bank Name">
-        <label style="margin-top:10px;">Your Account Number</label>
+        <label style="margin-top:10px;" data-i18n="yourAccount">Your Account Number</label>
         <input type="text" placeholder="Enter your Account Number">
-        <label style="margin-top:10px;">Transaction ID / Reference</label>
+        <label style="margin-top:10px;" data-i18n="trxRef">Transaction ID / Reference</label>
         <input type="text" placeholder="Enter Reference Number">
       </div>
 
       <!-- Bank (Bangladesh) Form -->
       <div id="form-bank" class="form-group">
         <div style="background:#fff; padding:10px; border-radius:4px; border:1px solid #ccc; margin-bottom:10px; font-size:13px; line-height:1.6;">
-          <strong>Admin Bank Details (Bangladesh):</strong><br>
-          <span id="show-bank"></span>
+          <strong data-i18n="adminBankDetailsBD">Admin Bank Details (Bangladesh):</strong><br>
+          <div style="display:flex; align-items:center; gap:8px; margin-top:5px;">
+             <span id="show-bank" style="flex:1; font-weight:bold; color:#c8102e;"></span>
+             <button type="button" class="copy-btn" style="height: 30px; width: 30px; padding: 5px;" onclick="copyToClipboard('show-bank')" title="Copy Bank Details">
+               <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+             </button>
+          </div>
         </div>
-        <label>Your Bank Name</label>
+        <label data-i18n="yourBank">Your Bank Name</label>
         <input type="text" placeholder="Enter your Bank Name">
-        <label style="margin-top:10px;">Your Account Number</label>
+        <label style="margin-top:10px;" data-i18n="yourAccount">Your Account Number</label>
         <input type="text" placeholder="Enter your Account Number">
-        <label style="margin-top:10px;">Transaction ID / Reference</label>
+        <label style="margin-top:10px;" data-i18n="trxRef">Transaction ID / Reference</label>
         <input type="text" placeholder="Enter Reference Number">
       </div>
 
-      <!-- Coffee Form -->
-      <div id="form-coffee" class="form-group">
-        <div style="background:#fff; padding:10px; border-radius:4px; border:1px solid #8b4513; margin-bottom:10px; font-size:13px; line-height:1.6; color: #5d2e0c;">
-          <strong>☕ Support GlobalWork!</strong><br>
-          Buy us a coffee to keep the servers running. Enter your details below.
-        </div>
-        <label>Your Name</label>
-        <input type="text" placeholder="Enter your name">
-        <label style="margin-top:10px;">Coffee Amount ($)</label>
-        <input type="number" placeholder="e.g. 5" min="1">
-        <label style="margin-top:10px;">Your Message / Note</label>
-        <input type="text" placeholder="Keep up the good work!">
-      </div>
-
       <div class="form-actions">
-        <button type="button" class="btn btn-cancel" onclick="window.history.back()">Cancel</button>
-        <button type="submit" class="btn btn-create">Submit Payment</button>
+        <button type="button" class="btn btn-cancel" data-i18n="cancel" onclick="window.history.back()">Cancel</button>
+        <button type="submit" class="btn btn-create" data-i18n="submit">Submit Payment</button>
       </div>
     </form>
   </div>
 </div>
 
+<div id="toast" data-i18n="copied">Copied to clipboard!</div>
+
 <script>
+  const T = {
+    en: { title:"Add a payment method", crypto:"Crypto", indianbank:"Indian Bank", bank:"Bank (BD)", card:"Card", cryptoMsg:"You will get a 10% discount on the total application fee by paying with cryptocurrency.", selectCrypto:"Select Cryptocurrency", sendToWallet:"Send Payment to (Admin Wallet):", yourTxid:"Your Wallet Address / TXID", sendToNumber:"Send Payment to (Admin Number):", yourBkash:"Your bKash Number", trxid:"Transaction ID (TrxID)", yourNagad:"Your Nagad Number", yourRocket:"Your Rocket Number", sendToUPI:"Send Payment to (Admin UPI ID):", yourUpi:"Your UPI ID or Transaction ID", yourGpay:"Your Google Pay UPI ID or Transaction ID", adminBankDetails:"Admin Indian Bank Details:", yourBank:"Your Bank Name", yourAccount:"Your Account Number", trxRef:"Transaction ID / Reference", adminBankDetailsBD:"Admin Bank Details (Bangladesh):", cancel:"Cancel", submit:"Submit Payment", copied:"Copied to clipboard!" },
+    bn: { title:"পেমেন্ট পদ্ধতি যুক্ত করুন", crypto:"ক্রিপ্টো", indianbank:"ইন্ডিয়ান ব্যাংক", bank:"ব্যাংক (বিডি)", card:"কার্ড", cryptoMsg:"ক্রিপ্টোকারেন্সি দিয়ে পেমেন্ট করলে মোট আবেদন ফি-তে ১০% ছাড় পাবেন।", selectCrypto:"ক্রিপ্টোকারেন্সি নির্বাচন করুন", sendToWallet:"পেমেন্ট পাঠান (অ্যাডমিন ওয়ালেট):", yourTxid:"আপনার ওয়ালেট ঠিকানা / TXID", sendToNumber:"পেমেন্ট পাঠান (অ্যাডমিন নম্বর):", yourBkash:"আপনার বিকাশ নম্বর", trxid:"ট্রানজেকশন আইডি (TrxID)", yourNagad:"আপনার নগদ নম্বর", yourRocket:"আপনার রকেট নম্বর", sendToUPI:"পেমেন্ট পাঠান (অ্যাডমিন UPI আইডি):", yourUpi:"আপনার UPI আইডি বা ট্রানজেকশন আইডি", yourGpay:"আপনার Google Pay UPI আইডি বা ট্রানজেকশন আইডি", adminBankDetails:"অ্যাডমিন ইন্ডিয়ান ব্যাংক বিবরণ:", yourBank:"আপনার ব্যাংকের নাম", yourAccount:"আপনার অ্যাকাউন্ট নম্বর", trxRef:"ট্রানজেকশন আইডি / রেফারেন্স", adminBankDetailsBD:"অ্যাডমিন ব্যাংক বিবরণ (বাংলাদেশ):", cancel:"বাতিল", submit:"পেমেন্ট জমা দিন", copied:"কপি করা হয়েছে!" },
+    es: { title:"Añadir método de pago", crypto:"Cripto", indianbank:"Banco Indio", bank:"Banco (BD)", card:"Tarjeta", cryptoMsg:"Obtendrá un 10% de descuento en la tarifa total pagando con criptomoneda.", selectCrypto:"Seleccionar Criptomoneda", sendToWallet:"Enviar Pago a (Billetera Admin):", yourTxid:"Su Dirección de Billetera / TXID", sendToNumber:"Enviar Pago a (Número Admin):", yourBkash:"Su Número de bKash", trxid:"ID de Transacción (TrxID)", yourNagad:"Su Número de Nagad", yourRocket:"Su Número de Rocket", sendToUPI:"Enviar Pago a (ID UPI Admin):", yourUpi:"Su ID de UPI o ID de Transacción", yourGpay:"Su ID de Google Pay UPI o ID de Transacción", adminBankDetails:"Detalles del Banco Indio Admin:", yourBank:"Nombre de su Banco", yourAccount:"Su Número de Cuenta", trxRef:"ID de Transacción / Referencia", adminBankDetailsBD:"Detalles del Banco Admin (Bangladesh):", cancel:"Cancelar", submit:"Enviar Pago", copied:"¡Copiado al portapapeles!" },
+    fr: { title:"Ajouter un mode de paiement", crypto:"Crypto", indianbank:"Banque Indienne", bank:"Banque (BD)", card:"Carte", cryptoMsg:"Vous bénéficierez d'une réduction de 10% sur les frais de dossier en payant par cryptomonnaie.", selectCrypto:"Sélectionner la Cryptomonnaie", sendToWallet:"Envoyer le paiement à (Portefeuille Admin):", yourTxid:"Votre adresse de portefeuille / TXID", sendToNumber:"Envoyer le paiement à (Numéro Admin):", yourBkash:"Votre numéro bKash", trxid:"ID de transaction (TrxID)", yourNagad:"Votre numéro Nagad", yourRocket:"Votre numéro Rocket", sendToUPI:"Envoyer le paiement à (ID UPI Admin):", yourUpi:"Votre ID UPI ou ID de transaction", yourGpay:"Votre ID Google Pay UPI ou ID de transaction", adminBankDetails:"Détails de la banque indienne Admin:", yourBank:"Nom de votre banque", yourAccount:"Votre numéro de compte", trxRef:"ID de transaction / Référence", adminBankDetailsBD:"Détails de la banque Admin (Bangladesh):", cancel:"Annuler", submit:"Soumettre le paiement", copied:"Copié dans le presse-papiers!" },
+    de: { title:"Zahlungsmethode hinzufügen", crypto:"Krypto", indianbank:"Indische Bank", bank:"Bank (BD)", card:"Karte", cryptoMsg:"Sie erhalten 10% Rabatt auf die Gesamtantragsgebühr, wenn Sie mit Kryptowährung bezahlen.", selectCrypto:"Kryptowährung auswählen", sendToWallet:"Zahlung senden an (Admin Wallet):", yourTxid:"Ihre Wallet-Adresse / TXID", sendToNumber:"Zahlung senden an (Admin-Nummer):", yourBkash:"Ihre bKash-Nummer", trxid:"Transaktions-ID (TrxID)", yourNagad:"Ihre Nagad-Nummer", yourRocket:"Ihre Rocket-Nummer", sendToUPI:"Zahlung senden an (Admin UPI-ID):", yourUpi:"Ihre UPI-ID oder Transaktions-ID", yourGpay:"Ihre Google Pay UPI-ID oder Transaktions-ID", adminBankDetails:"Admin Indian Bank Details:", yourBank:"Name Ihrer Bank", yourAccount:"Ihre Kontonummer", trxRef:"Transaktions-ID / Referenz", adminBankDetailsBD:"Admin-Bankdetails (Bangladesch):", cancel:"Abbrechen", submit:"Zahlung senden", copied:"In die Zwischenablage kopiert!" },
+    pt: { title:"Adicionar método de pagamento", crypto:"Cripto", indianbank:"Banco Indiano", bank:"Banco (BD)", card:"Cartão", cryptoMsg:"Você receberá um desconto de 10% na taxa total de inscrição pagando com criptomoeda.", selectCrypto:"Selecionar Criptomoeda", sendToWallet:"Enviar Pagamento para (Carteira Admin):", yourTxid:"Seu Endereço de Carteira / TXID", sendToNumber:"Enviar Pagamento para (Número Admin):", yourBkash:"Seu Número bKash", trxid:"ID da Transação (TrxID)", yourNagad:"Seu Número Nagad", yourRocket:"Seu Número Rocket", sendToUPI:"Enviar Pagamento para (ID UPI Admin):", yourUpi:"Seu ID UPI ou ID de Transação", yourGpay:"Seu ID Google Pay UPI ou ID de Transação", adminBankDetails:"Detalhes do Banco Indiano Admin:", yourBank:"Nome do seu Banco", yourAccount:"Seu Número de Conta", trxRef:"ID da Transação / Referência", adminBankDetailsBD:"Detalhes do Banco Admin (Bangladesh):", cancel:"Cancelar", submit:"Enviar Pagamento", copied:"Copiado para a área de transferência!" },
+    hi: { title:"भुगतान विधि जोड़ें", crypto:"क्रिप्टो", indianbank:"इंडियन बैंक", bank:"बैंक (BD)", card:"कार्ड", cryptoMsg:"क्रिप्टोकरेंसी से भुगतान करने पर आपको कुल आवेदन शुल्क पर 10% छूट मिलेगी।", selectCrypto:"क्रिप्टोकरेंसी चुनें", sendToWallet:"भुगतान भेजें (एडमिन वॉलेट):", yourTxid:"आपका वॉलेट पता / TXID", sendToNumber:"भुगतान भेजें (एडमिन नंबर):", yourBkash:"आपका bKash नंबर", trxid:"लेनदेन आईडी (TrxID)", yourNagad:"आपका Nagad नंबर", yourRocket:"आपका Rocket नंबर", sendToUPI:"भुगतान भेजें (एडमिन UPI आईडी):", yourUpi:"आपकी UPI आईडी या लेनदेन आईडी", yourGpay:"आपकी Google Pay UPI आईडी या लेनदेन आईडी", adminBankDetails:"एडमिन इंडियन बैंक विवरण:", yourBank:"आपके बैंक का नाम", yourAccount:"आपका खाता संख्या", trxRef:"लेनदेन आईडी / संदर्भ", adminBankDetailsBD:"एडमिन बैंक विवरण (बांग्लादेश):", cancel:"रद्द करें", submit:"भुगतान जमा करें", copied:"क्लिपबोर्ड पर कॉपी किया गया!" },
+    ar: { title:"إضافة طريقة دفع", crypto:"عملة مشفرة", indianbank:"بنك هندي", bank:"بنك (BD)", card:"بطاقة", cryptoMsg:"ستحصل على خصم 10% على إجمالي رسوم الطلب عند الدفع بالعملة المشفرة.", selectCrypto:"اختر العملة المشفرة", sendToWallet:"إرسال الدفع إلى (محفظة المسؤول):", yourTxid:"عنوان محفظتك / TXID", sendToNumber:"إرسال الدفع إلى (رقم المسؤول):", yourBkash:"رقم bKash الخاص بك", trxid:"معرف المعاملة (TrxID)", yourNagad:"رقم Nagad الخاص بك", yourRocket:"رقم Rocket الخاص بك", sendToUPI:"إرسال الدفع إلى (معرف UPI للمسؤول):", yourUpi:"معرف UPI أو معرف المعاملة الخاص بك", yourGpay:"معرف Google Pay UPI أو معرف المعاملة الخاص بك", adminBankDetails:"تفاصيل البنك الهندي للمسؤول:", yourBank:"اسم بنكك", yourAccount:"رقم حسابك", trxRef:"معرف المعاملة / المرجع", adminBankDetailsBD:"تفاصيل بنك المسؤول (بنغلاديش):", cancel:"إلغاء", submit:"إرسال الدفع", copied:"تم النسخ إلى الحافظة!" },
+    zh: { title:"添加付款方式", crypto:"加密货币", indianbank:"印度银行", bank:"银行 (BD)", card:"卡", cryptoMsg:"使用加密货币付款，您将获得总申请费10%的折扣。", selectCrypto:"选择加密货币", sendToWallet:"付款至（管理员钱包）：", yourTxid:"您的钱包地址 / TXID", sendToNumber:"付款至（管理员号码）：", yourBkash:"您的 bKash 号码", trxid:"交易 ID (TrxID)", yourNagad:"您的 Nagad 号码", yourRocket:"您的 Rocket 号码", sendToUPI:"付款至（管理员 UPI ID）：", yourUpi:"您的 UPI ID 或交易 ID", yourGpay:"您的 Google Pay UPI ID 或交易 ID", adminBankDetails:"管理员印度银行详情：", yourBank:"您的银行名称", yourAccount:"您的账号", trxRef:"交易 ID / 参考", adminBankDetailsBD:"管理员银行详情（孟加拉国）：", cancel:"取消", submit:"提交付款", copied:"已复制到剪贴板！" },
+    ja: { title:"支払い方法を追加", crypto:"暗号通貨", indianbank:"インドの銀行", bank:"銀行 (BD)", card:"カード", cryptoMsg:"暗号通貨で支払うと、申請手数料の合計が10%割引になります。", selectCrypto:"暗号通貨を選択", sendToWallet:"支払い先（管理者ウォレット）：", yourTxid:"あなたのウォレットアドレス / TXID", sendToNumber:"支払い先（管理者番号）：", yourBkash:"あなたの bKash 番号", trxid:"トランザクション ID (TrxID)", yourNagad:"あなたの Nagad 番号", yourRocket:"あなたの Rocket 番号", sendToUPI:"支払い先（管理者 UPI ID）：", yourUpi:"あなたの UPI ID またはトランザクション ID", yourGpay:"あなたの Google Pay UPI ID またはトランザクション ID", adminBankDetails:"管理者のインドの銀行の詳細：", yourBank:"あなたの銀行名", yourAccount:"あなたの口座番号", trxRef:"トランザクション ID / 参照", adminBankDetailsBD:"管理者の銀行詳細（バングラデシュ）：", cancel:"キャンセル", submit:"支払いを送信", copied:"クリップボードにコピーしました！" }
+  };
+
+  let LANG = 'en';
+  try { LANG = localStorage.getItem('globalwork_lang') || 'en'; } catch(e) {}
+  if(!T[LANG]) LANG = 'en';
+
+  function applyI18n() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (T[LANG][key]) el.innerHTML = T[LANG][key];
+    });
+    document.documentElement.lang = LANG;
+    document.getElementById('langSel').value = LANG;
+  }
+
+  document.getElementById('langSel').addEventListener('change', function(e) {
+    LANG = e.target.value;
+    try { localStorage.setItem('globalwork_lang', LANG); } catch(x) {}
+    applyI18n();
+  });
+
   function getPaymentSettings() {
     try {
       return JSON.parse(localStorage.getItem('globalwork_payment_settings')) || {
@@ -323,6 +392,24 @@ a{text-decoration:none;color:inherit}
     event.preventDefault();
     alert("Payment details submitted successfully! Admin will verify shortly.");
   }
+
+  function copyToClipboard(elementId) {
+    const element = document.getElementById(elementId);
+    let textToCopy = element.value !== undefined ? element.value : element.innerText;
+    
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }).catch(err => {
+      console.error('Failed to copy: ', err);
+    });
+  }
+
+  // Init
+  applyI18n();
 </script>
 </body>
 </html>
