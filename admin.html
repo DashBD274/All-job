@@ -144,7 +144,7 @@ td input[type=checkbox],th input[type=checkbox]{width:16px;height:16px;padding:0
       </div>
     </section>
 
-    <!-- পেমেন্ট সেটিংস পেজ (UPI সহ) -->
+    <!-- পেমেন্ট সেটিংস পেজ -->
     <section id="v-payment" class="view" hidden>
       <div class="card set">
         <h3>💳 Payment Method Settings</h3>
@@ -161,8 +161,14 @@ td input[type=checkbox],th input[type=checkbox]{width:16px;height:16px;padding:0
         
         <label>UPI ID (India)</label>
         <input type="text" id="p-upi" placeholder="yourname@upi">
+
+        <label>Google Pay UPI ID (India)</label>
+        <input type="text" id="p-gpay" placeholder="yourname@okicici">
+
+        <label>Indian Bank Name & Account</label>
+        <input type="text" id="p-indianbank" placeholder="e.g. HDFC Bank - 50100234567890">
         
-        <label>Bank Name & Account</label>
+        <label>Bank Name & Account (Bangladesh)</label>
         <input type="text" id="p-bank" placeholder="e.g. Dutch Bangla Bank - 1234567890">
         
         <label>Crypto USDT (TRC20) Address</label>
@@ -259,7 +265,8 @@ $('rf').addEventListener('click', function () { refresh(); loadPaymentSettings()
 function loadPaymentSettings() {
   var p = store('globalwork_payment_settings') || {
     bkash: "01712345678", nagad: "01812345678", rocket: "019123456789-1",
-    upi: "globalwork@upi",
+    upi: "globalwork@upi", gpay: "globalwork@okicici", 
+    indianbank: "HDFC Bank - 50100234567890",
     bank: "Dutch Bangla Bank - 1234567890 (GlobalWork Ltd)",
     usdt: "TXYZ1234567890USDT", btc: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
   };
@@ -267,6 +274,8 @@ function loadPaymentSettings() {
   $('p-nagad').value = p.nagad;
   $('p-rocket').value = p.rocket;
   $('p-upi').value = p.upi || "";
+  $('p-gpay').value = p.gpay || "";
+  $('p-indianbank').value = p.indianbank || "";
   $('p-bank').value = p.bank;
   $('p-usdt').value = p.usdt;
   $('p-btc').value = p.btc;
@@ -278,6 +287,8 @@ function savePaymentSettings() {
     nagad: $('p-nagad').value,
     rocket: $('p-rocket').value,
     upi: $('p-upi').value,
+    gpay: $('p-gpay').value,
+    indianbank: $('p-indianbank').value,
     bank: $('p-bank').value,
     usdt: $('p-usdt').value,
     btc: $('p-btc').value
