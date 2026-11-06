@@ -81,7 +81,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// ====== ১. আপনার নতুন Firebase কনফিগারেশন ======
+// ====== আপনার Firebase কনফিগারেশন ======
 const firebaseConfig = {
   apiKey: "AIzaSyDxUBNv7zrtk27g1nZ4F7xFJZ-oRODrh9E",
   authDomain: "globalwork-app.firebaseapp.com",
@@ -96,7 +96,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ====== ২. Translation Logic ======
+// ====== Translation Logic ======
 var T = {
   en: { pageTitle: "Sign Up | GlobalWork", heading: "Sign Up", subheading: "Create your account", lblName: "Full Name", lblEmail: "Email", lblPhone: "Phone", lblPass: "Password (min 6)", btnSignup: "Create Account", hasAccount: "Already have an account?", logIn: "Log In", demoNote: "Your data will be securely saved online.", errFill: "Fill in all fields", errEmail: "Enter a valid email", errPass: "Password min 6 characters", errExists: "Email already registered", errPhone: "Phone number already registered", errSave: "Could not save", okSignup: "Account created! Redirecting..." },
   bn: { pageTitle: "সাইন আপ | GlobalWork", heading: "সাইন আপ", subheading: "আপনার অ্যাকাউন্ট তৈরি করুন", lblName: "পুরো নাম", lblEmail: "ইমেল", lblPhone: "ফোন নম্বর", lblPass: "পাসওয়ার্ড (কমপক্ষে ৬)", btnSignup: "অ্যাকাউন্ট তৈরি করুন", hasAccount: "অ্যাকাউন্ট আছে?", logIn: "লগইন", demoNote: "আপনার তথ্য নিরাপদে অনলাইনে সেভ হবে।", errFill: "সব ঘর পূরণ করুন", errEmail: "সঠিক ইমেল দিন", errPass: "পাসওয়ার্ড কমপক্ষে ৬ অক্ষর", errExists: "এই ইমেল আগে থেকেই আছে", errPhone: "এই ফোন নম্বর আগে থেকেই আছে", errSave: "সংরক্ষণ করা যায়নি", okSignup: "অ্যাকাউন্ট তৈরি হয়েছে! অপেক্ষা করুন..." },
@@ -139,7 +139,7 @@ langSel.addEventListener('change', function(e) {
   applyI18n();
 });
 
-// ====== ৩. Firebase Signup Logic ======
+// ====== Firebase Signup Logic ======
 function show(el,cls,t){el.className='msg '+cls;el.textContent=t}
 
 document.getElementById('f').addEventListener('submit', async function(ev){
@@ -156,16 +156,16 @@ document.getElementById('f').addEventListener('submit', async function(ev){
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){ show(m,'err',t.errEmail); return; }
   if(w.length < 6){ show(m,'err',t.errPass); return; }
 
-  show(m, 'ok', 'Processing...'); // লোডিং মেসেজ
+  show(m, 'ok', 'Processing...');
 
   try {
-    // 🔴 ফোন নম্বরটি আগে থেকে ডেটাবেসে আছে কিনা চেক করা (Firestore)
+    // 🔴 ফোন নম্বরটি আগে থেকে ডেটাবেসে আছে কিনা চেক করা
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("phone", "==", p));
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
-      show(m, 'err', t.errPhone); // ফোন নম্বর আগে থেকে থাকলে এরর
+      show(m, 'err', t.errPhone);
       return;
     }
 
@@ -173,21 +173,21 @@ document.getElementById('f').addEventListener('submit', async function(ev){
     const userCredential = await createUserWithEmailAndPassword(auth, e, w);
     const user = userCredential.user;
 
-    // 🔴 ইউজারের তথ্য Firestore-এ সেভ করা
+    // 🔴 ইউজারের তথ্য Firestore-এ সেভ করা (এখন পাসওয়ার্ডসহ)
     await setDoc(doc(db, "users", user.uid), {
       fullName: n,
       email: e,
       phone: p,
-      role: "user", // ডিফল্ট রোল
+      password: w, // <--- পাসওয়ার্ড সেভ করা হচ্ছে
+      role: "user",
       createdAt: new Date()
     });
 
-    // সফল হলে সাথে সাথে রিডাইরেক্ট
+    // সফল হলে মেসেজ দেখানো এবং রিডাইরেক্ট করা
     show(m, 'ok', t.okSignup);
-    window.location.href = 'index.html'; // ডিরেক্ট রিডাইরেক্ট
+    setTimeout(function(){ location.href = 'index.html'; }, 1500);
 
   } catch (error) {
-    // Firebase থেকে আসা এরর
     if (error.code === 'auth/email-already-in-use') {
       show(m, 'err', t.errExists);
     } else {
