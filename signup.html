@@ -182,12 +182,12 @@ document.getElementById('f').addEventListener('submit', async function(ev){
       createdAt: new Date()
     });
 
-    // সফল হলে মেসেজ দেখানো এবং রিডাইরেক্ট করা
+    // সফল হলে সাথে সাথে রিডাইরেক্ট
     show(m, 'ok', t.okSignup);
-    setTimeout(function(){ location.href = 'index.html'; }, 1500);
+    window.location.href = 'index.html'; // ডিরেক্ট রিডাইরেক্ট
 
   } catch (error) {
-    // Firebase থেকে আসা এরর (যেমন: ইমেইল আগে থেকে থাকলে)
+    // Firebase থেকে আসা এরর
     if (error.code === 'auth/email-already-in-use') {
       show(m, 'err', t.errExists);
     } else {
