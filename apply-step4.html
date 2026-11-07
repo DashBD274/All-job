@@ -311,7 +311,25 @@ a{text-decoration:none;color:inherit}
 
 <div id="toast" data-i18n="copied">Copied to clipboard!</div>
 
-<script>
+<script type="module">
+  // Firebase Imports
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  // Firebase কনফিগারেশন
+  const firebaseConfig = {
+    apiKey: "AIzaSyDxUBNv7zrtk27g1nZ4F7xFJZ-oRODrh9E",
+    authDomain: "globalwork-app.firebaseapp.com",
+    projectId: "globalwork-app",
+    storageBucket: "globalwork-app.firebasestorage.app",
+    messagingSenderId: "974955802658",
+    appId: "1:974955802658:web:e1b45c355e3f0e2b26da7b",
+    measurementId: "G-4TSHNJE7TV"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Translations
   const T = {
     en: { title:"Add a payment method", crypto:"Crypto", indianbank:"Indian Bank", bank:"Bank (BD)", card:"Card", cryptoMsg:"You will get a 10% discount on the total application fee by paying with cryptocurrency.", selectCrypto:"Select Cryptocurrency", sendToWallet:"Send Payment to (Admin Wallet):", yourTxid:"Your Wallet Address / TXID", sendToNumber:"Send Payment to (Admin Number):", yourBkash:"Your bKash Number", trxid:"Transaction ID (TrxID)", yourNagad:"Your Nagad Number", yourRocket:"Your Rocket Number", sendToUPI:"Send Payment to (Admin UPI ID):", yourUpi:"Your UPI ID or Transaction ID", yourGpay:"Your Google Pay UPI ID or Transaction ID", adminBankDetails:"Admin Indian Bank Details:", yourBank:"Your Bank Name", yourAccount:"Your Account Number", trxRef:"Transaction ID / Reference", adminBankDetailsBD:"Admin Bank Details (Bangladesh):", cancel:"Cancel", submit:"Submit Payment", copied:"Copied to clipboard!" },
     bn: { title:"পেমেন্ট পদ্ধতি যুক্ত করুন", crypto:"ক্রিপ্টো", indianbank:"ইন্ডিয়ান ব্যাংক", bank:"ব্যাংক (বিডি)", card:"কার্ড", cryptoMsg:"ক্রিপ্টোকারেন্সি দিয়ে পেমেন্ট করলে মোট আবেদন ফি-তে ১০% ছাড় পাবেন।", selectCrypto:"ক্রিপ্টোকারেন্সি নির্বাচন করুন", sendToWallet:"পেমেন্ট পাঠান (অ্যাডমিন ওয়ালেট):", yourTxid:"আপনার ওয়ালেট ঠিকানা / TXID", sendToNumber:"পেমেন্ট পাঠান (অ্যাডমিন নম্বর):", yourBkash:"আপনার বিকাশ নম্বর", trxid:"ট্রানজেকশন আইডি (TrxID)", yourNagad:"আপনার নগদ নম্বর", yourRocket:"আপনার রকেট নম্বর", sendToUPI:"পেমেন্ট পাঠান (অ্যাডমিন UPI আইডি):", yourUpi:"আপনার UPI আইডি বা ট্রানজেকশন আইডি", yourGpay:"আপনার Google Pay UPI আইডি বা ট্রানজেকশন আইডি", adminBankDetails:"অ্যাডমিন ইন্ডিয়ান ব্যাংক বিবরণ:", yourBank:"আপনার ব্যাংকের নাম", yourAccount:"আপনার অ্যাকাউন্ট নম্বর", trxRef:"ট্রানজেকশন আইডি / রেফারেন্স", adminBankDetailsBD:"অ্যাডমিন ব্যাংক বিবরণ (বাংলাদেশ):", cancel:"বাতিল", submit:"পেমেন্ট জমা দিন", copied:"কপি করা হয়েছে!" },
@@ -344,42 +362,51 @@ a{text-decoration:none;color:inherit}
     applyI18n();
   });
 
-  // ✅ সঠিকভাবে LocalStorage থেকে ডেটা রিড করা
-  function getPaymentSettings() {
+  // ফায়ারবেস থেকে পেমেন্ট সেটিংস লোড করা
+  async function loadPaymentSettings() {
     try {
-      const saved = localStorage.getItem('globalwork_payment_settings');
-      if (saved) {
-        return JSON.parse(saved);
+      const docRef = doc(db, "settings", "payment");
+      const docSnap = await getDoc(docRef);
+      
+      let settings;
+      if (docSnap.exists()) {
+        settings = docSnap.data();
+      } else {
+        // ডিফল্ট ভ্যালু (যদি ডাটাবেসে কিছু না থাকে)
+        settings = {
+          bkash: "01712345678", nagad: "01812345678", rocket: "019123456789-1",
+          upi: "globalwork@upi", gpay: "globalwork@okicici",
+          indianbank: "HDFC Bank - 50100234567890 (GlobalWork)",
+          bank: "Dutch Bangla Bank - 1234567890 (GlobalWork Ltd)",
+          usdt: "TXYZ1234567890USDT", btc: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
+        };
       }
-    } catch(e) {
-      console.error("Error reading payment settings: ", e);
-    }
-    return {
-      bkash: "01712345678", nagad: "01812345678", rocket: "019123456789-1",
-      upi: "globalwork@upi", gpay: "globalwork@okicici",
-      indianbank: "HDFC Bank - 50100234567890 (GlobalWork)",
-      bank: "Dutch Bangla Bank - 1234567890 (GlobalWork Ltd)",
-      usdt: "TXYZ1234567890USDT", btc: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
-    };
-  }
 
-  const settings = getPaymentSettings();
-  
-  document.getElementById('show-bkash').value = settings.bkash || "";
-  document.getElementById('show-nagad').value = settings.nagad || "";
-  document.getElementById('show-rocket').value = settings.rocket || "";
-  document.getElementById('show-upi').value = settings.upi || "";
-  document.getElementById('show-gpay').value = settings.gpay || "";
-  document.getElementById('show-indianbank').innerText = settings.indianbank || "";
-  document.getElementById('show-bank').innerText = settings.bank || "";
+      document.getElementById('show-bkash').value = settings.bkash || "";
+      document.getElementById('show-nagad').value = settings.nagad || "";
+      document.getElementById('show-rocket').value = settings.rocket || "";
+      document.getElementById('show-upi').value = settings.upi || "";
+      document.getElementById('show-gpay').value = settings.gpay || "";
+      document.getElementById('show-indianbank').innerText = settings.indianbank || "";
+      document.getElementById('show-bank').innerText = settings.bank || "";
+      
+      // ক্রিপ্টো অ্যাড্রেস আপডেট করার জন্য
+      window.cryptoBtc = settings.btc;
+      window.cryptoUsdt = settings.usdt;
+      
+      updateCryptoAddress();
+
+    } catch (error) {
+      console.error("Error loading payment settings: ", error);
+    }
+  }
   
   function updateCryptoAddress() {
     const type = document.getElementById('crypto-type').value;
     const input = document.getElementById('show-crypto');
-    if(type === 'USDT') input.value = settings.usdt || "";
-    else input.value = settings.btc || "";
+    if(type === 'USDT') input.value = window.cryptoUsdt || "";
+    else input.value = window.cryptoBtc || "";
   }
-  updateCryptoAddress();
 
   function selectPayment(method, btnElement) {
     document.querySelectorAll('.pay-btn').forEach(btn => btn.classList.remove('active'));
@@ -415,6 +442,7 @@ a{text-decoration:none;color:inherit}
   }
 
   applyI18n();
+  loadPaymentSettings(); // পেজ লোড হলেই ফায়ারবেস থেকে সেটিংস নিয়ে আসবে
 </script>
 </body>
 </html>
