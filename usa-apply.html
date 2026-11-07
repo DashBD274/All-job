@@ -441,17 +441,14 @@ if(logoutBtn){
   // ⚠️ এই ফাংশনটি আপডেট করা হয়েছে
   // ==========================================
   function applyJob(j){
-    if(!currentUser){ // <--- Firebase Auth চেক করা হচ্ছে
-      // Toast Message
+    if(!currentUser){ // <--- Firebase Auth চেক
       var t = document.createElement('div'); t.className='toast err'; t.textContent="Please log in to apply.";
       document.body.appendChild(t); setTimeout(()=>t.remove(), 3000);
-      
       setTimeout(function(){location.href='login.html'},1200);
       return;
     }
-    // আপনার আগের কোড অনুযায়ী এখানে রিডাইরেক্ট হবে (প্রয়োজনে apply-form.html?job=... দিন)
-    // যেহেতু আপনার USA পেজে ফর্মে পাঠানোর লজিক ছিল না, তাই এখানে apply-form.html এ পাঠানো হচ্ছে।
-    window.location.href = 'apply-form.html?job=' + encodeURIComponent(j.title);
+    // ✅ এখানে country=USA যোগ করা হলো
+    window.location.href = 'apply-form.html?job=' + encodeURIComponent(j.title) + '&country=USA';
   }
 
   var debounce;
