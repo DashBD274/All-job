@@ -193,7 +193,7 @@ td input[type=checkbox],th input[type=checkbox]{width:16px;height:16px;padding:0
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // ====== আপনার Firebase কনফিগারেশন ======
 const firebaseConfig = {
@@ -266,27 +266,65 @@ document.querySelectorAll('nav button').forEach(function (b) { b.addEventListene
 $('burger').addEventListener('click', function () { $('side').classList.toggle('open'); });
 $('rf').addEventListener('click', function () { refresh(); loadPaymentSettings(); toast('Refreshed'); });
 
-/* ---------- Payment Settings ---------- */
-function loadPaymentSettings() {
-  var p = store('globalwork_payment_settings') || {
-    bkash: "01712345678", nagad: "01812345678", rocket: "019123456789-1",
-    upi: "globalwork@upi", gpay: "globalwork@okicici",
-    indianbank: "HDFC Bank - 50100234567890 (GlobalWork)",
-    bank: "Dutch Bangla Bank - 1234567890 (GlobalWork Ltd)",
-    usdt: "TXYZ1234567890USDT", btc: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
-  };
-  $('p-bkash').value = p.bkash; $('p-nagad').value = p.nagad; $('p-rocket').value = p.rocket;
-  $('p-upi').value = p.upi || ""; $('p-gpay').value = p.gpay || ""; $('p-indianbank').value = p.indianbank || "";
-  $('p-bank').value = p.bank; $('p-usdt').value = p.usdt; $('p-btc').value = p.btc;
+/* ---------- Payment Settings (Firebase) ---------- */
+async function loadPaymentSettings() {
+  try {
+    const docRef = doc(db, "settings", "payment");
+    const docSnap = await getDoc(docRef);
+    
+    let p;
+    if (docSnap.exists()) {
+      p = docSnap.data();
+    } else {
+      // ডিফল্ট ভ্যালু (যদি ডাটাবেসে কিছু না থাকে)
+      p = {
+        bkash: "01712345678", nagad: "01812345678", rocket: "019123456789-1",
+        upi: "globalwork@upi", gpay: "globalwork@okicici",
+        indianbank: "HDFC Bank - 50100234567890 (GlobalWork)",
+        bank: "Dutch Bangla Bank - 1234567890 (GlobalWork Ltd)",
+        usdt: "TXYZ1234567890USDT", btc: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
+      };
+    }
+    
+    $('p-bkash').value = p.bkash || ""; 
+    $('p-nagad').value = p.nagad || ""; 
+    $('p-rocket').value = p.rocket || "";
+    $('p-upi').value = p.upi || ""; 
+    $('p-gpay').value = p.gpay || ""; 
+    $('p-indianbank').value = p.indianbank || "";
+    $('p-bank').value = p.bank || ""; 
+    $('p-usdt').value = p.usdt || ""; 
+    $('p-btc').value = p.btc || "";
+    
+  } catch (error) {
+    console.error("Error loading payment settings: ", error);
+  }
 }
-function savePaymentSettings() {
+
+async function savePaymentSettings() {
   var p = {
-    bkash: $('p-bkash').value, nagad: $('p-nagad').value, rocket: $('p-rocket').value,
-    upi: $('p-upi').value, gpay: $('p-gpay').value, indianbank: $('p-indianbank').value,
-    bank: $('p-bank').value, usdt: $('p-usdt').value, btc: $('p-btc').value
+    bkash: $('p-bkash').value.trim(), 
+    nagad: $('p-nagad').value.trim(), 
+    rocket: $('p-rocket').value.trim(),
+    upi: $('p-upi').value.trim(), 
+    gpay: $('p-gpay').value.trim(), 
+    indianbank: $('p-indianbank').value.trim(),
+    bank: $('p-bank').value.trim(), 
+    usdt: $('p-usdt').value.trim(), 
+    btc: $('p-btc').value.trim()
   };
-  store('globalwork_payment_settings', p);
-  toast('Payment settings saved successfully!');
+  
+  try {
+    // Firebase-এ পেমেন্ট সেটিংস সেভ করা (settings/payment)
+    await setDoc(doc(db, "settings", "payment"), p);
+    // লোকাল স্টোরেজেও সেভ করে রাখা (ঐচ্ছিক, তবে ব্রাউজার ক্যাশের জন্য ভালো)
+    store('globalwork_payment_settings', p);
+    
+    toast('Payment settings saved successfully!');
+  } catch (error) {
+    console.error("Error saving payment settings: ", error);
+    toast('Failed to save payment settings', true);
+  }
 }
 window.savePaymentSettings = savePaymentSettings;
 
@@ -375,7 +413,6 @@ function users() {
     var tr = el('tr');
     
     var c1 = el('td'), w = el('div', 'who'); w.appendChild(el('span', 'av', ini(u.fullName))); w.appendChild(el('strong', '', u.fullName)); c1.appendChild(w); tr.appendChild(c1);
-    // নতুন পাসওয়ার্ড কলাম যোগ করা হলো
     [u.email, u.phone, u.password || '—', dstr(u.createdAt)].forEach(function (v) { tr.appendChild(el('td', '', v)); });
     
     var c5 = el('td');
@@ -406,7 +443,6 @@ function editUser(u) {
   mc.appendChild(el('h3', '', 'Edit User Details'));
   
   var f = el('form');
-  // এডিট ফর্মে পাসওয়ার্ড যোগ করা হলো
   f.innerHTML = `
     <label>Full Name</label>
     <input type="text" id="edit-name" value="${u.fullName || ''}" required>
