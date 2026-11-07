@@ -107,6 +107,31 @@ a{text-decoration:none;color:inherit}
 .job-card:hover{transform:translateY(-4px);box-shadow:var(--sh-md)}
 .country-flag{font-size:2.6rem;margin-bottom:12px;line-height:1}
 .job-card h3{font-size:1.3rem;color:var(--primary);margin-bottom:6px}
+
+/* Perfect Card Flags CSS */
+.card-flag-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+.card-flag {
+    width: 46px;
+    height: 30px;
+    border-radius: 4px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+}
+.card-flag::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 50%);
+}
+.card-flag.ca { background-image: url('https://upload.wikimedia.org/wikipedia/commons/c/cf/Flag_of_Canada.svg'); }
+.card-flag.us { background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg'); }
+
 .visa-tag{display:inline-block;background:rgba(11,59,92,.08);color:var(--primary);font-size:.75rem;font-weight:600;padding:4px 12px;border-radius:20px;margin-bottom:14px;align-self:flex-start}
 .job-card p{font-size:.95rem;margin-bottom:18px;flex:1}
 .job-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
@@ -156,8 +181,14 @@ h2{font-size:1.5rem}
 
 <header class="site-header">
   <div class="container header-inner">
-    <a href="index.html" class="logo" aria-label="GlobalWork Home"><span class="logo-flags"><span class="flag ca"></span><span class="flag us"></span></span><span>GlobalWork</span></a>
+    <a href="index.html" class="logo" aria-label="GlobalWork Home">
+        <!-- Simple Header Logo Flags -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Flag_of_Canada.svg" alt="CA" style="width:24px; border-radius:2px;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" alt="US" style="width:24px; border-radius:2px; margin-left: -8px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
+        <span style="margin-left: 8px;">GlobalWork</span>
+    </a>
     <div class="header-controls">
+      <!-- Removed Theme Dots -->
       <div class="lang-selector">
         <i class="fas fa-language"></i>
         <select id="languageSelect" aria-label="Select language">
@@ -189,7 +220,7 @@ h2{font-size:1.5rem}
 <section class="hero">
   <div class="container hero-content">
     
-    <!-- New Premium Animated Flags -->
+    <!-- Premium Animated Flags -->
     <div class="flags-row">
       <div class="premium-flag ca" title="Canada"></div>
       <div class="flag-amp">&amp;</div>
@@ -216,7 +247,7 @@ h2{font-size:1.5rem}
       <form id="jobSearch" class="find-form">
         <div class="form-group">
           <label for="kw" data-i18n="srchKw">What job are you looking for?</label>
-          <!-- New Premium Search Bar -->
+          <!-- Premium Search Bar -->
           <div class="premium-search-wrapper">
             <i class="fas fa-search"></i>
             <input class="premium-search-input" type="text" id="kw" placeholder="e.g. Farm worker, Greenhouse" data-i18n-ph="kwPh" autocomplete="off">
@@ -236,7 +267,7 @@ h2{font-size:1.5rem}
         <button type="button" data-q="Farm worker" data-i18n="tagFarm">Farm Worker</button><button type="button" data-q="Greenhouse" data-i18n="tagGreenhouse">Greenhouse</button><button type="button" data-q="Food processing" data-i18n="tagFood">Food Processing</button><button type="button" data-q="Livestock" data-i18n="tagLivestock">Livestock</button><button type="button" data-q="Landscaping" data-i18n="tagLandscaping">Landscaping</button></div>
     </div>
 
-    <!-- Updated Links to Local HTML Pages -->
+    <!-- Direct Links to Local HTML Pages -->
     <div class="res-grid">
       <a href="canada-apply.html" class="res-card">
         <img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Flag_of_Canada.svg" alt="Canada" class="flag-icon">
@@ -262,31 +293,40 @@ h2{font-size:1.5rem}
       <p data-i18n="jobsSubheading">Explore work opportunities in Canada and the USA with visa sponsorship potential.</p>
     </div>
     <div class="job-grid">
+      <!-- Canada Card -->
       <div class="job-card reveal">
-        <div class="country-flag"><span class="flag ca" style="--s:34px"></span></div>
+        <div class="card-flag-container">
+            <div class="card-flag ca"></div>
+        </div>
         <h3 data-i18n="canadaTitle">Canada</h3>
         <span class="visa-tag" data-i18n="canadaVisaTag">LMIA / Work Permit</span>
         <p data-i18n="canadaDesc">Find jobs with employers who support LMIA or work permit applications. High demand in agriculture, food processing, and general labour.</p>
         <div class="job-tags"><span class="job-tag" data-i18n="tagFarm">Farm Worker</span><span class="job-tag" data-i18n="tagFood">Food Processing</span><span class="job-tag" data-i18n="tagLivestock">Livestock</span><span class="job-tag" data-i18n="tagGreenhouse">Greenhouse</span></div>
-        
         <a href="canada-apply.html" class="btn btn-primary btn-sm btn-block" data-i18n="applyCanada">Apply in Canada</a>
       </div>
+      
+      <!-- USA Card -->
       <div class="job-card reveal">
-        <div class="country-flag"><span class="flag us" style="--s:34px"></span></div>
+        <div class="card-flag-container">
+            <div class="card-flag us"></div>
+        </div>
         <h3 data-i18n="usaTitle">USA</h3>
         <span class="visa-tag" data-i18n="usaVisaTag">H-2A / H-2B Visa</span>
         <p data-i18n="usaDesc">Seasonal and agricultural jobs with employer petition support. Perfect for farm, hospitality, and landscaping roles.</p>
         <div class="job-tags"><span class="job-tag" data-i18n="tagH2AFarm">H-2A Farm</span><span class="job-tag" data-i18n="tagH2BHosp">H-2B Hospitality</span><span class="job-tag" data-i18n="tagLandscaping">Landscaping</span><span class="job-tag" data-i18n="tagSeafood">Seafood</span></div>
-        
         <a href="usa-apply.html" class="btn btn-primary btn-sm btn-block" data-i18n="applyUSA">Apply in USA</a>
       </div>
+      
+      <!-- Both Card -->
       <div class="job-card reveal">
-        <div class="country-flag"><span class="flag ca" style="--s:30px"></span><span class="flag us" style="--s:30px"></span></div>
+        <div class="card-flag-container">
+            <div class="card-flag ca"></div>
+            <div class="card-flag us"></div>
+        </div>
         <h3 data-i18n="bothTitle">Canada & USA</h3>
         <span class="visa-tag" data-i18n="bothVisaTag">Employer Sponsorship</span>
         <p data-i18n="bothDesc">Apply to both countries at once. Get matched with employers who are willing to sponsor your work visa.</p>
         <div class="job-tags"><span class="job-tag" data-i18n="tagSponsor">Sponsorship</span><span class="job-tag" data-i18n="tagRelocation">Relocation</span><span class="job-tag" data-i18n="tagSupport">Support</span></div>
-        
         <a href="both-apply.html" class="btn btn-accent btn-sm btn-block" data-i18n="applyBoth">Apply Both</a>
       </div>
     </div>
@@ -297,7 +337,7 @@ h2{font-size:1.5rem}
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="logo"><span class="logo-flags"><span class="flag ca"></span><span class="flag us"></span></span><span>GlobalWork</span></div>
+        <div class="logo">GlobalWork</div>
         <p data-i18n="footerBrandDesc">Connecting global talent with opportunities in Canada and the USA.</p>
       </div>
       <div class="footer-links">
@@ -325,7 +365,7 @@ h2{font-size:1.5rem}
       </div>
     </div>
     <div class="footer-bottom">
-      <span><span data-i18n="footerCopyright">© 2026 GlobalWork. All rights reserved.</span><span class="flag ca"></span><span class="flag us"></span></span>
+      <span><span data-i18n="footerCopyright">© 2026 GlobalWork. All rights reserved.</span></span>
     </div>
   </div>
 </footer>
@@ -392,7 +432,7 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
 });
 
 // ==========================================
-// নিচের অংশটুকু আপনার আগের কোডের মতোই আছে (সব ভাষাসহ)
+// Translations (আপনার আগের কোড থেকে)
 // ==========================================
 (function () {
   var K = ["signUp","heroBadge","heroTitle1","heroTitle2","heroSubtitle","browseJobs","createAccount","jobsHeading","jobsSubheading","canadaTitle","canadaVisaTag","canadaDesc","applyCanada","usaTitle","usaVisaTag","usaDesc","applyUSA","bothTitle","bothVisaTag","bothDesc","applyBoth","accountHeading","accountSubheading","accountPoint1","accountPoint2","accountPoint3","accountPoint4","formTitle","formSub","labelFullName","labelEmail","labelPhone","labelPassword","createAccountBtn","formNote","footerBrandDesc","footerQuickLinks","footerJobs","footerAccount","footerVisa","footerSupport","footerLegal","footerPrivacy","footerTerms","footerDisclaimer","footerContact","footerCopyright","msgFill","msgPass","msgEmail","msgWelcome","srchTitle","srchSub","srchKw","srchCountry","srchAll","srchBtn","srchQuick","srcCA","srcUS","srchOpen","warnTitle","warnText","login","loginTitle","loginSub","loginBtn","noAccount","logout","msgLoginBad","msgLoginOk","msgExists","demoNote"];
@@ -441,7 +481,8 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
   try { saved = localStorage.getItem('globalwork_lang') || 'en'; } catch (e) {}
   setLanguage(saved);
   langSelect.addEventListener('change', function (e) { setLanguage(e.target.value); });
-
+  
+  // Smooth scrolling for anchor links
   document.querySelectorAll('a[href^="#"]').forEach(function (a) {
     a.addEventListener('click', function (e) {
       var id = this.getAttribute('href');
@@ -451,88 +492,6 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
     });
   });
 
-  var root = document.documentElement;
-  var dots = document.querySelectorAll('.theme-dots button');
-  function setTheme(t) {
-    root.setAttribute('data-theme', t);
-    dots.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.theme === t)); });
-    try { localStorage.setItem('globalwork_theme', t); } catch (e) {}
-  }
-  var th = 'unity';
-  try { th = localStorage.getItem('globalwork_theme') || 'unity'; } catch (e) {}
-  setTheme(th);
-  dots.forEach(function (b) { b.addEventListener('click', function () { setTheme(b.dataset.theme); }); });
-
-  var box = document.querySelector('.particles');
-  if (box && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    for (var i = 0; i < 16; i++) {
-      var sp = document.createElement('span');
-      sp.textContent = i % 2 ? '🍁' : '★';
-      sp.style.left = (Math.random() * 100) + '%';
-      sp.style.fontSize = (12 + Math.random() * 14) + 'px';
-      sp.style.animationDuration = (9 + Math.random() * 9) + 's';
-      sp.style.animationDelay = (-Math.random() * 12) + 's';
-      box.appendChild(sp);
-    }
-  }
-
-  var rv = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, { threshold: 0.15 });
-    rv.forEach(function (el, k) { el.style.transitionDelay = (k % 3) * 0.12 + 's'; io.observe(el); });
-  } else { rv.forEach(function (el) { el.classList.add('in'); }); }
-
-  var kwEl = document.getElementById('kw'), ctryEl = document.getElementById('ctry');
-  var rCA = document.getElementById('rCA'), rUS = document.getElementById('rUS');
-  var companies = {
-    ca: [
-      { name: "Maple Leaf Farms", address: "Ontario, Canada", logo: "🍁" },
-      { name: "Northern Harvest", address: "British Columbia, Canada", logo: "🌾" },
-      { name: "Canadian Meat Co.", address: "Alberta, Canada", logo: "🥩" },
-      { name: "Greenhouse Tech", address: "Quebec, Canada", logo: "🌿" }
-    ],
-    us: [
-      { name: "US Farm Corp", address: "Texas, USA", logo: "🤠" },
-      { name: "Sunshine Hospitality", address: "Florida, USA", logo: "🏨" },
-      { name: "Golden State Seafood", address: "California, USA", logo: "🦞" }
-    ]
-  };
-  var coBox = document.getElementById('companyListContainer');
-  var coGrid = document.getElementById('companyGrid');
-  function renderCompanies(c) {
-    coGrid.textContent = '';
-    var list = companies[c];
-    if (!list) { coBox.style.display = 'none'; return; }
-    coBox.style.display = 'block';
-    list.forEach(function (co) {
-      var card = document.createElement('div'); card.className = 'company-card';
-      var logo = document.createElement('div'); logo.className = 'company-logo'; logo.textContent = co.logo;
-      var info = document.createElement('div');
-      var h = document.createElement('h4'); h.textContent = co.name;
-      var a = document.createElement('p'); a.textContent = '📍 ' + co.address;
-      info.appendChild(h); info.appendChild(a); card.appendChild(logo); card.appendChild(info); coGrid.appendChild(card);
-    });
-  }
-  function updateResults() {
-    var kw = kwEl.value.trim(), c = ctryEl.value;
-    // Now these are just dummy updates for the hidden IDs if needed, but the actual links are hardcoded in HTML
-    renderCompanies(c);
-  }
-  document.getElementById('jobSearch').addEventListener('submit', function (e) {
-    e.preventDefault(); updateResults();
-    var target = ctryEl.value === 'all' ? coBox : coBox;
-    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  });
-  ctryEl.addEventListener('change', updateResults);
-  kwEl.addEventListener('input', updateResults);
-  document.querySelectorAll('.chips button').forEach(function (b) {
-    b.addEventListener('click', function () { kwEl.value = b.dataset.q; updateResults(); });
-  });
-  updateResults();
-
-  function tx(k) { return T[current][k] || T.en[k]; }
 })();
 </script>
 </body>
