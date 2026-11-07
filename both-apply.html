@@ -434,7 +434,7 @@ if(logoutBtn){
   $('modal').addEventListener('click',function(e){if(e.target===$('modal'))closeM()});
 
   // ==========================================
-  // ⚠️ এই ফাংশনটি আপডেট করা হয়েছে
+  // ⚠️ এই ফাংশনটি আপডেট করা হয়েছে (Country প্যারামিটার সহ)
   // ==========================================
   function applyJob(j){
     if(!currentUser){ // <--- Firebase Auth চেক
@@ -443,7 +443,8 @@ if(logoutBtn){
       setTimeout(function(){location.href='login.html'},1200);
       return;
     }
-    window.location.href = 'apply-form.html?job=' + encodeURIComponent(j.title);
+    // ✅ এখানে j.country ডাইনামিকভাবে পাঠানো হচ্ছে (Canada অথবা USA)
+    window.location.href = 'apply-form.html?job=' + encodeURIComponent(j.title) + '&country=' + j.country;
   }
 
   /* ====== Bind controls ====== */
